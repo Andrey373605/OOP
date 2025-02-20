@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace OOP_LAB1.Domain.Enums
 {
-    public enum AccountStatus
+    public enum AccountType
     {
-        Active,
-        Blocked,
-        Frozen,
-        Closed
+        Deposit,
+        Credit,
+        Salary
     }
 }

@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace OOP_LAB1.Domain.Enums
 {
-    public enum UserRole
+    public enum LoanStatus
     {
-        Client,
-        Operator,
-        Manager,
-        ExternalSpecialist,
-        Administrator
+        OK = 0,
     }
 }

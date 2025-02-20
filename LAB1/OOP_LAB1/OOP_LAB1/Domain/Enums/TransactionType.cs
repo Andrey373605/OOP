@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace OOP_LAB1.Domain.Enums
 {
-    public enum LoanType
+    public enum TransactionType
     {
-
+        Transfer,
+        Withdrawal,
+        Deposit,
+        CreditPayment
     }
 }
