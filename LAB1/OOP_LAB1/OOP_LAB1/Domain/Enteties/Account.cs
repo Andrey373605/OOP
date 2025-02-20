@@ -1,26 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OOP_LAB1.Domain.Enums;
+using System.ComponentModel.DataAnnotations;
 
-namespace OOP_LAB1.Enteties
+namespace OOP_LAB1.Domain.Enteties
 {
     internal class Account
     {
         public int Id;
-        public string AccountNumber;
         public decimal Balance;
         public AccountStatus Status;
         public DateTime CreatedDate;
         public int OwnerId;
+
+
+        public void UpdateBalance(decimal newAmount)
+        {
+            if (Status != AccountStatus.Active)
+            {
+                throw new InvalidOperationException("Account not active");
+            }
+            Balance = newAmount;
+        }
     }
 
-    public enum AccountStatus
-    {
-        Active,
-        Blocked,
-        Frozen,
-        Closed
-    }
+    
 }

@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace OOP_LAB1.Domain.Enums
 {
-    internal class LoanType
+    public enum LoanType
     {
+
     }
 }
