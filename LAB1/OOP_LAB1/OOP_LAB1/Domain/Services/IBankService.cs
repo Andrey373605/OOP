@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OOP_LAB1.Enteties
+namespace OOP_LAB1.Domain.Services
 {
-    internal class Account
+    internal interface IBankService
     {
     }
 }

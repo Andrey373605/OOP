@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OOP_LAB1.Core.Services
+namespace OOP_LAB1.Domain.Services
 {
-    internal class LoanService
+    internal interface IUserService
     {
     }
 }

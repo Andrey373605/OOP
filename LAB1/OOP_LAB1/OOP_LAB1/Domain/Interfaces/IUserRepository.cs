@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OOP_LAB1.Enteties
+namespace OOP_LAB1.Domain.Interfaces
 {
-    internal class Credit
+    internal interface IUserRepository
     {
     }
 }

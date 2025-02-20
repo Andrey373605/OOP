@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OOP_LAB1.Core.Enteties
+namespace OOP_LAB1.Domain.Enteties
 {
-    internal class User
+    internal class Transaction
     {
     }
 }
