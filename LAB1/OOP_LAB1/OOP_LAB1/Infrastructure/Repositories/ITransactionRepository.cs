@@ -1,7 +1,7 @@
 ﻿using OOP_LAB1.Domain.Enums;
 using OOP_LAB1.Domain.Enteties;
 
-namespace OOP_LAB1.Domain.Interfaces
+namespace OOP_LAB1.Infrastructure.Repositories
 {
     internal interface ITransactionRepository
     {
