@@ -16,7 +16,7 @@ namespace OOP_LAB1.Domain.Enteties
 
         public void UpdateBalance(decimal newAmount)
         {
-            if (Status != AccountStatus.Active)
+            if (!IsBlocked && !IsFrozen)
             {
                 throw new InvalidOperationException("Account not active");
             }

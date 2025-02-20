@@ -12,6 +12,5 @@ namespace OOP_LAB1.Domain.Enteties
         public string Email { get; set; }
         public bool IsForeigner { get; set; }
         public UserRole Role { get; set; }
-        public List<Account> Accounts { get; set; } = new();
     }
 }
