@@ -15,7 +15,6 @@ namespace OOP_LAB1.Domain.Enteties
         public string BIK { get; set; }
         public string Address { get; set; }
         public int BankId { get; set; }
-        public Bank Bank { get; set; }
-        public List<Account> Accounts { get; set; } = new();
+        public List<Account> Accounts { get; set; }
     }
 }
