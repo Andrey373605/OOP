@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OOP_LAB1.Domain.Services
+namespace OOP_LAB1.Domain.Interfaces
 {
     internal interface ILoanService
     {

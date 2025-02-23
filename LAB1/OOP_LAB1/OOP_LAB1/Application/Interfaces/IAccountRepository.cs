@@ -1,12 +1,8 @@
 ﻿using OOP_LAB1.Domain.Enteties;
 using OOP_LAB1.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace OOP_LAB1.Infrastructure.Repositories
+
+namespace OOP_LAB1.Application.Interfaces
 {
     internal interface IAccountRepository
     {

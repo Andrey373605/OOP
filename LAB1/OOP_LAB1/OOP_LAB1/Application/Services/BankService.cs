@@ -1,16 +1,13 @@
 ﻿using OOP_LAB1.Domain.Enteties;
-using OOP_LAB1.Infrastructure.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OOP_LAB1.Domain.Interfaces;
+using OOP_LAB1.Application.Interfaces;
 
-namespace OOP_LAB1.Domain.Services
+
+namespace OOP_LAB1.Application.Services
 {
     internal class BankService : IBankService
     {
-        IBankRepository _bankRepository;
+        readonly IBankRepository _bankRepository;
         public BankService(IBankRepository bankRepository) 
         { 
             _bankRepository = bankRepository;
@@ -28,7 +25,15 @@ namespace OOP_LAB1.Domain.Services
 
         public Bank CreateBank(string name)
         {
-            throw new NotImplementedException();
+            if (_bankRepository.GetByName(name) != null)
+            {
+                throw new InvalidOperationException("Bank already exists");
+            }
+            Bank bank = new Bank
+            {
+                Name = name,
+            };
+            return bank;
         }
 
         public void DeleteBank(int id)

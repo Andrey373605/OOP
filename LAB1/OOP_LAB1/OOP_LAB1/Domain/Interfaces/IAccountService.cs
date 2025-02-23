@@ -2,7 +2,7 @@
 using OOP_LAB1.Domain.Enums;
 
 
-namespace OOP_LAB1.Domain.Services
+namespace OOP_LAB1.Domain.Interfaces
 {
     internal interface IAccountService
     {
