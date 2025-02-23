@@ -1,4 +1,4 @@
-﻿using OOP_LAB1.Domain.Enteties;
+﻿using OOP_LAB1.Domain.Entities;
 using OOP_LAB1.Domain.Enums;
 using System;
 using System.Collections.Generic;

@@ -1,6 +1,6 @@
 ﻿
 
-namespace OOP_LAB1.Domain.Enteties
+namespace OOP_LAB1.Domain.Entities
 {
     public class Enterprise
     {
@@ -11,6 +11,6 @@ namespace OOP_LAB1.Domain.Enteties
         public string BIK { get; set; }
         public string Address { get; set; }
         public int BankId { get; set; }
-        public List<Account> Accounts { get; set; }
+        public List<int> AccountsIdList { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using OOP_LAB1.Application.Interfaces;
-using OOP_LAB1.Domain.Enteties;
+using OOP_LAB1.Domain.Entities;
 
 namespace OOP_LAB1.Infrastructure.Repositories;
 

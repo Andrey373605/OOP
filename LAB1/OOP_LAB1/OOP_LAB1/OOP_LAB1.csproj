@@ -10,7 +10,6 @@
   <ItemGroup>
     <Folder Include="Application\UseCases\Bank\" />
     <Folder Include="Application\UseCases\User\" />
-    <Folder Include="Application\UseCases\Account\" />
     <Folder Include="Application\UseCases\Loan\" />
     <Folder Include="Application\UseCases\Transaction\" />
     <Folder Include="Application\UseCases\SalaryProject\" />

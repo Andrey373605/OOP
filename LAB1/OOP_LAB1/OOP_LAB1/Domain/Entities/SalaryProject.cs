@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OOP_LAB1.Domain.Enteties
+namespace OOP_LAB1.Domain.Entities
 {
     internal class SalaryProject
     {
         public int Id { get; set; }
-        public Enterprise Enterprise { get; set; }
-        public Bank Bank { get; set; }
-        public List<Account> EmployeeAccounts { get; set; } = new();
+        public int EnterpriseId { get; set; }
+        public int BankId { get; set; }
+        public List<int> EmployeeAccountsIdList { get; set; } = new();
         public bool IsActive { get; set; }
     }
 }

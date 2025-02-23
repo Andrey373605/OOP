@@ -1,10 +1,10 @@
-﻿using OOP_LAB1.Domain.Enteties;
+﻿using OOP_LAB1.Domain.Entities;
 using OOP_LAB1.Domain.Enums;
 
 
 namespace OOP_LAB1.Domain.Interfaces
 {
-    internal interface IAccountService
+    public interface IAccountService
     {
         Account CreateAccount(AccountType type, int ownerId);
 

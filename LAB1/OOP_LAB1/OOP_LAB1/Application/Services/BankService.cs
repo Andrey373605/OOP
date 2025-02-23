@@ -1,6 +1,7 @@
-﻿using OOP_LAB1.Domain.Enteties;
+﻿using OOP_LAB1.Domain.Entities;
 using OOP_LAB1.Domain.Interfaces;
 using OOP_LAB1.Application.Interfaces;
+using OOP_LAB1.Infrastructure.Repositories;
 
 
 namespace OOP_LAB1.Application.Services
@@ -8,57 +9,84 @@ namespace OOP_LAB1.Application.Services
     internal class BankService : IBankService
     {
         readonly IBankRepository _bankRepository;
-        public BankService(IBankRepository bankRepository) 
+        readonly IEnterpriseRepository _enterpriseRepository;
+        public BankService(IBankRepository bankRepository, IEnterpriseRepository enterpriseRepository) 
         { 
             _bankRepository = bankRepository;
+            _enterpriseRepository = enterpriseRepository;
         }
-        public void AddEnterpriseToBank(int bankId, Enterprise enterprise)
+        public void AddEnterpriseToBank(int bankId, int enterpriseId)
         {
-            Bank bank = _bankRepository.GetById(bankId);
-
+            var bank = _bankRepository.GetById(bankId);
             if (bank == null)
             {
-                throw new InvalidOperationException("Bank does not exist");
+                throw new InvalidOperationException("Bank not found");
             }
+            
+            var enterprise = _enterpriseRepository.GetById(enterpriseId);
+            if (enterprise == null)
+            {
+                throw new InvalidOperationException("Enterprise not found");
+            }
+            
+            if (bank.EnterprisesIdList.Contains(enterpriseId))
+            {
+                throw new InvalidOperationException("Enterprise is already associated with this bank");
+            }
+            
+            bank.EnterprisesIdList.Add(enterpriseId);
+            
+            _bankRepository.Update(bank);
 
         }
 
         public Bank CreateBank(string name)
         {
-            if (_bankRepository.GetByName(name) != null)
+            Bank bank = _bankRepository.GetByName(name);
+            if (bank != null)
             {
                 throw new InvalidOperationException("Bank already exists");
             }
-            Bank bank = new Bank
+            Bank newBank = new Bank
             {
                 Name = name,
+                UsersIdList = new List<int>(),
+                EnterprisesIdList = new List<int>()
             };
-            return bank;
+            return newBank;
         }
 
         public void DeleteBank(int id)
         {
-            throw new NotImplementedException();
+            Bank bank = _bankRepository.GetById(id);
+            if (bank == null)
+            {
+                throw new InvalidOperationException("Bank does not exist");
+            }
+            
+            _bankRepository.Delete(id);
         }
 
         public IEnumerable<Bank> GetAllBanks()
         {
-            throw new NotImplementedException();
+            return _bankRepository.GetAll();
         }
 
         public Bank GetBankById(int id)
         {
-            throw new NotImplementedException();
+            Bank bank = _bankRepository.GetById(id);
+            if (bank == null)
+            {
+                throw new InvalidOperationException("Bank does not exist");
+            }
+
+            return bank;
         }
 
         public IEnumerable<Enterprise> GetEnterprisesByBankId(int bankId)
         {
-            throw new NotImplementedException();
+            return _bankRepository.GetEnterprisesByBankId(bankId);
         }
-
-        public void UpdateBank(Bank bank)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

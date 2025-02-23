@@ -1,13 +1,9 @@
-﻿using OOP_LAB1.Domain.Enteties;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OOP_LAB1.Domain.Entities;
+
 
 namespace OOP_LAB1.Domain.Interfaces
 {
-    internal interface IBankService
+    public interface IBankService
     {
         Bank CreateBank(string name);
 
@@ -15,12 +11,10 @@ namespace OOP_LAB1.Domain.Interfaces
 
         IEnumerable<Bank> GetAllBanks();
 
-        void AddEnterpriseToBank(int bankId, Enterprise enterprise);
+        void AddEnterpriseToBank(int bankId, int enterpriseId);
 
         IEnumerable<Enterprise> GetEnterprisesByBankId(int bankId);
-
-        void UpdateBank(Bank bank);
-
+        
         void DeleteBank(int id);
     }
 }

@@ -1,5 +1,5 @@
 ﻿
-using OOP_LAB1.Domain.Enteties;
+using OOP_LAB1.Domain.Entities;
 using OOP_LAB1.Domain.Enums;
 using OOP_LAB1.Domain.Interfaces;
 using OOP_LAB1.Application.Interfaces;

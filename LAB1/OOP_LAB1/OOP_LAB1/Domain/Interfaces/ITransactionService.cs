@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OOP_LAB1.Domain.Interfaces
 {
-    internal interface ITransactionService
+    public interface ITransactionService
     {
     }
 }

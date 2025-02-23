@@ -1,6 +1,6 @@
 ﻿using OOP_LAB1.Domain.Enums;
 
-namespace OOP_LAB1.Domain.Enteties
+namespace OOP_LAB1.Domain.Entities
 {
     internal class Transaction
     {
