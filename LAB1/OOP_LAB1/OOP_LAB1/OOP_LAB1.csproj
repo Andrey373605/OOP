@@ -13,10 +13,13 @@
     <Folder Include="Application\UseCases\Loan\" />
     <Folder Include="Application\UseCases\Transaction\" />
     <Folder Include="Application\UseCases\SalaryProject\" />
-    <Folder Include="Infrastructure\Data\" />
     <Folder Include="Infrastructure\Services\" />
     <Folder Include="Presentation\Controllers\" />
     <Folder Include="Presentation\View\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.2" />
   </ItemGroup>
 
 
