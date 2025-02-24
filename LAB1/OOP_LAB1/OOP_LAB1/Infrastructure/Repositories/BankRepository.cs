@@ -32,7 +32,6 @@ public class BankRepository : IBankRepository
         _databaseHelper.ExecuteNonQuery(query, parameters);
         bank.Id = _databaseHelper.GetLastInsertId();
     }
-
     public Bank GetById(int id)
     {
         var query = @"
@@ -102,26 +101,126 @@ public class BankRepository : IBankRepository
 
     public void Update(Bank bank)
     {
-        throw new NotImplementedException();
+        var query = @"
+            UPDATE Banks
+            SET Name = @Name,
+                IsEnterprise = @IsEnterprise,
+                EnterpriseType = @EnterpriseType,
+                LegalName = @LegalName,
+                UNP = @UNP,
+                BIK = @BIK,
+                Address = @Address
+            WHERE Id = @Id";
+
+        var parameters = new Dictionary<string, object>
+        {
+            { "Id", bank.Id },
+            { "Name", bank.Name },
+            { "IsEnterprise", bank.IsEnterprise },
+            { "EnterpriseType", bank.EnterpriseType },
+            { "LegalName", bank.LegalName },
+            { "UNP", bank.UNP },
+            { "BIK", bank.BIK },
+            { "Address", bank.Address }
+        };
+        
+        _databaseHelper.ExecuteNonQuery(query, parameters);
+        
+        SynchronizeBankUsers(bank.Id, bank.UsersIdList);
+        SynchronizeBankEnterprises(bank.Id, bank.EnterprisesIdList);
+    }
+    
+    private void SynchronizeBankUsers(int bankId, IEnumerable<int> userIds)
+    {
+        var currentUserIdList = GetUsersIdListForBank(bankId);
+        
+        var usersToAdd = userIds.Except(currentUserIdList).ToList();
+        var usersToRemove = currentUserIdList.Except(userIds).ToList();
+
+        foreach (var user in usersToAdd)
+        {
+            AddUserToBank(bankId, user);
+        }
+
+        foreach (var user in usersToRemove)
+        {
+            RemoveUserFromBank(bankId, user);
+        }
     }
 
-    public void Delete(int id)
+    private void RemoveUserFromBank(int bankId, int userId)
     {
-        throw new NotImplementedException();
+        var query = @"
+            DELETE FROM Accounts
+            WHERE OwnerId = @Id and IsUserOwner = 1";
+        
+        var parameters = new Dictionary<string, object>
+        {
+            { "OwnerId", userId }
+        };
+        _databaseHelper.ExecuteNonQuery(query, parameters);
     }
 
-    public IEnumerable<Bank> GetAll()
+    private void AddUserToBank(int bankId, int userId)
     {
-        throw new NotImplementedException();
+        var query = @"
+            INSERT INTO Accounts (OwnerId, Balance, Type, IsBlocked, IsFrozen, IsUserOwner, IsEnterpriseOwner)
+            VALUES (@OwnerId, 0, 'Deposit', 0, 0, 1, 0)";
+
+        var parameters = new Dictionary<string, object>
+        {
+            { "OwnerId", userId }
+        };
+
+        _databaseHelper.ExecuteNonQuery(query, parameters);
+    }
+    
+    private void SynchronizeBankEnterprises(int bankId, IEnumerable<int> enterpriseIds)
+    {
+        var currentEnterpriseIdList = GetEnterprisesIdListForBank(bankId);
+        
+        var enterprisesToAdd = enterpriseIds.Except(currentEnterpriseIdList).ToList();
+        var enterprisesToRemove = currentEnterpriseIdList.Except(enterpriseIds).ToList();
+        
+        foreach (var enterpriseId in enterprisesToAdd)
+        {
+            AddEnterpriseToBank(bankId, enterpriseId);
+        }
+        
+        foreach (var enterpriseId in enterprisesToRemove)
+        {
+            RemoveEnterpriseFromBank(bankId, enterpriseId);
+        }
+    }
+    
+    private void AddEnterpriseToBank(int bankId, int enterpriseId)
+    {
+        var query = @"
+            INSERT INTO BankEnterprises (BankId, EnterpriseId)
+            VALUES (@BankId, @EnterpriseId)";
+
+        var parameters = new Dictionary<string, object>
+        {
+            { "BankId", bankId },
+            { "EnterpriseId", enterpriseId }
+        };
+
+        _databaseHelper.ExecuteNonQuery(query, parameters);
     }
 
-    public Bank GetByName(string name)
+    private void RemoveEnterpriseFromBank(int bankId, int enterpriseId)
     {
-        throw new NotImplementedException();
-    }
+        var query = @"
+            DELETE FROM BankEnterprises
+            WHERE BankId = @BankId AND EnterpriseId = @EnterpriseId";
 
-    public IEnumerable<Enterprise> GetEnterprisesByBankId(int bankId)
-    {
-        throw new NotImplementedException();
+        var parameters = new Dictionary<string, object>
+        {
+            { "BankId", bankId },
+            { "EnterpriseId", enterpriseId }
+        };
+
+        _databaseHelper.ExecuteNonQuery(query, parameters);
     }
+    
 }

@@ -9,11 +9,11 @@ namespace OOP_LAB1.Domain.Entities
         public List<int> EnterprisesIdList { get; set; } = new();
         
         
-        public bool IsEnterprise { get; set; } = false; // Флаг, указывающий, является ли банк предприятием
-        public string? EnterpriseType { get; set; } // Тип предприятия (например, ООО, ИП)
-        public string? LegalName { get; set; } // Юридическое название предприятия
-        public string? UNP { get; set; } // УНП предприятия
-        public string? BIK { get; set; } // БИК предприятия
-        public string? Address { get; set; } // Адрес предприятия
+        public bool IsEnterprise { get; set; } = false;
+        public string? EnterpriseType { get; set; } 
+        public string? LegalName { get; set; }
+        public string? UNP { get; set; }
+        public string? BIK { get; set; }
+        public string? Address { get; set; }
     }
 }

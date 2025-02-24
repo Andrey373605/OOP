@@ -15,12 +15,7 @@ namespace OOP_LAB1.Application.Interfaces
 
         void Update(Bank bank);
 
-        void Delete(int id);
 
-        IEnumerable<Bank> GetAll();
-
-        Bank GetByName(string name);
-
-        IEnumerable<Enterprise> GetEnterprisesByBankId(int bankId);
+        
     }
 }
