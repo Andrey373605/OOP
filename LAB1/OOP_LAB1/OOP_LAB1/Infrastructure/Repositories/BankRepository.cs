@@ -70,12 +70,33 @@ public class BankRepository : IBankRepository
 
     private List<int> GetEnterprisesIdListForBank(int id)
     {
-        throw new NotImplementedException();
+        var query = @"
+            SELECT EnterpriseId
+            FROM BankEnterprises
+            WHERE BankId = @Id";
+
+        var paramaters = new Dictionary<string, object>
+        {
+            { "@Id", id }
+        };
+        var dataTable = _databaseHelper.ExecuteQuery(query, paramaters);
+        return dataTable.Select(u => Convert.ToInt32(u["EnterpriseId"])).ToList();
     }
 
     private List<int> GetUsersIdListForBank(int id)
     {
-        throw new NotImplementedException();
+        var query = @"
+            SELECT DISTINCT U.Id
+            FROM Users U
+            INNER JOIN Accounts A ON U.Id = A.OwnerId
+            WHERE A.BankId = @Id";
+
+        var paramaters = new Dictionary<string, object>
+        {
+            { "@Id", id }
+        };
+        var dataTable = _databaseHelper.ExecuteQuery(query, paramaters);
+        return dataTable.Select(u => Convert.ToInt32(u["Id"])).ToList();
     }
 
 
