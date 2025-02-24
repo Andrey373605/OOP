@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿
 using Microsoft.Data.Sqlite;
 
 namespace OOP_LAB1.Infrastructure.Data;
