@@ -15,7 +15,6 @@
     <Folder Include="Application\UseCases\Loan\" />
     <Folder Include="Application\UseCases\Transaction\" />
     <Folder Include="Application\UseCases\SalaryProject\" />
-    <Folder Include="Domain\Interfaces\" />
     <Folder Include="Infrastructure\Repositories\" />
     <Folder Include="Infrastructure\Services\" />
     <Folder Include="Presentation\Controllers\" />
