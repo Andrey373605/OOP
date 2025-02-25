@@ -2,5 +2,6 @@
 
 public interface IAuthorizationService
 {
-    
+    public void RegisterUser();
+    public void AuthorizeUser();
 }

@@ -2,5 +2,6 @@
 
 public interface ISalaryProjectService
 {
-    
+    public void CreateSalaryProjectApplication();
+    public void ApproveSalaryProjectApplication();
 }

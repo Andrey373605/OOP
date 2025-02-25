@@ -2,5 +2,5 @@
 
 public interface IBankService
 {
-    public void CreateAccount();
+    public void CreateBank();
 }

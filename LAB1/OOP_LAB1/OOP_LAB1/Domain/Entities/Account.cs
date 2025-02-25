@@ -6,10 +6,9 @@ namespace OOP_LAB1.Domain.Entities
     {
         public int Id { get; set; }
         public decimal Balance { get; set; }
-        public AccountType Type { get; set; }
         public int OwnerId { get; set; }
-        public bool IsBlocked { get; set; }
-        public bool IsFrozen { get; set; }
+        private bool IsBlocked;
+        private bool IsFrozen;
         public bool IsUserOwner { get; set; }
         public bool IsEnterpriseOwner { get; set; }
         public void UpdateBalance(decimal newAmount)
@@ -19,6 +18,26 @@ namespace OOP_LAB1.Domain.Entities
                 throw new InvalidOperationException("Account not active");
             }
             Balance = newAmount;
+        }
+
+        public void FreezeAccount()
+        {
+            IsFrozen = true;
+        }
+        
+        public void UnfreezeAccount()
+        {
+            IsFrozen = false;
+        }
+
+        public void BlockAccount()
+        {
+            IsBlocked = true;
+        }
+
+        public void UnblockAccount()
+        {
+            IsBlocked = false;
         }
     }
 

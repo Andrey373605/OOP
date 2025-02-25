@@ -15,7 +15,7 @@ namespace OOP_LAB1.Application.Interfaces
 
         void Update(Bank bank);
 
-
+        
         
     }
 }

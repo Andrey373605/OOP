@@ -2,5 +2,6 @@
 
 public interface ICancelattionService
 {
-    
+    public void CancelAllActions();
+    public void CancelUserAction();
 }
