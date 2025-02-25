@@ -11,7 +11,6 @@ namespace OOP_LAB1.Domain.Entities
         public int Id { get; set; }
         public int EnterpriseId { get; set; }
         public int BankId { get; set; }
-        public List<int> EmployeeAccountsIdList { get; set; } = new();
         public bool IsActive { get; set; }
     }
 }

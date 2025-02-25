@@ -19,5 +19,6 @@ namespace OOP_LAB1.Application.Interfaces
         IEnumerable<Account> GetByOwnerId(int ownerId);
 
         IEnumerable<Account> GetByType(AccountType type);
+        void DeleteUserAccounts(int userId);
     }
 }
