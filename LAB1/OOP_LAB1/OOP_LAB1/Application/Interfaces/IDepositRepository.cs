@@ -3,7 +3,11 @@ namespace OOP_LAB1.Application.Interfaces;
 
 public interface IDepositRepository
 {
-    public void Add(int userId, decimal depositAmount, decimal depositInterestRate);
     
-    public Task CreateRequestAsync(DepositRequest depositRequest);
+    public Task AddAsync(Deposit deposit);
+    
+    public Task<Deposit> GetByIdAsync(int id);
+    
+    public Task UpdateAsync(Deposit deposit);
+    
 }

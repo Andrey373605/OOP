@@ -5,12 +5,17 @@ namespace OOP_LAB1.Infrastructure.Repositories;
 
 public class DepositRepository : IDepositRepository
 {
-    public void Add(int userId, decimal depositAmount, decimal depositInterestRate)
+    public Task AddAsync(Deposit deposit)
     {
         throw new NotImplementedException();
     }
 
-    public Task CreateRequestAsync(DepositRequest depositRequest)
+    public Task<Deposit> GetByIdAsync(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task UpdateAsync(Deposit deposit)
     {
         throw new NotImplementedException();
     }

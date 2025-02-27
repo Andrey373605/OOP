@@ -13,32 +13,34 @@ public class DepositService : IDepositService
         _depositRepository = depositRepository;
     }
     
-    public void CreateDepositAccount(int userId, decimal depositAmount, decimal interestRate)
+    public async Task ApproveDepositAsync(int depositId)
     {
-        _depositRepository.Add(userId, depositAmount, interestRate);
+        Deposit deposit = await _depositRepository.GetByIdAsync(depositId);
+        deposit.SetActive();
+        await _depositRepository.UpdateAsync(deposit);
     }
 
-    public void DepositMoney(decimal depositAmount)
+
+    public async Task DepositMoneyAsync(int id, decimal depositAmount)
     {
-        throw new NotImplementedException();
+        Deposit deposit = await _depositRepository.GetByIdAsync(id);
+        deposit.MakeDeposit(depositAmount);
+        await _depositRepository.UpdateAsync(deposit);
     }
 
-    public Task AddDepositRequest()
+    
+    public async Task AddAsync(int idUser, decimal depositAmount, decimal interestRate, int monthCount)
     {
-        throw new NotImplementedException();
-    }
-
-    public Task AddDepositRequest(int idUser, decimal depositAmount, decimal interestRate, int monthCount)
-    {
-        DepositRequest depositRequest = new DepositRequest
+        Deposit depositRequest = new Deposit
         {
             UserId = idUser,
             Amount = depositAmount,
             InterestRate = interestRate,
-            MonthCount = monthCount
+            MonthCount = monthCount,
+            IsActive = false
             
         };
 
-        return _depositRepository.CreateRequestAsync(depositRequest);
+        await _depositRepository.AddAsync(depositRequest);
     }
 }

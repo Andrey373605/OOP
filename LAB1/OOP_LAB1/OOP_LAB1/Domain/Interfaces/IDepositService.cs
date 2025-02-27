@@ -4,9 +4,9 @@ namespace OOP_LAB1.Domain.Interfaces;
 
 public interface IDepositService
 {
-    public void CreateDepositAccount(int userId, decimal depositAmount, decimal interestRate);
+    public Task ApproveDepositAsync(int depositId);
     
-    public void DepositMoney(decimal depositAmount);
+    public Task DepositMoneyAsync(int id, decimal depositAmount);
 
-    public Task AddDepositRequest(int idUser, decimal depositAmount, decimal interestRate, int monthCount);
+    public Task AddAsync(int idUser, decimal depositAmount, decimal interestRate, int monthCount);
 }
