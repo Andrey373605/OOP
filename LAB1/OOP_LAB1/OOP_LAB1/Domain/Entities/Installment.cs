@@ -9,7 +9,7 @@ namespace OOP_LAB1.Domain.Entities
     internal class Installment
     {
         public int Id { get; set; }
-        public int AccountId { get; set; }
+        public int UserId { get; set; }
         public decimal TotalAmount { get; set; }
         public int NumberOfPayments { get; set; }
         public decimal MonthlyPayment => TotalAmount / NumberOfPayments;
