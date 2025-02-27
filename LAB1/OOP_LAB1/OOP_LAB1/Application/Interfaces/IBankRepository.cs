@@ -9,11 +9,11 @@ namespace OOP_LAB1.Application.Interfaces
 {
     internal interface IBankRepository
     {
-        void Add(Bank bank);
+        Task AddAsync(Bank bank);
 
-        Bank GetById(int id);
+        Task<Bank> GetByIdAsync(int id);
 
-        void Update(Bank bank);
+        Task UpdateAsync(Bank bank);
 
         
         
