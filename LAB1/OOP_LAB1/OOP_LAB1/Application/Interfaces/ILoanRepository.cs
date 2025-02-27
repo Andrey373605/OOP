@@ -3,7 +3,11 @@ namespace OOP_LAB1.Application.Interfaces;
 
 public interface ILoanRepository
 {
-    public void Add(int userId, decimal depositAmount, decimal depositInterestRate);
+    public Task AddAsync(Loan loan);
     
-    public Task CreateRequestAsync(LoanRequest loanRequest);
+    public Task CreateAsync(Loan loan);
+    
+    public Task UpdateAsync(Loan loan);
+    
+    public Task DeleteAsync(Loan loan);
 }
