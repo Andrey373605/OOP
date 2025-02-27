@@ -12,57 +12,61 @@ public class AccountService : IAccountService
         _accountRepository = accountRepository;
     }
     
-    public void FreezeAccount(int id)
+    public async Task FreezeAccountAsync(int id)
     {
-        Account account = _accountRepository.GetById(id);
+        Account account = await _accountRepository.GetByIdAsync(id);
         account.FreezeAccount();
-        _accountRepository.Update(account);
+        await _accountRepository.UpdateAsync(account);
+        
     }
 
-    public void UnfreezeAccount(int id)
+    public async Task UnfreezeAccountAsync(int id)
     {
-        Account account = _accountRepository.GetById(id);
+        Account account = await _accountRepository.GetByIdAsync(id);
         account.UnfreezeAccount();
-        _accountRepository.Update(account);
+        await _accountRepository.UpdateAsync(account);
     }
 
-    public void BlockAccount(int id)
+    public async Task BlockAccountAsync(int id)
     {
-        Account account = _accountRepository.GetById(id);
+        Account account = await _accountRepository.GetByIdAsync(id);
         account.BlockAccount();
-        _accountRepository.Update(account);
+        await _accountRepository.UpdateAsync(account);
     }
 
-    public void UnblockAccount(int id)
+    public async Task UnblockAccountAsync(int id)
     {
-        Account account = _accountRepository.GetById(id);
+        Account account = await _accountRepository.GetByIdAsync(id);
         account.UnblockAccount();
-        _accountRepository.Update(account);
+        await _accountRepository.UpdateAsync(account);
     }
+    
 
-    public void CreateAccount(int userId)
+    public async Task DeleteAccountAsync(int id)
     {
-        _accountRepository.Add(userId);
-    }
-
-    public void DeleteAccount(int id)
-    {
-        Account account = _accountRepository.GetById(id);
+        Account account = await _accountRepository.GetByIdAsync(id);
 
         if (account == null)
         {
             throw new NullReferenceException();
         }
         
-        _accountRepository.Remove(account);
+        await _accountRepository.RemoveAsync(account);
     }
 
-    public void DepositAccount(int id, decimal amount)
+    public async Task DepositAccountAsync(int id, decimal amount)
     {
-        Account account = _accountRepository.GetById(id);
+        Account account = await _accountRepository.GetByIdAsync(id);
         account.DepositAccount(amount);
-        _accountRepository.Update(account);
+        await _accountRepository.UpdateAsync(account);
     }
 
-
+    public async Task CreateAccountAsync(int userId)
+    {
+        Account account = new Account
+        {
+            OwnerId = userId,
+        };
+        await _accountRepository.AddAsync(account);
+    }
 }
