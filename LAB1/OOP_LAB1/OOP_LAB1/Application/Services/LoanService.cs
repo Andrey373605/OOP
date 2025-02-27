@@ -32,14 +32,15 @@ public class LoanService : ILoanService
 
     public Task AddLoanRequest(int idUser, decimal depositAmount, decimal interestRate, int monthCount)
     {
-        LoanRequest loanRequest = new LoanRequest
+        Loan loanRequest = new Loan
         {
             UserId = idUser,
             MonthCount = monthCount,
             InterestRate = interestRate,
-            Amount = depositAmount
+            Amount = depositAmount,
+            IsActive = false
         };
 
-        return _loanRepository.CreateRequestAsync(loanRequest);
+        return _loanRepository.CreateAsync(loanRequest);
     }
 }

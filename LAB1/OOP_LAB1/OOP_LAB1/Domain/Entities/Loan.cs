@@ -2,7 +2,7 @@
 
 namespace OOP_LAB1.Domain.Entities
 {
-    internal class Loan
+    public class Loan
     {
         public int Id { get; set; }
         public int UserId { get; set; }
@@ -10,6 +10,6 @@ namespace OOP_LAB1.Domain.Entities
         public int MonthCount { get; set; }
         public decimal InterestRate { get; set; }
         public decimal MonthlyPayment { get; set; }
-        public LoanStatus Status { get; set; }
+        public bool IsActive { get; set; }
     }
 }
