@@ -39,6 +39,11 @@ namespace OOP_LAB1.Domain.Entities
         {
             IsBlocked = false;
         }
+
+        public void DepositAccount(decimal amount)
+        {
+            Balance += amount;
+        }
     }
 
     
