@@ -13,16 +13,14 @@ namespace OOP_LAB1.Application.Interfaces
 
         Task<User> GetByIdAsync(int id);
 
-        Task Update(User user);
+        Task UpdateAsync(User user);
 
-        Task Delete(int id);
+        Task DeleteAsync(int id);
 
-        Task<IEnumerable<User>> GetAll();
-
-        User GetByIdentificationNumber(string identificationNumber);
+        Task<IEnumerable<User>> GetAllAsync();
+        
 
         Task<User> GetUserByEmailAsync(string email);
-
-        IEnumerable<User> GetUsersByRole(UserRole userRole);
+        
     }
 }
