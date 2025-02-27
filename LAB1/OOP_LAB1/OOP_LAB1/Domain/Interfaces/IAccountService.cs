@@ -8,8 +8,8 @@ public interface IAccountService
     void UnfreezeAccount(int id);
     void BlockAccount(int id);
     void UnblockAccount(int id);
-    void CreateAccount();
-    void DeleteAccount();
+    void CreateAccount(int userId);
+    void DeleteAccount(int id);
 
-    void DepositAccount();
+    void DepositAccount(int id, decimal amount);
 }
