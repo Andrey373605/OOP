@@ -1,29 +1,27 @@
 ﻿using OOP_LAB1.Domain.Entities;
 using OOP_LAB1.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace OOP_LAB1.Infrastructure.Repositories
+namespace OOP_LAB1.Application.Interfaces
 {
     internal interface IUserRepository
     {
-        void Add(User user);
+        Task CreateAsync(User user);
+        
+        Task CreateRequestAsync(RegistrationRequest request);
+        
+        Task<RegistrationRequest> GetRequestByIdAsync(int id);
 
-        User GetById(int id);
+        Task<User> GetByIdAsync(int id);
 
-        void Update(User user);
+        Task Update(User user);
 
-        void Delete(int id);
+        Task Delete(int id);
 
-        IEnumerable<User> GetAll();
+        Task<IEnumerable<User>> GetAll();
 
         User GetByIdentificationNumber(string identificationNumber);
 
-        User GetByEmail(string email);
+        Task<User> GetUserByEmailAsync(string email);
 
         IEnumerable<User> GetUsersByRole(UserRole userRole);
     }

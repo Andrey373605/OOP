@@ -8,14 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Services\" />
     <Folder Include="Application\UseCases\AccountUseCases\" />
     <Folder Include="Application\UseCases\Bank\" />
     <Folder Include="Application\UseCases\User\" />
     <Folder Include="Application\UseCases\Loan\" />
     <Folder Include="Application\UseCases\Transaction\" />
     <Folder Include="Application\UseCases\SalaryProject\" />
-    <Folder Include="Infrastructure\Repositories\" />
     <Folder Include="Infrastructure\Services\" />
     <Folder Include="Presentation\Controllers\" />
     <Folder Include="Presentation\View\" />
