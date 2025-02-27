@@ -1,16 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+namespace OOP_LAB1.Domain.Entities;
 
-namespace OOP_LAB1.Domain.Entities
+public class SalaryProject
 {
-    internal class SalaryProject
+    public int Id { get; set; }
+    public int EnterpriseId { get; set; }
+    public int BankId { get; set; }
+    public bool IsActive { get; set; }
+
+    public void SetActive()
     {
-        public int Id { get; set; }
-        public int EnterpriseId { get; set; }
-        public int BankId { get; set; }
-        public bool IsActive { get; set; }
+        IsActive = true;
+    }
+
+    public void SetInactive()
+    {
+        IsActive = false;
     }
 }
+
