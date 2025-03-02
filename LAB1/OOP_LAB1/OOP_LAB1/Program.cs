@@ -1,12 +1,17 @@
 ﻿using OOP_LAB1.Infrastructure.Data;
+using Microsoft.Extensions.DependencyInjection;
+using OOP_LAB1.Application.Interfaces;
+using OOP_LAB1.Application.Services;
+using OOP_LAB1.Domain.Interfaces;
+using OOP_LAB1.Infrastructure.Repositories;
+using OOP_LAB1.Presentation.Controllers;
 
-DatabaseInitializer ini = new DatabaseInitializer("Data Source=sample.db");
-DatabaseHelper helper = new DatabaseHelper("Data Source=sample.db");
-var query = "INSERT INTO Banks (id, name) VALUES (@id, @name)";
-var parameters = new Dictionary<string, object>
-{
-    { "id", 2 },
-    { "name", "ZBank" }
-};
-helper.ExecuteNonQuery(query, parameters);
-ini.Initialize();
+var serviceProvider = new ServiceCollection()
+    .AddSingleton<IAuthorizationService, AuthorizationService>()
+    .AddSingleton<IUserRepository, UserRepository>()
+    .AddSingleton<IEmployeeRepository, EmployeeRepository>()
+    .BuildServiceProvider();
+
+var authorizationService = serviceProvider.GetService<IAuthorizationService>();
+var userController = new UserController(authorizationService);
+userController.RegisterUser();
