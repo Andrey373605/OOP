@@ -45,7 +45,7 @@ public class AuthorizationService : IAuthorizationService
             PassportSeries = passportSeries,
             IdentificationNumber = passportNumber
         };
-
+        
         await _userRepository.CreateRequestAsync(registrationRequest);
     }
 
