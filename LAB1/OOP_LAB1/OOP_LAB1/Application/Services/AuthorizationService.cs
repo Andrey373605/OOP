@@ -2,7 +2,9 @@
 using OOP_LAB1.Domain.Interfaces;
 using System.Security.Cryptography;
 using System.Text;
+using OOP_LAB1.Application.Context;
 using OOP_LAB1.Domain.Entities;
+using OOP_LAB1.Domain.Enums;
 
 
 namespace OOP_LAB1.Application.Services;
@@ -10,10 +12,16 @@ namespace OOP_LAB1.Application.Services;
 public class AuthorizationService : IAuthorizationService
 {
     IUserRepository _userRepository;
+    IEmployeeRepository _employeeRepository;
+    UserContext _userContext;
+    EmployeeContext _employeeContext;
 
-    AuthorizationService(IUserRepository userRepository)
+    public AuthorizationService(IUserRepository userRepository, IEmployeeRepository employeeRepository)
     {
         _userRepository = userRepository;
+        _employeeRepository = employeeRepository;
+        _userContext = new UserContext();
+        _employeeContext = new EmployeeContext();
     }
 
     public async Task RegisterUserAsync(string fisrtName, string lastName, string middleName, string email,
@@ -40,8 +48,40 @@ public class AuthorizationService : IAuthorizationService
 
         await _userRepository.CreateRequestAsync(registrationRequest);
     }
-    
-    
+
+    public async Task RegisterEmployeeAsync(string email, string password, EmployeeRole role)
+    {
+        var existingEmployee = await _employeeRepository.GetByEmailAsync(email);
+        if (existingEmployee != null)
+        {
+            throw new Exception("Employee with this email already exists.");
+        }
+        
+        var hashPassword = HashPassword(password);
+        var employee = new Employee
+        {
+            Email = email,
+            HashPassword = hashPassword,
+            Role = role
+        };
+        
+        await _employeeRepository.AddAsync(employee);
+    }
+
+    public async Task<bool> AuthorizeEmployeeAsync(string email, string password)
+    {
+        var employee = await _employeeRepository.GetByEmailAsync(email);
+        if (employee == null)
+        {
+            return false;
+        }
+        
+        var hashPassword = HashPassword(password);
+        _employeeContext.SetCurrent(employee);
+       _userContext.ClearCurrent();
+        return employee.HashPassword == hashPassword;
+    }
+
 
     public async Task<bool> AuthenticateUserAsync(string email, string password)
     {
@@ -52,6 +92,8 @@ public class AuthorizationService : IAuthorizationService
         }
 
         var hashPassword = HashPassword(password);
+        _userContext.SetCurrent(user);
+        _employeeContext.ClearCurrent();
         return user.HashPassword == hashPassword;
     }
     
