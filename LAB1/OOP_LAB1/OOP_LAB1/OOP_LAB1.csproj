@@ -15,6 +15,8 @@
     <Folder Include="Application\UseCases\Transaction\" />
     <Folder Include="Application\UseCases\SalaryProject\" />
     <Folder Include="Infrastructure\Services\" />
+    <Folder Include="Presentation\ControllerInterface\" />
+    <Folder Include="Presentation\Views\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -4,7 +4,9 @@ using OOP_LAB1.Application.Interfaces;
 using OOP_LAB1.Application.Services;
 using OOP_LAB1.Domain.Interfaces;
 using OOP_LAB1.Infrastructure.Repositories;
+using OOP_LAB1.Presentation;
 using OOP_LAB1.Presentation.Controllers;
+
 
 var serviceProvider = new ServiceCollection()
     .AddSingleton<IAuthorizationService, AuthorizationService>()
@@ -12,6 +14,4 @@ var serviceProvider = new ServiceCollection()
     .AddSingleton<IEmployeeRepository, EmployeeRepository>()
     .BuildServiceProvider();
 
-var authorizationService = serviceProvider.GetService<IAuthorizationService>();
-var userController = new UserController(authorizationService);
-userController.RegisterUser();
+
