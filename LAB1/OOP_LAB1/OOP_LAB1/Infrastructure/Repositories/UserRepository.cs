@@ -10,9 +10,9 @@ public class UserRepository : IUserRepository
         throw new NotImplementedException();
     }
 
-    public Task CreateRequestAsync(RegistrationRequest request)
+    public async Task CreateRequestAsync(RegistrationRequest request)
     {
-        throw new NotImplementedException();
+        await Task.Run(()=> Console.WriteLine("gooal"));
     }
 
     public Task<RegistrationRequest> GetRequestByIdAsync(int id)
@@ -40,8 +40,9 @@ public class UserRepository : IUserRepository
         throw new NotImplementedException();
     }
 
-    public Task<User> GetUserByEmailAsync(string email)
+    public async Task<User> GetUserByEmailAsync(string email)
     {
-        throw new NotImplementedException();
+        await Task.Delay(1);
+        return new User();
     }
 }
