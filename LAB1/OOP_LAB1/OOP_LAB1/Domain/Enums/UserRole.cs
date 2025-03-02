@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace OOP_LAB1.Domain.Enums
 {
-    public enum UserRole
+    public enum EmployeeRole
     {
-        Client,
-        Operator,
-        Manager,
-        ExternalSpecialist,
-        Administrator
+        Operator = 1,
+        Manager = 2,
+        ExternalSpecialist = 3,
+        Administrator = 4
     }
 }
