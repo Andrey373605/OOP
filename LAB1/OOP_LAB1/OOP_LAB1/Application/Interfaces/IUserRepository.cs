@@ -1,9 +1,8 @@
 ﻿using OOP_LAB1.Domain.Entities;
-using OOP_LAB1.Domain.Enums;
 
 namespace OOP_LAB1.Application.Interfaces
 {
-    internal interface IUserRepository
+    public interface IUserRepository
     {
         Task CreateAsync(User user);
         
@@ -19,8 +18,6 @@ namespace OOP_LAB1.Application.Interfaces
 
         Task<IEnumerable<User>> GetAllAsync();
         
-
         Task<User> GetUserByEmailAsync(string email);
-        
     }
 }
