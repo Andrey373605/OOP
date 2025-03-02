@@ -1,0 +1,16 @@
+﻿using OOP_LAB1.Presentation.ValidatorInterfaces;
+
+namespace OOP_LAB1.Presentation.Validators;
+
+public class PasswordValidator : IStringValidator
+{
+    public bool IsValid(string stringToValidate)
+    {
+        return true;
+    }
+
+    public string GetInvalidValidationString()
+    {
+        return "Password is too easy";
+    }
+}
