@@ -15,6 +15,5 @@ namespace OOP_LAB1.Domain.Entities
         public string Email { get; set; }
         public bool IsActive { get; set; }
         public bool IsForeigner { get; set; }
-        public UserRole Role { get; set; }
     }
 }
