@@ -1,9 +1,8 @@
-﻿using OOP_LAB1.Application.Interfaces;
-using OOP_LAB1.Domain.Entities;
+﻿
 using OOP_LAB1.Domain.Interfaces;
 using OOP_LAB1.Presentation.Console;
-using OOP_LAB1.Presentation.ValidatorInterfaces;
 using OOP_LAB1.Presentation.Validators;
+
 
 namespace OOP_LAB1.Presentation.Controllers;
 
