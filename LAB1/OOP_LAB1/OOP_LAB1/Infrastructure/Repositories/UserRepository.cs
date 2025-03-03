@@ -12,7 +12,7 @@ public class UserRepository : IUserRepository
 
     public async Task CreateRequestAsync(RegistrationRequest request)
     {
-        await Task.Run(()=> Console.WriteLine("gooal"));
+        return;
     }
 
     public Task<RegistrationRequest> GetRequestByIdAsync(int id)
@@ -43,6 +43,6 @@ public class UserRepository : IUserRepository
     public async Task<User> GetUserByEmailAsync(string email)
     {
         await Task.Delay(1);
-        return new User();
+        return null;
     }
 }
