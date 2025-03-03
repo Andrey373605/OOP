@@ -8,15 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Application\UseCases\AccountUseCases\" />
-    <Folder Include="Application\UseCases\Bank\" />
-    <Folder Include="Application\UseCases\User\" />
-    <Folder Include="Application\UseCases\Loan\" />
-    <Folder Include="Application\UseCases\Transaction\" />
-    <Folder Include="Application\UseCases\SalaryProject\" />
     <Folder Include="Infrastructure\Services\" />
     <Folder Include="Presentation\ControllerInterface\" />
-    <Folder Include="Presentation\Views\" />
   </ItemGroup>
 
   <ItemGroup>
