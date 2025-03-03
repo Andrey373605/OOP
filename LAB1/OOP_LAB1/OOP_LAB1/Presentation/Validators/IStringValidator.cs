@@ -1,4 +1,4 @@
-﻿namespace OOP_LAB1.Presentation.ValidatorInterfaces;
+﻿namespace OOP_LAB1.Presentation.Validators;
 
 public interface IStringValidator
 {

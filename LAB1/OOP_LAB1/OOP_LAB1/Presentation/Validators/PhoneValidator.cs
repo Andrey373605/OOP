@@ -1,5 +1,4 @@
-﻿using OOP_LAB1.Presentation.ValidatorInterfaces;
-
+﻿
 namespace OOP_LAB1.Presentation.Validators;
 
 public class PhoneValidator : IStringValidator
