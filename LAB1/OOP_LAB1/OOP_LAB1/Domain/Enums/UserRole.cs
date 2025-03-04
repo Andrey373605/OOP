@@ -12,6 +12,5 @@ namespace OOP_LAB1.Domain.Enums
         Manager = 2,
         ExternalSpecialist = 3,
         Administrator = 4,
-        Client = 5,
     }
 }
