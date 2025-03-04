@@ -3,8 +3,13 @@
 public enum PageName
 {
     MainMenuPage,
-    BankChoosePage,
+    RegisterInBankPage,
     BankMenuPage,
-    RegistrationPage,
-    LoginPage
+    RegistrationClientPage,
+    LoginPage,
+    RegistrationEmployeePage,
+    RegistrationUserPage,
+    LoginUserPage,
+    ChooseRolePage,
+    ChooseBankPage
 }
