@@ -21,29 +21,7 @@ public class AuthorizationService : IAuthorizationService
         _clientRepository = clientRepository;
         _context = context;
     }
-
-    public async Task RegisterClientAsync(string fisrtName, string lastName, string middleName, string email,
-        string password, string phoneNumber, string passportNumber, string passportSeries)
-    {
-        var existingUser = await _userRepository.GetByEmailAsync(email);
-        if (existingUser != null)
-        {
-            throw new Exception("User with this email already exists.");
-        }
-
-        var hashPassword = HashPassword(password);
-        var registrationRequest = new Client
-        {
-            FirstName = fisrtName,
-            LastName = lastName,
-            MiddleName = middleName,
-            Phone = phoneNumber,
-            PassportSeries = passportSeries,
-            IdentificationNumber = passportNumber
-        };
-        
-        await _userRepository.CreateRequestAsync(registrationRequest);
-    }
+    
 
     public async Task RegisterEmployeeAsync(string email, string password, UserRole role)
     {
@@ -58,19 +36,52 @@ public class AuthorizationService : IAuthorizationService
         {
             Email = email,
             HashPassword = hashPassword,
-            Role = role
         };
         
         await _userRepository.AddAsync(employee);
     }
-    
+
+
+    public async Task RegisterUser(string email, string password)
+    {
+        var User = new User
+        {
+            Email = email,
+            HashPassword = HashPassword(password),
+        };
+        
+        await _userRepository.AddAsync(User);
+    }
+
+    public async Task RegisterClientAsync(User user, string fisrtName, string lastName, string middleName, string phoneNumber,
+        string passportNumber, string passportSeries)
+    {
+
+        var client = new Client
+        {
+            FirstName = fisrtName,
+            LastName = lastName,
+            MiddleName = middleName,
+            Phone = phoneNumber,
+            PassportSeries = passportSeries,
+            IdentificationNumber = passportNumber,
+            UserId = user.Id,
+            IsActive = false
+        };
+        await _clientRepository.AddAsync(client);
+    }
+
+    public Task RegisterEmployeeAsync(User user, UserRole role)
+    {
+        throw new NotImplementedException();
+    }
 
     public async Task<bool> AuthorizeEmployeeAsync(string email, string password)
     {
         var employee = await _userRepository.GetByEmailAsync(email);
         if (employee == null)
         {
-            return false;
+            throw new UnauthorizedAccessException("Invalid email or password.");
         }
         
         var hashPassword = HashPassword(password);
@@ -91,7 +102,12 @@ public class AuthorizationService : IAuthorizationService
         _context.SetCurrent(user);
         return user.HashPassword == hashPassword;
     }
-    
+
+    public async Task<User> GetUserByEmaiAsync(string email)
+    {
+         return await _userRepository.GetByEmailAsync(email);
+    }
+
 
     public async Task ApproveRequestClientRegistrationAsync(int id)
     {
