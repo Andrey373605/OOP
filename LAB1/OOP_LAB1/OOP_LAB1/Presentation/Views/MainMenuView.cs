@@ -22,8 +22,8 @@ public class MainMenuView : IView
         var choice = _console.ReadLine();
         NextViewName = choice switch
         {
-            "1" => PageName.RegistrationPage,
-            "2" => PageName.LoginPage,
+            "1" => PageName.RegistrationUserPage,
+            "2" => PageName.LoginUserPage,
             _ => NextViewName
         };
     }
