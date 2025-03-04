@@ -35,7 +35,7 @@ public class RegistrationView : IView
         
         try
         {
-            _auth.RegisterUserAsync(firstName, lastName, middleName, email, password, phoneNumber,
+            _auth.RegisterClientAsync(firstName, lastName, middleName, email, password, phoneNumber,
                 identificationNumber, series).GetAwaiter().GetResult();
             NextViewName = PageName.BankChoosePage;
             _console.WriteLine("Registration successful!");

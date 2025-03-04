@@ -1,12 +1,11 @@
 ﻿using OOP_LAB1.Infrastructure.Data;
 using Microsoft.Extensions.DependencyInjection;
+using OOP_LAB1.Application.Context;
 using OOP_LAB1.Application.Interfaces;
 using OOP_LAB1.Application.Services;
 using OOP_LAB1.Domain.Interfaces;
 using OOP_LAB1.Infrastructure.Repositories;
-using OOP_LAB1.Presentation;
 using OOP_LAB1.Presentation.Console;
-using OOP_LAB1.Presentation.Controllers;
 using OOP_LAB1.Presentation.Enums;
 using OOP_LAB1.Presentation.Handler;
 using OOP_LAB1.Presentation.Navigator;
@@ -17,6 +16,10 @@ var serviceProvider = new ServiceCollection()
     // регистрация сервисов
     .AddSingleton<IAuthorizationService, AuthorizationService>()
     .AddSingleton<IBankService, BankService>()
+    .AddSingleton<IAccountService, AccountService>()
+    
+    // регистрация контекста
+    .AddSingleton<IContext, Context>()
     
     // регистрация консоли 
     .AddSingleton<IConsoleView, ConsoleView>()
@@ -29,7 +32,7 @@ var serviceProvider = new ServiceCollection()
     
     // регистрация репозиториев
     .AddSingleton<IUserRepository, UserRepository>()
-    .AddSingleton<IEmployeeRepository, EmployeeRepository>()
+    .AddSingleton<IClientRepository, ClientRepository>()
     
     // регистрация view
     .AddTransient<MainMenuView>()

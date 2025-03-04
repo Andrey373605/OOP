@@ -15,13 +15,15 @@ public class MainMenuView : IView
 
     public void Execute()
     {
-        _console.WriteLine("1. Choose bank");
-        _console.WriteLine("2. Exit");
+        _console.WriteLine("1. Registration");
+        _console.WriteLine("2. Login");
+        _console.WriteLine("3. Exit");
         
         var choice = _console.ReadLine();
         NextViewName = choice switch
         {
-            "1" => PageName.BankChoosePage,
+            "1" => PageName.RegistrationPage,
+            "2" => PageName.LoginPage,
             _ => NextViewName
         };
     }

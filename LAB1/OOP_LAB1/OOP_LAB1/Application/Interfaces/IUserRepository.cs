@@ -4,11 +4,11 @@ namespace OOP_LAB1.Application.Interfaces
 {
     public interface IUserRepository
     {
-        Task CreateAsync(User user);
+        Task AddAsync(User user);
         
-        Task CreateRequestAsync(RegistrationRequest request);
+        Task CreateRequestAsync(Client client);
         
-        Task<RegistrationRequest> GetRequestByIdAsync(int id);
+        Task<Client> GetRequestByIdAsync(int id);
 
         Task<User> GetByIdAsync(int id);
 
@@ -18,6 +18,6 @@ namespace OOP_LAB1.Application.Interfaces
 
         Task<IEnumerable<User>> GetAllAsync();
         
-        Task<User> GetUserByEmailAsync(string email);
+        Task<User> GetByEmailAsync(string email);
     }
 }

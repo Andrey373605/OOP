@@ -3,14 +3,14 @@ using OOP_LAB1.Domain.Entities;
 
 namespace OOP_LAB1.Infrastructure.Repositories;
 
-public class EmployeeRepository : IEmployeeRepository
+public class ClientRepository : IClientRepository
 {
-    public Task<Employee> GetByEmailAsync(string email)
+    public Task UpdateAsync(Client client)
     {
         throw new NotImplementedException();
     }
 
-    public Task AddAsync(Employee employee)
+    public Task<Client> GetRequestByIdAsync(int id)
     {
         throw new NotImplementedException();
     }

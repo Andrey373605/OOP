@@ -12,35 +12,31 @@ namespace OOP_LAB1.Application.Services;
 public class AuthorizationService : IAuthorizationService
 {
     IUserRepository _userRepository;
-    IEmployeeRepository _employeeRepository;
-    UserContext _userContext;
-    EmployeeContext _employeeContext;
+    IClientRepository _clientRepository;
+    IContext _context;
 
-    public AuthorizationService(IUserRepository userRepository, IEmployeeRepository employeeRepository)
+    public AuthorizationService(IUserRepository userRepository, IClientRepository clientRepository,IContext context)
     {
         _userRepository = userRepository;
-        _employeeRepository = employeeRepository;
-        _userContext = new UserContext();
-        _employeeContext = new EmployeeContext();
+        _clientRepository = clientRepository;
+        _context = context;
     }
 
-    public async Task RegisterUserAsync(string fisrtName, string lastName, string middleName, string email,
+    public async Task RegisterClientAsync(string fisrtName, string lastName, string middleName, string email,
         string password, string phoneNumber, string passportNumber, string passportSeries)
     {
-        var existingUser = await _userRepository.GetUserByEmailAsync(email);
+        var existingUser = await _userRepository.GetByEmailAsync(email);
         if (existingUser != null)
         {
             throw new Exception("User with this email already exists.");
         }
 
         var hashPassword = HashPassword(password);
-        var registrationRequest = new RegistrationRequest
+        var registrationRequest = new Client
         {
             FirstName = fisrtName,
             LastName = lastName,
             MiddleName = middleName,
-            Email = email,
-            HashPassword = hashPassword,
             Phone = phoneNumber,
             PassportSeries = passportSeries,
             IdentificationNumber = passportNumber
@@ -49,77 +45,64 @@ public class AuthorizationService : IAuthorizationService
         await _userRepository.CreateRequestAsync(registrationRequest);
     }
 
-    public async Task RegisterEmployeeAsync(string email, string password, EmployeeRole role)
+    public async Task RegisterEmployeeAsync(string email, string password, UserRole role)
     {
-        var existingEmployee = await _employeeRepository.GetByEmailAsync(email);
-        if (existingEmployee != null)
+        var existingUser = await _userRepository.GetByEmailAsync(email);
+        if (existingUser != null)
         {
             throw new Exception("Employee with this email already exists.");
         }
         
         var hashPassword = HashPassword(password);
-        var employee = new Employee
+        var employee = new User
         {
             Email = email,
             HashPassword = hashPassword,
             Role = role
         };
         
-        await _employeeRepository.AddAsync(employee);
+        await _userRepository.AddAsync(employee);
     }
+    
 
     public async Task<bool> AuthorizeEmployeeAsync(string email, string password)
     {
-        var employee = await _employeeRepository.GetByEmailAsync(email);
+        var employee = await _userRepository.GetByEmailAsync(email);
         if (employee == null)
         {
             return false;
         }
         
         var hashPassword = HashPassword(password);
-        _employeeContext.SetCurrent(employee);
-       _userContext.ClearCurrent();
+        _context.SetCurrent(employee);
         return employee.HashPassword == hashPassword;
     }
 
 
     public async Task<bool> AuthenticateUserAsync(string email, string password)
     {
-        var user = await _userRepository.GetUserByEmailAsync(email);
+        var user = await _userRepository.GetByEmailAsync(email);
         if (user == null)
         {
             return false;
         }
 
         var hashPassword = HashPassword(password);
-        _userContext.SetCurrent(user);
-        _employeeContext.ClearCurrent();
+        _context.SetCurrent(user);
         return user.HashPassword == hashPassword;
     }
     
 
-    public async Task ApproveRequestUserRegistrationAsync(int id)
+    public async Task ApproveRequestClientRegistrationAsync(int id)
     {
-        RegistrationRequest registrationRequest = await _userRepository.GetRequestByIdAsync(id);
-        if (registrationRequest == null)
+        var client = await _clientRepository.GetRequestByIdAsync(id);
+        if (client == null)
         {
             throw new Exception("Request does not exist.");
         }
+        client.IsActive = true;
 
-        User user = new User
-        {
-            Id = id,
-            FirstName = registrationRequest.FirstName,
-            LastName = registrationRequest.LastName,
-            MiddleName = registrationRequest.MiddleName,
-            Email = registrationRequest.Email,
-            HashPassword = registrationRequest.HashPassword,
-            Phone = registrationRequest.Phone,
-            PassportSeries = registrationRequest.PassportSeries,
-            IdentificationNumber = registrationRequest.IdentificationNumber
-        };
-
-        await _userRepository.CreateAsync(user);
+        await _clientRepository.UpdateAsync(client);
     }
 
     private string HashPassword(string password)

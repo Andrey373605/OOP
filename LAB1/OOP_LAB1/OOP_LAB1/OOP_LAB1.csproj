@@ -10,6 +10,7 @@
   <ItemGroup>
     <Folder Include="Infrastructure\Services\" />
     <Folder Include="Presentation\ControllerInterface\" />
+    <Folder Include="Presentation\Controllers\" />
   </ItemGroup>
 
   <ItemGroup>
