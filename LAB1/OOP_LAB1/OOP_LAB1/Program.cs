@@ -36,7 +36,12 @@ var serviceProvider = new ServiceCollection()
     
     // регистрация view
     .AddTransient<MainMenuView>()
-    .AddTransient<RegistrationView>()
+    .AddTransient<RegistrationClientView>()
+    .AddTransient<RegisterInBankView>()
+    .AddTransient<RegistrationUserView>()
+    .AddTransient<RegistrationEmployeeView>()
+    .AddTransient<LoginUserView>()
+    .AddTransient<ChooseRoleView>()
     .AddTransient<ChooseBankView>()
     
     // сборка
@@ -45,9 +50,14 @@ var serviceProvider = new ServiceCollection()
 
 var navigator = serviceProvider.GetService<INavigator>();
 
-navigator.RegisterView(PageName.BankChoosePage, serviceProvider.GetService<ChooseBankView>());
+navigator.RegisterView(PageName.RegisterInBankPage, serviceProvider.GetService<RegisterInBankView>());
 navigator.RegisterView(PageName.MainMenuPage, serviceProvider.GetService<MainMenuView>());
-navigator.RegisterView(PageName.RegistrationPage, serviceProvider.GetService<RegistrationView>());
+navigator.RegisterView(PageName.RegistrationUserPage, serviceProvider.GetService<RegistrationUserView>());
+navigator.RegisterView(PageName.RegistrationClientPage, serviceProvider.GetService<RegistrationClientView>());
+navigator.RegisterView(PageName.RegistrationEmployeePage, serviceProvider.GetService<RegistrationEmployeeView>());
+navigator.RegisterView(PageName.LoginUserPage, serviceProvider.GetService<LoginUserView>());
+navigator.RegisterView(PageName.ChooseRolePage, serviceProvider.GetService<ChooseRoleView>());
+navigator.RegisterView(PageName.ChooseBankPage, serviceProvider.GetService<ChooseBankView>());
 
 
 navigator.Run(PageName.MainMenuPage);
