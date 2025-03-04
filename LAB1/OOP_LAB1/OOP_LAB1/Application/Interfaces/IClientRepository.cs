@@ -7,4 +7,5 @@ public interface IClientRepository
     public Task UpdateAsync(Client client);
 
     public Task<Client> GetRequestByIdAsync(int id);
+    public Task AddAsync(Client client);
 }

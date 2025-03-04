@@ -14,4 +14,9 @@ public class ClientRepository : IClientRepository
     {
         throw new NotImplementedException();
     }
+
+    public Task AddAsync(Client client)
+    {
+        throw new NotImplementedException();
+    }
 }
