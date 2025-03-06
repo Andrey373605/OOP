@@ -38,8 +38,8 @@ public class ChooseBankView : IView
         }
         var bankName = _input.GetString("Enter bank name: ", new NameValidator());
         var bank = _bankService.GetBankByName(bankName);
-        _bankService.LoginBank(bank);
-        _console.WriteLine($"succesfully chosen bank {bankName}");
+        _auth.LoginBank(bank);
+        _console.WriteLine($"Succesfully chosen bank {bankName}");
         _context.SetCurrent(bank);
 
         NextViewName = PageName.ChooseRolePage;

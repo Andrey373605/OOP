@@ -8,8 +8,8 @@ namespace OOP_LAB1.Domain.Enums
 {
     public enum AccountType
     {
-        Deposit,
-        Credit,
-        Salary
+        Loan = 1,
+        Credit = 2,
+        Saving = 3
     }
 }

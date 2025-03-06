@@ -11,5 +11,6 @@ public enum PageName
     RegistrationUserPage,
     LoginUserPage,
     ChooseRolePage,
-    ChooseBankPage
+    ChooseBankPage,
+    ClientMainMenuPage
 }

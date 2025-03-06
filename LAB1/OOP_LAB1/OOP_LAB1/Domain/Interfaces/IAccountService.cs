@@ -11,5 +11,5 @@ public interface IAccountService
     Task CreateAccountAsync(int userId);
     Task DeleteAccountAsync(int id);
     Task DepositAccountAsync(int id, decimal amount);
-
+    
 }

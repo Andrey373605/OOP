@@ -9,6 +9,8 @@ namespace OOP_LAB1.Domain.Entities
         public int OwnerId { get; set; }
         public bool IsBlocked { get; set; }
         public bool IsFrozen { get; set; }
+        
+        public AccountType AccountType { get; set; }
 
         public void UpdateBalance(decimal newAmount)
         {

@@ -43,7 +43,6 @@ public class RegisterInBankView : IView
         _console.WriteLine($"Successfully chosen bank: {bank.Name}");
         
         
-        
         string role = _console.ReadLine();
         NextViewName = role switch
         {

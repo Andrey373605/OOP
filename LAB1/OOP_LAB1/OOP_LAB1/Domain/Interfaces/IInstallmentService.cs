@@ -2,6 +2,9 @@
 
 public interface IInstallmentService
 {
-    public void CreateInstallmentApplication();
-    public void ApproveInstallmentApplication();
+    public Task DepositMoney(int installmentId);
+
+    public Task AddInstallmentRequest(int idUser, decimal depositAmount, int interestRate, int monthCount);
+
+    public Task ApproveInstallmentRequest(int loanId);
 }

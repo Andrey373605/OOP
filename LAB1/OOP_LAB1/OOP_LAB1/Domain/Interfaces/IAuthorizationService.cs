@@ -9,10 +9,7 @@ public interface IAuthorizationService
     Task RegisterClientAsync(User user, string fisrtName, string lastName, string middleName, 
         string phoneNumber, string passportNumber, string passportSeries);
     Task RegisterEmployeeAsync(User user, UserRole role);
-
     Task<bool> AuthenticateUserAsync(string email, string password);
-    
-    Task<User> GetUserByEmaiAsync(string email);
-    
-    Task ApproveRequestClientRegistrationAsync(int id);             
+    Task ApproveRegistrationUser(int id);
+    void LoginBank(Bank bank);
 }

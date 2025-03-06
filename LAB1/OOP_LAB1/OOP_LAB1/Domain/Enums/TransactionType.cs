@@ -8,9 +8,8 @@ namespace OOP_LAB1.Domain.Enums
 {
     public enum TransactionType
     {
-        Transfer,
-        Withdrawal,
-        Deposit,
-        CreditPayment
+        Transfer = 1,
+        Withdrawal = 2,
+        Deposit = 3,
     }
 }

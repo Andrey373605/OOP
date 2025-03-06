@@ -10,6 +10,7 @@ using OOP_LAB1.Presentation.Enums;
 using OOP_LAB1.Presentation.Handler;
 using OOP_LAB1.Presentation.Navigator;
 using OOP_LAB1.Presentation.Views;
+using OOP_LAB1.Presentation.Views.ClientViews;
 
 // Настройка DI
 var serviceProvider = new ServiceCollection()
@@ -43,6 +44,7 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<LoginUserView>()
     .AddTransient<ChooseRoleView>()
     .AddTransient<ChooseBankView>()
+    .AddTransient<ClientMainMenuView>()
     
     // сборка
     .BuildServiceProvider();
@@ -58,6 +60,7 @@ navigator.RegisterView(PageName.RegistrationEmployeePage, serviceProvider.GetSer
 navigator.RegisterView(PageName.LoginUserPage, serviceProvider.GetService<LoginUserView>());
 navigator.RegisterView(PageName.ChooseRolePage, serviceProvider.GetService<ChooseRoleView>());
 navigator.RegisterView(PageName.ChooseBankPage, serviceProvider.GetService<ChooseBankView>());
+navigator.RegisterView(PageName.ClientMainMenuPage, serviceProvider.GetService<ClientMainMenuView>());
 
 
 navigator.Run(PageName.MainMenuPage);

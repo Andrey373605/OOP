@@ -1,10 +1,12 @@
-﻿namespace OOP_LAB1.Domain.Interfaces;
+﻿using OOP_LAB1.Domain.Entities;
+
+namespace OOP_LAB1.Domain.Interfaces;
 
 public interface ILoanService
 {
-    public void CreateLoanAccount(int userId, decimal depositAmount, decimal interestRate);
-    
-    public void DepositMoney(decimal depositAmount);
+    public Task DepositMoney(int loanId);
 
-    public Task AddLoanRequest(int idUser, decimal depositAmount, decimal interestRate, int monthCount);
+    public Task AddLoanRequest(int idUser, decimal depositAmount, int interestRate, int monthCount);
+
+    public Task ApproveLoanRequest(int loanId);
 }

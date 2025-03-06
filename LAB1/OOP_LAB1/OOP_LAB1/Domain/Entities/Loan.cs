@@ -5,11 +5,20 @@ namespace OOP_LAB1.Domain.Entities
     public class Loan
     {
         public int Id { get; set; }
+        
+        public int AccountId { get; set; }
         public int UserId { get; set; }
         public decimal Amount { get; set; }
         public int MonthCount { get; set; }
-        public decimal InterestRate { get; set; }
-        public decimal MonthlyPayment { get; set; }
+        public int InterestRate { get; set; }
+        
+        public decimal RestMonth { get; set; }
         public bool IsActive { get; set; }
+        
+        public decimal CalculateMonthlyPayment()
+        {
+            return Amount * (1 + ((decimal)InterestRate / 100)) / MonthCount;
+        }
+        
     }
 }

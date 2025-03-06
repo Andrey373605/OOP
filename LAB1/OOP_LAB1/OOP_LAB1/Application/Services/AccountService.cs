@@ -1,6 +1,8 @@
 ﻿using OOP_LAB1.Application.Interfaces;
 using OOP_LAB1.Domain.Interfaces;
 using OOP_LAB1.Domain.Entities;
+using OOP_LAB1.Domain.Enums;
+
 namespace OOP_LAB1.Application.Services;
 
 public class AccountService : IAccountService
@@ -66,7 +68,18 @@ public class AccountService : IAccountService
         Account account = new Account
         {
             OwnerId = userId,
+            Balance = 0,
+            IsFrozen = false,
+            IsBlocked = false,
+            AccountType = AccountType.Saving
         };
         await _accountRepository.AddAsync(account);
     }
+
+    public async Task<IEnumerable<Account>> GetAllAccountsAsync(int userId)
+    {
+        return await _accountRepository.GetAllByUserIdAsync(userId);
+    }
+
+    
 }

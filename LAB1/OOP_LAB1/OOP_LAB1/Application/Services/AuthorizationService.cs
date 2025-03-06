@@ -108,18 +108,7 @@ public class AuthorizationService : IAuthorizationService
          return await _userRepository.GetByEmailAsync(email);
     }
 
-
-    public async Task ApproveRequestClientRegistrationAsync(int id)
-    {
-        var client = await _clientRepository.GetRequestByIdAsync(id);
-        if (client == null)
-        {
-            throw new Exception("Request does not exist.");
-        }
-        client.IsActive = true;
-
-        await _clientRepository.UpdateAsync(client);
-    }
+    
 
     private string HashPassword(string password)
     {
@@ -128,6 +117,18 @@ public class AuthorizationService : IAuthorizationService
             var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
             return Convert.ToBase64String(hashedBytes);
         }
+    }
+    
+    public void LoginBank(Bank bank)
+    {
+        _context.SetCurrent(bank);
+    }
+    
+    public async Task ApproveRegistrationUser(int id)
+    {
+        User user = await _userRepository.GetByIdAsync(id);
+        user.IsActive = true;
+        await _userRepository.UpdateAsync(user);
     }
     
 }

@@ -5,6 +5,10 @@ public interface ISalaryProjectService
 {
     public Task CreateSalaryProjectApplication(int bankId, int enterpriseid);
     public Task ApproveSalaryProjectApplication(int id);
-    public Task AddAccountToSalaryProject(SalaryProject project, Account account);
-    public Task PaySalary(SalaryProject project);
+    public Task AddAccountToSalaryProject(int projectId, int accountId);
+    
+    
+    public Task PaySalary(int projectId);
+    
+    public Task UpdateUserSalaryAmount(int projectId, int accountId, int amount);
 }

@@ -9,5 +9,5 @@ public interface IBankService
     public IEnumerable<string> GetAllBankNames();
     
     public Bank GetBankByName(string name);
-    void LoginBank(Bank bank);
+
 }

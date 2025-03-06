@@ -27,8 +27,5 @@ public class BankService : IBankService
         return new Bank{ Name = name };
     }
 
-    public void LoginBank(Bank bank)
-    {
-        _context.SetCurrent(bank);
-    }
+    
 }
