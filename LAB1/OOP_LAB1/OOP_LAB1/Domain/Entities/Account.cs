@@ -45,6 +45,11 @@ namespace OOP_LAB1.Domain.Entities
         {
             Balance += amount;
         }
+
+        public void WithdrawAccount(decimal amount)
+        {
+            Balance -= amount;
+        }
     }
 
     
