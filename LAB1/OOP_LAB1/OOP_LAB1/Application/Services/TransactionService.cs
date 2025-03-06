@@ -16,7 +16,7 @@ public class TransactionService : ITransactionService
     public async Task WithdrawFunds(decimal amount, int accountId)
     {
         var account = await _accountRepository.GetByIdAsync(accountId);
-        account.Balance -= amount;
+        account.WithdrawAccount(amount);
         //вывод средств????
         await _accountRepository.UpdateAsync(account);
     }
@@ -25,8 +25,8 @@ public class TransactionService : ITransactionService
     {
         var fromAccount = await _accountRepository.GetByIdAsync(fromAccountId);
         var toAccount = await _accountRepository.GetByIdAsync(toAccountId);
-        fromAccount.Balance -= amount;
-        toAccount.Balance += amount;
+        fromAccount.WithdrawAccount(amount);
+        toAccount.DepositAccount(amount);
         await _accountRepository.UpdateAsync(fromAccount);
         await _accountRepository.UpdateAsync(toAccount);
     }
@@ -35,7 +35,7 @@ public class TransactionService : ITransactionService
     {
         //обращение к терминалу???
         var account = await _accountRepository.GetByIdAsync(accountId);
-        account.Balance += amount;
+        account.DepositAccount(amount);
         await _accountRepository.UpdateAsync(account);
     }
 }

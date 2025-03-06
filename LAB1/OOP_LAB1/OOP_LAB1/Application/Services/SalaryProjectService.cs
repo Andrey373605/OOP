@@ -50,8 +50,8 @@ public class SalaryProjectService : ISalaryProjectService
         var projectAccount = await _accountRepository.GetByIdAsync(project.AccountId);
         foreach (var s in salaries)
         {
-            s.Key.Balance += s.Value;
-            projectAccount.Balance -= s.Value;
+            s.Key.DepositAccount(s.Value);
+            projectAccount.WithdrawAccount(s.Value);
         }
         await _salaryProjectRepository.UpdateAsync(project);
         await _accountRepository.UpdateAsync(projectAccount);
@@ -62,5 +62,13 @@ public class SalaryProjectService : ISalaryProjectService
         var project = await _salaryProjectRepository.GetByIdAsync(projectId);
         var account = await _accountRepository.GetByIdAsync(accountId);
         await _salaryProjectRepository.UpdateSalaryAsync(project, account, amount);
+    }
+
+    public async Task DepositProjectAccount(int projectId, decimal amount)
+    {
+        var project = await _salaryProjectRepository.GetByIdAsync(projectId);
+        var account = await _accountRepository.GetByIdAsync(project.AccountId);
+        account.DepositAccount(amount);
+        await _accountRepository.UpdateAsync(account);
     }
 }

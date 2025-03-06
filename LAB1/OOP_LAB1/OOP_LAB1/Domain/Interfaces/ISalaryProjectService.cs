@@ -11,4 +11,6 @@ public interface ISalaryProjectService
     public Task PaySalary(int projectId);
     
     public Task UpdateUserSalaryAmount(int projectId, int accountId, int amount);
+
+    public Task DepositProjectAccount(int projectId, decimal amount);
 }
