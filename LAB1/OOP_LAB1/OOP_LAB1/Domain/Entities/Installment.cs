@@ -10,8 +10,12 @@ namespace OOP_LAB1.Domain.Entities
         public int NumberOfPayments { get; set; }
         
         public int RestMonth { get; set; }
-        public decimal MonthlyPayment => Amount / NumberOfPayments;
         public bool IsActive { get; set; }
+        
+        public void DecreaseRestMonth()
+        {
+            RestMonth = RestMonth - 1;
+        }
 
         public void SetActive()
         {
@@ -21,6 +25,11 @@ namespace OOP_LAB1.Domain.Entities
         public void SetInactive()
         {
             IsActive = false;
+        }
+        
+        public decimal CalculateMonthlyPayment()
+        {
+            return Amount / NumberOfPayments;
         }
         
     }

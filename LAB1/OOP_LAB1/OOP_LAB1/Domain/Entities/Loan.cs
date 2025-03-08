@@ -20,6 +20,11 @@ namespace OOP_LAB1.Domain.Entities
             return Amount * (1 + ((decimal)InterestRate / 100)) / NumberOfPayments;
         }
 
+        public void DecreaseRestMonth()
+        {
+            RestMonth = RestMonth - 1;
+        }
+
         public void SetActive()
         {
             IsActive = true;

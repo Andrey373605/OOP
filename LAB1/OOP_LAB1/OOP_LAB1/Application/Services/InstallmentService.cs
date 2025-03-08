@@ -17,9 +17,18 @@ public class InstallmentService : IInstallmentService
     }
     
     
-    public Task DepositMoney(int installmentId)
+    public async Task DepositMoney(int installmentId)
     {
-        throw new NotImplementedException();
+        var loan = await _installmentRepository.GetByIdAsync(installmentId);
+        
+        var account = await _accountRepository.GetByIdAsync(loan.AccountId);
+
+        var sum = loan.CalculateMonthlyPayment();
+        account.WithdrawAccount(sum);
+        loan.DecreaseRestMonth();
+        
+        await _accountRepository.UpdateAsync(account);
+        await _installmentRepository.UpdateAsync(loan);
     }
 
     public async Task AddInstallmentRequest(int idUser, decimal depositAmount, int monthCount)
