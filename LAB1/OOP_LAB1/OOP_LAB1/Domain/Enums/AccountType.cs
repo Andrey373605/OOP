@@ -9,7 +9,7 @@ namespace OOP_LAB1.Domain.Enums
     public enum AccountType
     {
         Loan = 1,
-        Credit = 2,
+        Installment = 2,
         Saving = 3
     }
 }
