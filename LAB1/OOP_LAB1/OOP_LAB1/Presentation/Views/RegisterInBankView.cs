@@ -28,7 +28,7 @@ public class RegisterInBankView : IView
     public void Execute()
     {
         _console.WriteLine("List of bank:");
-        List<string> bankNames = _bankService.GetAllBankNames().ToList();
+        List<string> bankNames = _bankService.GetAllBankNames().GetAwaiter().GetResult();
         foreach (var b in bankNames)
         {
             _console.WriteLine(b);
@@ -37,7 +37,7 @@ public class RegisterInBankView : IView
         _console.WriteLine("Choose bank:");
         string bankName = _console.ReadLine();
         
-        Bank bank = _bankService.GetBankByName(bankName);
+        Bank bank = _bankService.GetBankByName(bankName).GetAwaiter().GetResult();
         
         
         _console.WriteLine($"Successfully chosen bank: {bank.Name}");

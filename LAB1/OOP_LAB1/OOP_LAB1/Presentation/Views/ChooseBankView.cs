@@ -31,13 +31,13 @@ public class ChooseBankView : IView
     
     public void Execute()
     {
-        List<string> banks = _bankService.GetAllBankNames().ToList();
+        List<string> banks = _bankService.GetAllBankNames().GetAwaiter().GetResult();
         foreach (string b in banks)
         {
             _console.WriteLine(b);
         }
         var bankName = _input.GetString("Enter bank name: ", new NameValidator());
-        var bank = _bankService.GetBankByName(bankName);
+        var bank = _bankService.GetBankByName(bankName).GetAwaiter().GetResult();
         _auth.LoginBank(bank);
         _console.WriteLine($"Succesfully chosen bank {bankName}");
         _context.SetCurrent(bank);
