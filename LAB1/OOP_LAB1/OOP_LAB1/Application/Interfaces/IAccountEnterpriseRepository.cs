@@ -4,6 +4,6 @@ namespace OOP_LAB1.Application.Interfaces;
 
 public interface IAccountEnterpriseRepository
 {
-    Task<Account> GetByIdAsync(int accountId);
-    Task UpdateAsync(Account projectAccount);
+    Task<EnterpriseAccount> GetByIdAsync(int accountId);
+    Task UpdateAsync(EnterpriseAccount projectAccount);
 }

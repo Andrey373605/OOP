@@ -9,15 +9,31 @@ public class SalaryProjectService : ISalaryProjectService
 {
     IAccountEnterpriseRepository _accountRepository;
     ISalaryProjectRepository _salaryProjectRepository;
+    IBankRepository _bankRepository;
+    IEnterpriseRepository _enterpriseRepository;
 
-    public SalaryProjectService(ISalaryProjectRepository repository, IAccountEnterpriseRepository accountRepository)
+    public SalaryProjectService(ISalaryProjectRepository repository, IAccountEnterpriseRepository accountRepository, 
+                                IBankRepository bankRepository, IEnterpriseRepository enterpriseRepository)
     {
         _salaryProjectRepository = repository;
         _accountRepository = accountRepository;
+        _bankRepository = bankRepository;
+        _enterpriseRepository = enterpriseRepository;
     }
 
     public async Task CreateSalaryProjectApplication(int bankId, int enterpriseid)
     {
+        var bank = await _bankRepository.GetByIdAsync(bankId);
+        if (bank == null)
+        {
+            throw new NullReferenceException("Bank could not be found");
+        }
+        var enterprise = await _enterpriseRepository.GetByIdAsync(enterpriseid);
+        if (enterprise == null)
+        {
+            throw new NullReferenceException("Enterprise could not be found");
+        }
+        
         SalaryProject project = new SalaryProject
         {
             BankId = bankId,
@@ -42,7 +58,7 @@ public class SalaryProjectService : ISalaryProjectService
     {
         var project = await _salaryProjectRepository.GetByIdAsync(projectId);
         var account = await _accountRepository.GetByIdAsync(accountId);
-        _salaryProjectRepository.AddAccountToSalaryProjectAsync(project, account);
+        await _salaryProjectRepository.AddAccountToSalaryProjectAsync(project, account);
     }
 
     public async Task PaySalary(int projectId)

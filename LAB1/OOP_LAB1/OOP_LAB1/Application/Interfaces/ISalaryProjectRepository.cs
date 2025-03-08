@@ -12,7 +12,7 @@ public interface ISalaryProjectRepository
     public Task UpdateAsync(SalaryProject salaryProject);
 
     public Task<IEnumerable<Account>> GetAccountInSalaryProjectAsync(SalaryProject salaryProject);
-    void AddAccountToSalaryProjectAsync(SalaryProject project, Account account);
-    Task<Dictionary<Account, decimal>> GetSalaryAmounts(SalaryProject project);
-    Task UpdateSalaryAsync(SalaryProject project, Account account, int amount);
+    public Task AddAccountToSalaryProjectAsync(SalaryProject project, EnterpriseAccount account);
+    public Task<Dictionary<Account, decimal>> GetSalaryAmounts(SalaryProject project);
+    public Task UpdateSalaryAsync(SalaryProject project, EnterpriseAccount account, int amount);
 }
