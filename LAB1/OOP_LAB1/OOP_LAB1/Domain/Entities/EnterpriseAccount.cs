@@ -5,7 +5,7 @@ public class EnterpriseAccount
     public int Id { get; set; }
     private decimal Balance { get; set; }
     
-    public int OwnerId { get; set; }
+    public int EnterpriseId { get; set; }
     public bool IsBlocked { get; set; }
     public bool IsFrozen { get; set; }
     

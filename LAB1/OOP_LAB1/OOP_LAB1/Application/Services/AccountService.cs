@@ -67,7 +67,7 @@ public class AccountService : IAccountService
     {
         Account account = new Account
         {
-            OwnerId = userId,
+            UserId = userId,
             Balance = 0,
             IsFrozen = false,
             IsBlocked = false,

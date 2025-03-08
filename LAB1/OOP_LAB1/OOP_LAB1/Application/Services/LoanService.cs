@@ -27,7 +27,7 @@ public class LoanService : ILoanService
             AccountType = AccountType.Loan,
             IsBlocked = false,
             IsFrozen = false,
-            OwnerId = loanRequest.UserId
+            UserId = loanRequest.UserId
         };
         
         loanRequest.SetActive();

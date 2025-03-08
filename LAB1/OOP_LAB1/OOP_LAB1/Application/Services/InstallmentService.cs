@@ -54,7 +54,7 @@ public class InstallmentService : IInstallmentService
             IsBlocked = false,
             IsFrozen = false,
             AccountType = AccountType.Installment,
-            OwnerId = installmentRequest.UserId,
+            UserId = installmentRequest.UserId,
         };
         installmentRequest.SetActive();
 
