@@ -1,21 +1,19 @@
 ﻿using OOP_LAB1.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace OOP_LAB1.Application.Interfaces
 {
-    internal interface IBankRepository
+    public interface IBankRepository
     {
-        Task AddAsync(Bank bank);
+        public Task AddAsync(Bank bank);
 
-        Task<Bank> GetByIdAsync(int id);
-
-        Task UpdateAsync(Bank bank);
-
+        public Task<Bank> GetByIdAsync(int id);
         
+        public Task<Bank> GetByNameAsync(string id);
+
+        public Task UpdateAsync(Bank bank);
+
+        public Task<IEnumerable<string>> GetAllBankNamesAsync();
         
     }
 }

@@ -4,10 +4,10 @@ namespace OOP_LAB1.Domain.Interfaces;
 
 public interface IBankService
 {
-    public void CreateBank();
+    public Task CreateBank(string bankName);
 
-    public IEnumerable<string> GetAllBankNames();
+    public Task<List<string>> GetAllBankNames();
     
-    public Bank GetBankByName(string name);
+    public Task<Bank> GetBankByName(string name);
 
 }
