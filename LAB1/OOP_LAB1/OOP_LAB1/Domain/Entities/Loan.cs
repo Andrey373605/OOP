@@ -9,15 +9,25 @@ namespace OOP_LAB1.Domain.Entities
         public int AccountId { get; set; }
         public int UserId { get; set; }
         public decimal Amount { get; set; }
-        public int MonthCount { get; set; }
+        public int NumberOfPayments { get; set; }
         public int InterestRate { get; set; }
-        
+
         public decimal RestMonth { get; set; }
         public bool IsActive { get; set; }
         
         public decimal CalculateMonthlyPayment()
         {
-            return Amount * (1 + ((decimal)InterestRate / 100)) / MonthCount;
+            return Amount * (1 + ((decimal)InterestRate / 100)) / NumberOfPayments;
+        }
+
+        public void SetActive()
+        {
+            IsActive = true;
+        }
+
+        public void SetInactive()
+        {
+            IsActive = false;
         }
         
     }

@@ -30,7 +30,7 @@ public class LoanService : ILoanService
             OwnerId = loanRequest.UserId
         };
         
-        loanRequest.IsActive = true;
+        loanRequest.SetActive();
         await _accountRepository.AddAsync(account);
         await _loanRepository.UpdateAsync(loanRequest);
     }
@@ -57,12 +57,12 @@ public class LoanService : ILoanService
         Loan loanRequest = new Loan
         {
             UserId = idUser,
-            MonthCount = monthCount,
+            NumberOfPayments = monthCount,
             InterestRate = interestRate,
             Amount = depositAmount,
             IsActive = false
         };
 
-        await _loanRepository.CreateAsync(loanRequest);
+        await _loanRepository.AddAsync(loanRequest);
     }
 }
