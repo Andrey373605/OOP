@@ -4,12 +4,12 @@ namespace OOP_LAB1.Domain.Interfaces;
 
 public interface IAccountService
 {
-    Task FreezeAccountAsync(int id);
-    Task UnfreezeAccountAsync(int id);
-    Task BlockAccountAsync(int id);
-    Task UnblockAccountAsync(int id);
-    Task CreateAccountAsync(int userId);
-    Task DeleteAccountAsync(int id);
-    Task DepositAccountAsync(int id, decimal amount);
+    public Task FreezeAccountAsync(int id);
+    public Task UnfreezeAccountAsync(int id);
+    public Task BlockAccountAsync(int id);
+    public Task UnblockAccountAsync(int id);
+    public Task CreateAccountAsync(int clientId, int bankId);
+    public Task DeleteAccountAsync(int id);
+    public Task DepositAccountAsync(int id, decimal amount);
     
 }

@@ -7,7 +7,7 @@ namespace OOP_LAB1.Domain.Entities
         public int Id { get; set; }
         
         public int AccountId { get; set; }
-        public int UserId { get; set; }
+        public int ClientId { get; set; }
         public decimal Amount { get; set; }
         public int NumberOfPayments { get; set; }
         public int InterestRate { get; set; }

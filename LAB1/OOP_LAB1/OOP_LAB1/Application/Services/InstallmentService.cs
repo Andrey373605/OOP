@@ -9,11 +9,13 @@ public class InstallmentService : IInstallmentService
 {
     readonly IInstallmentRepository _installmentRepository;
     readonly IAccountRepository _accountRepository;
+    readonly IClientRepository _clientRepository;
 
-    public InstallmentService(IInstallmentRepository installmentRepository, IAccountRepository accountRepository)
+    public InstallmentService(IInstallmentRepository installmentRepository, IAccountRepository accountRepository, IClientRepository clientRepository)
     {
         _installmentRepository = installmentRepository;
         _accountRepository = accountRepository;
+        _clientRepository = clientRepository;
     }
     
     
@@ -31,12 +33,18 @@ public class InstallmentService : IInstallmentService
         await _installmentRepository.UpdateAsync(loan);
     }
 
-    public async Task AddInstallmentRequest(int idUser, decimal depositAmount, int monthCount)
+    public async Task AddInstallmentRequest(int clientId, decimal depositAmount, int monthCount)
     {
+        var client = await _clientRepository.GetByIdAsync(clientId);
+        if (client == null)
+        {
+            throw new ApplicationException($"Client with id {clientId} not found");
+        }
+        
         var installmentRequest = new Installment
         {
             Amount = depositAmount,
-            UserId = idUser,
+            ClientId = client.Id,
             NumberOfPayments = monthCount,
             IsActive = false
         };
@@ -54,7 +62,7 @@ public class InstallmentService : IInstallmentService
             IsBlocked = false,
             IsFrozen = false,
             AccountType = AccountType.Installment,
-            UserId = installmentRequest.UserId,
+            ClientId = installmentRequest.ClientId,
         };
         installmentRequest.SetActive();
 

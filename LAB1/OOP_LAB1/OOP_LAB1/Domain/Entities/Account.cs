@@ -1,12 +1,15 @@
-﻿using OOP_LAB1.Domain.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using OOP_LAB1.Domain.Enums;
 
 namespace OOP_LAB1.Domain.Entities
 {
     public class Account
     {
         public int Id { get; set; }
+
+        public int BankId { get; set; }
         public decimal Balance { get; set; }
-        public int UserId { get; set; }
+        public int ClientId { get; set; }
         public bool IsBlocked { get; set; }
         public bool IsFrozen { get; set; }
         

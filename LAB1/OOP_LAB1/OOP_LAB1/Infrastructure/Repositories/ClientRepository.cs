@@ -5,6 +5,11 @@ namespace OOP_LAB1.Infrastructure.Repositories;
 
 public class ClientRepository : IClientRepository
 {
+    public Task AddClient(Client client)
+    {
+        throw new NotImplementedException();
+    }
+
     public Task UpdateAsync(Client client)
     {
         throw new NotImplementedException();
@@ -16,6 +21,11 @@ public class ClientRepository : IClientRepository
     }
 
     public Task AddAsync(Client client)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<Client> GetByIdAsync(int clientId)
     {
         throw new NotImplementedException();
     }

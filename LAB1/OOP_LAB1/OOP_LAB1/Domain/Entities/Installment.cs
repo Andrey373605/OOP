@@ -4,17 +4,17 @@ namespace OOP_LAB1.Domain.Entities
     public class Installment
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
+        public int ClientId { get; init; }
         public int AccountId { get; set; }
-        public decimal Amount { get; set; }
-        public int NumberOfPayments { get; set; }
+        public decimal Amount { get; init; }
+        public int NumberOfPayments { get; init; }
         
         public int RestMonth { get; set; }
         public bool IsActive { get; set; }
         
         public void DecreaseRestMonth()
         {
-            RestMonth = RestMonth - 1;
+            RestMonth--;
         }
 
         public void SetActive()

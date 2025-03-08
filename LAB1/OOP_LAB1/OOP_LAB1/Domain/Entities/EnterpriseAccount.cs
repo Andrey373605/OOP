@@ -1,10 +1,13 @@
-﻿namespace OOP_LAB1.Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace OOP_LAB1.Domain.Entities;
 
 public class EnterpriseAccount
 {
     public int Id { get; set; }
-    private decimal Balance { get; set; }
     
+    public int BankId { get; set; }
+    private decimal Balance { get; set; }
     public int EnterpriseId { get; set; }
     public bool IsBlocked { get; set; }
     public bool IsFrozen { get; set; }

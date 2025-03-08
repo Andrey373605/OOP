@@ -8,10 +8,14 @@ namespace OOP_LAB1.Application.Services;
 public class AccountService : IAccountService
 {
     IAccountRepository _accountRepository;
+    IBankRepository _bankRepository;
+    IClientRepository _clientRepository;
 
-    AccountService(IAccountRepository accountRepository)
+    AccountService(IAccountRepository accountRepository, IBankRepository bankRepository, IClientRepository clientRepository)
     {
         _accountRepository = accountRepository;
+        _bankRepository = bankRepository;
+        _clientRepository = clientRepository;
     }
     
     public async Task FreezeAccountAsync(int id)
@@ -56,18 +60,30 @@ public class AccountService : IAccountService
         await _accountRepository.RemoveAsync(account);
     }
 
-    public async Task DepositAccountAsync(int id, decimal amount)
+    public async Task DepositAccountAsync(int accountId, decimal amount)
     {
-        Account account = await _accountRepository.GetByIdAsync(id);
+        Account account = await _accountRepository.GetByIdAsync(accountId);
         account.DepositAccount(amount);
         await _accountRepository.UpdateAsync(account);
     }
 
-    public async Task CreateAccountAsync(int userId)
+    public async Task CreateAccountAsync(int clientId, int bankId)
     {
+        var client = await _clientRepository.GetByIdAsync(clientId);
+        if (client == null)
+        {
+            throw new NullReferenceException("User does not exist");
+        }
+        var bank = await _bankRepository.GetByIdAsync(bankId);
+        if (bank == null)
+        {
+            throw new NullReferenceException("Bank does not exist");
+        }
+        
         Account account = new Account
         {
-            UserId = userId,
+            ClientId = client.Id,
+            BankId = bank.Id,
             Balance = 0,
             IsFrozen = false,
             IsBlocked = false,
