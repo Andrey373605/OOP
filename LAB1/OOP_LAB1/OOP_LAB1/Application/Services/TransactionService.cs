@@ -13,29 +13,56 @@ public class TransactionService : ITransactionService
         _accountRepository = accountRepository;
     }
     
-    public async Task WithdrawFunds(decimal amount, int accountId)
+    public async Task<(bool, string)> WithdrawFunds(decimal amount, int accountId)
     {
-        var account = await _accountRepository.GetByIdAsync(accountId);
-        account.WithdrawAccount(amount);
-        //вывод средств????
-        await _accountRepository.UpdateAsync(account);
+        try
+        {
+            var account = await _accountRepository.GetByIdAsync(accountId);
+            account.WithdrawAccount(amount);
+            //вывод средств????
+            await _accountRepository.UpdateAsync(account);
+            return (true, "successful withdraw");
+        }
+        catch (Exception e)
+        {
+            return (false, e.Message);
+        }
+        
     }
 
-    public async Task TransferFunds(decimal amount, int fromAccountId, int toAccountId)
+    public async Task<(bool, string)> TransferFunds(decimal amount, int fromAccountId, int toAccountId)
     {
-        var fromAccount = await _accountRepository.GetByIdAsync(fromAccountId);
-        var toAccount = await _accountRepository.GetByIdAsync(toAccountId);
-        fromAccount.WithdrawAccount(amount);
-        toAccount.DepositAccount(amount);
-        await _accountRepository.UpdateAsync(fromAccount);
-        await _accountRepository.UpdateAsync(toAccount);
+        try
+        {
+            var fromAccount = await _accountRepository.GetByIdAsync(fromAccountId);
+            var toAccount = await _accountRepository.GetByIdAsync(toAccountId);
+            fromAccount.WithdrawAccount(amount);
+            toAccount.DepositAccount(amount);
+            await _accountRepository.UpdateAsync(fromAccount);
+            await _accountRepository.UpdateAsync(toAccount);
+            return (true, "successful transfer");
+        }
+        catch (Exception e)
+        {
+            return (false, e.Message);
+        }
+        
     }
 
-    public async Task DepositFunds(decimal amount, int accountId)
+    public async Task<(bool, string)> DepositFunds(decimal amount, int accountId)
     {
-        //обращение к терминалу???
-        var account = await _accountRepository.GetByIdAsync(accountId);
-        account.DepositAccount(amount);
-        await _accountRepository.UpdateAsync(account);
+        try
+        {
+            //обращение к терминалу???
+            var account = await _accountRepository.GetByIdAsync(accountId);
+            account.DepositAccount(amount);
+            await _accountRepository.UpdateAsync(account);
+            return (true, "successful deposit");
+        }
+        catch (Exception e)
+        {
+            return (false, e.Message);
+        }
+        
     }
 }
