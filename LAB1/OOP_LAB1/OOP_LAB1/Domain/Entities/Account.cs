@@ -11,15 +11,7 @@ namespace OOP_LAB1.Domain.Entities
         public bool IsFrozen { get; set; }
         
         public AccountType AccountType { get; set; }
-
-        public void UpdateBalance(decimal newAmount)
-        {
-            if (!IsBlocked && !IsFrozen)
-            {
-                throw new InvalidOperationException("Account not active");
-            }
-            Balance = newAmount;
-        }
+        
 
         public void FreezeAccount()
         {
