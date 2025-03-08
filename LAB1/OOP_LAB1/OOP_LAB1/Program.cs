@@ -34,6 +34,7 @@ var serviceProvider = new ServiceCollection()
     // регистрация репозиториев
     .AddSingleton<IUserRepository, UserRepository>()
     .AddSingleton<IClientRepository, ClientRepository>()
+    .AddSingleton<IBankRepository, BankRepository>()
     
     // регистрация view
     .AddTransient<MainMenuView>()
