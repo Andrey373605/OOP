@@ -40,8 +40,9 @@ public class LoanService : ILoanService
         Loan loan = await _loanRepository.GetByIdAsync(loanId);
         
         Account account = await _accountRepository.GetByIdAsync(loan.AccountId);
-        
-        account.Balance -= loan.CalculateMonthlyPayment();
+
+        var sum = loan.CalculateMonthlyPayment();
+        account.WithdrawAccount(sum);
         loan.RestMonth--;
         
         await _accountRepository.UpdateAsync(account);
