@@ -1,5 +1,6 @@
 ﻿using OOP_LAB1.Application.Interfaces;
 using OOP_LAB1.Domain.Entities;
+using OOP_LAB1.Domain.Enums;
 using OOP_LAB1.Domain.Interfaces;
 
 namespace OOP_LAB1.Application.Services;
@@ -7,10 +8,12 @@ namespace OOP_LAB1.Application.Services;
 public class TransactionService : ITransactionService
 {
     readonly IAccountRepository _accountRepository;
+    readonly ITransactionRepository _transactionRepository;
 
-    public TransactionService(IAccountRepository accountRepository)
+    public TransactionService(IAccountRepository accountRepository, ITransactionRepository transactionRepository)
     {
         _accountRepository = accountRepository;
+        _transactionRepository = transactionRepository;
     }
     
     public async Task<(bool, string)> WithdrawFunds(decimal amount, int accountId)
@@ -19,8 +22,20 @@ public class TransactionService : ITransactionService
         {
             var account = await _accountRepository.GetByIdAsync(accountId);
             account.WithdrawAccount(amount);
-            //вывод средств????
+
             await _accountRepository.UpdateAsync(account);
+            
+            var transaction = new Transaction
+            {
+                FromAccountId = accountId,
+                ToAccountId = null,
+                Amount = amount,
+                Date = DateTime.UtcNow,
+                Type = TransactionType.Withdraw
+            };
+            
+            await _transactionRepository.AddAsync(transaction);
+            
             return (true, "successful withdraw");
         }
         catch (Exception e)
@@ -40,6 +55,18 @@ public class TransactionService : ITransactionService
             toAccount.DepositAccount(amount);
             await _accountRepository.UpdateAsync(fromAccount);
             await _accountRepository.UpdateAsync(toAccount);
+            
+            var transaction = new Transaction
+            {
+                FromAccountId = fromAccountId,
+                ToAccountId = toAccountId,
+                Amount = amount,
+                Date = DateTime.UtcNow,
+                Type = TransactionType.Withdraw
+            };
+            
+            await _transactionRepository.AddAsync(transaction);
+            
             return (true, "successful transfer");
         }
         catch (Exception e)
@@ -57,6 +84,18 @@ public class TransactionService : ITransactionService
             var account = await _accountRepository.GetByIdAsync(accountId);
             account.DepositAccount(amount);
             await _accountRepository.UpdateAsync(account);
+            
+            var transaction = new Transaction
+            {
+                FromAccountId = null,
+                ToAccountId = accountId,
+                Amount = amount,
+                Date = DateTime.UtcNow,
+                Type = TransactionType.Withdraw
+            };
+            
+            await _transactionRepository.AddAsync(transaction);
+            
             return (true, "successful deposit");
         }
         catch (Exception e)
