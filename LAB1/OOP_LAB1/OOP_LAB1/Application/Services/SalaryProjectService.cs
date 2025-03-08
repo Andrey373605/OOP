@@ -7,10 +7,10 @@ namespace OOP_LAB1.Application.Services;
 
 public class SalaryProjectService : ISalaryProjectService
 {
-    IAccountRepository _accountRepository;
+    IAccountEnterpriseRepository _accountRepository;
     ISalaryProjectRepository _salaryProjectRepository;
 
-    public SalaryProjectService(ISalaryProjectRepository repository, IAccountRepository accountRepository)
+    public SalaryProjectService(ISalaryProjectRepository repository, IAccountEnterpriseRepository accountRepository)
     {
         _salaryProjectRepository = repository;
         _accountRepository = accountRepository;
@@ -31,6 +31,9 @@ public class SalaryProjectService : ISalaryProjectService
     public async Task ApproveSalaryProjectApplication(int id)
     {
         SalaryProject salaryProject = await _salaryProjectRepository.GetByIdAsync(id);
+        
+        
+        
         salaryProject.SetActive();
         await _salaryProjectRepository.UpdateAsync(salaryProject);
     }
@@ -45,7 +48,6 @@ public class SalaryProjectService : ISalaryProjectService
     public async Task PaySalary(int projectId)
     {
         var project = await _salaryProjectRepository.GetByIdAsync(projectId);
-        IEnumerable<Account> accounts = await _salaryProjectRepository.GetAccountInSalaryProjectAsync(project);
         var salaries = await _salaryProjectRepository.GetSalaryAmounts(project);
         var projectAccount = await _accountRepository.GetByIdAsync(project.AccountId);
         foreach (var s in salaries)
