@@ -29,7 +29,7 @@ public class ClientMainMenuView : IView
         var choice = _console.ReadLine();
         NextViewName = choice switch
         {
-            "1" => PageName.RegistrationClientPage,
+            "1" => PageName.ClientAllAccountsPage,
             "2" => PageName.LoginClientPage,
             "3" => PageName.RegistrationEmployeePage,
             "4" => PageName.LoginEmployeePage,
