@@ -11,6 +11,7 @@ using OOP_LAB1.Presentation.Handler;
 using OOP_LAB1.Presentation.Navigator;
 using OOP_LAB1.Presentation.Views;
 using OOP_LAB1.Presentation.Views.ClientViews;
+using Console = OOP_LAB1.Presentation.Console.Console;
 
 // Настройка DI
 var serviceProvider = new ServiceCollection()
@@ -23,7 +24,7 @@ var serviceProvider = new ServiceCollection()
     .AddSingleton<IContext, Context>()
     
     // регистрация консоли 
-    .AddSingleton<IConsoleView, ConsoleView>()
+    .AddSingleton<IConsole, Console>()
     
     // регистрация handler
     .AddSingleton<IInputHandler, InputHandler>()

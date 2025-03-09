@@ -6,10 +6,10 @@ namespace OOP_LAB1.Presentation.Navigator;
 
 public class Navigator : INavigator
 {
-    private readonly IConsoleView _console;
+    private readonly IConsole _console;
     private readonly Dictionary<PageName, IView> _views = new();
 
-    public Navigator(IConsoleView console)
+    public Navigator(IConsole console)
     {
         _console = console;
     }
