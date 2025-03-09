@@ -34,6 +34,10 @@ public class BankService : IBankService
     public async Task<Bank> GetBankByName(string name)
     {
         var bank = await _bankRepository.GetByNameAsync(name);
+        if (bank == null)
+        {
+            throw new ApplicationException($"Bank {name} not found");
+        }
         return bank;
     }
 
