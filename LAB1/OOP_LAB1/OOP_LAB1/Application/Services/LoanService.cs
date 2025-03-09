@@ -21,6 +21,10 @@ public class LoanService : ILoanService
     public async Task ApproveLoanRequest(int loanId)
     {
         var loanRequest = await _loanRepository.GetByIdAsync(loanId);
+        if (loanRequest == null)
+        {
+            throw new ApplicationException($"Loan request with id: {loanId} does not exist");
+        }
 
         var account = new Account
         {
@@ -39,8 +43,16 @@ public class LoanService : ILoanService
     public async Task DepositMoney(int loanId)
     {
         Loan loan = await _loanRepository.GetByIdAsync(loanId);
+        if (loan == null)
+        {
+            throw new ArgumentException("Loan not found");
+        }
         
         Account account = await _accountRepository.GetByIdAsync(loan.AccountId);
+        if (account == null)
+        {
+            throw new ArgumentException("Loan doesnt have an account");
+        }
 
         var sum = loan.CalculateMonthlyPayment();
         account.WithdrawAccount(sum);

@@ -22,7 +22,7 @@ namespace OOP_LAB1.Domain.Entities
 
         public void DecreaseRestMonth()
         {
-            RestMonth = RestMonth - 1;
+            RestMonth--;
         }
 
         public void SetActive()
