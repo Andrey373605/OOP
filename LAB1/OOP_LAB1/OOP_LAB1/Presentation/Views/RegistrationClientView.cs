@@ -25,18 +25,18 @@ public class RegistrationClientView : IView
 
     public void Execute()
     {
-        string firstName = _input.GetString("First name: ", new NameValidator());
-        string lastName = _input.GetString("Last name: ", new NameValidator());
-        string middleName = _input.GetString("Middle name: ", new NameValidator());
-        string phoneNumber = _input.GetString("Phone number: ", new PhoneValidator());
-        string series = _input.GetString("Series: ", new SeriesValidator());
-        string identificationNumber = _input.GetString("Identification number: ", new IdentificationNumberValidator());
+        var firstName = _input.GetString("First name: ", new NameValidator());
+        var lastName = _input.GetString("Last name: ", new NameValidator());
+        var middleName = _input.GetString("Middle name: ", new NameValidator());
+        var phoneNumber = _input.GetString("Phone number: ", new PhoneValidator());
+        var series = _input.GetString("Series: ", new SeriesValidator());
+        var identificationNumber = _input.GetString("Identification number: ", new IdentificationNumberValidator());
         
         try
         {
             _auth.RegisterClientAsync(firstName, lastName, middleName, phoneNumber,
                 identificationNumber, series).GetAwaiter().GetResult();
-            NextViewName = PageName.RegisterInBankPage;
+            NextViewName = PageName.ChooseRolePage;
             _console.WriteLine("Registration successful!");
         }
         catch (Exception ex)

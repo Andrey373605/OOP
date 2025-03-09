@@ -24,7 +24,7 @@ public class MainMenuView : IView
         {
             "1" => PageName.RegistrationUserPage,
             "2" => PageName.LoginUserPage,
-            _ => NextViewName
+            _ => PageName.ExitPage
         };
     }
 }
