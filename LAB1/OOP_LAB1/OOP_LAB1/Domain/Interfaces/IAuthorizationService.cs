@@ -6,10 +6,18 @@ namespace OOP_LAB1.Domain.Interfaces;
 public interface IAuthorizationService
 {
     Task RegisterUser(string email, string password);
-    Task RegisterClientAsync(User user, string fisrtName, string lastName, string middleName, 
-        string phoneNumber, string passportNumber, string passportSeries);
-    Task RegisterEmployeeAsync(User user, UserRole role);
     Task<bool> AuthenticateUserAsync(string email, string password);
-    Task ApproveRegistrationUser(int id);
+    
+    
+    
+    Task RegisterClientAsync(string firstName, string lastName, string middleName, 
+        string phoneNumber, string passportNumber, string passportSeries);
+    Task ApproveRegistrationClient(int id);
+    Task<bool> AuthenticateClientAsync();
+
+    
+    Task RegisterEmployeeAsync(UserRole role);
+    Task<bool> AuthenticateEmployeeAsync();
+    
     void LoginBank(Bank bank);
 }

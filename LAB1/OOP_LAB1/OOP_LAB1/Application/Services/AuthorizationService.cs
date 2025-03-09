@@ -13,35 +13,21 @@ public class AuthorizationService : IAuthorizationService
 {
     IUserRepository _userRepository;
     IClientRepository _clientRepository;
+    IEmployeeRepository _employeeRepository;
+    IBankRepository _bankRepository;
     IContext _context;
 
-    public AuthorizationService(IUserRepository userRepository, IClientRepository clientRepository,IContext context)
+    public AuthorizationService(IUserRepository userRepository, IClientRepository clientRepository,
+        IContext context, IEmployeeRepository employeeRepository, IBankRepository bankRepository)
     {
         _userRepository = userRepository;
         _clientRepository = clientRepository;
         _context = context;
+        _employeeRepository = employeeRepository;
+        _bankRepository = bankRepository;
     }
     
-
-    public async Task RegisterEmployeeAsync(string email, string password, UserRole role)
-    {
-        var existingUser = await _userRepository.GetByEmailAsync(email);
-        if (existingUser != null)
-        {
-            throw new Exception("Employee with this email already exists.");
-        }
-        
-        var hashPassword = HashPassword(password);
-        var employee = new User
-        {
-            Email = email,
-            HashPassword = hashPassword,
-        };
-        
-        await _userRepository.AddAsync(employee);
-    }
-
-
+    
     public async Task RegisterUser(string email, string password)
     {
         var User = new User
@@ -53,9 +39,14 @@ public class AuthorizationService : IAuthorizationService
         await _userRepository.AddAsync(User);
     }
 
-    public async Task RegisterClientAsync(User user, string fisrtName, string lastName, string middleName, string phoneNumber,
+    public async Task RegisterClientAsync(string fisrtName, string lastName, string middleName, string phoneNumber,
         string passportNumber, string passportSeries)
     {
+        var user = _context.CurrentUser;
+        if (user == null)
+        {
+            throw new Exception("Context user error");
+        }
 
         var client = new Client
         {
@@ -66,27 +57,66 @@ public class AuthorizationService : IAuthorizationService
             PassportSeries = passportSeries,
             IdentificationNumber = passportNumber,
             UserId = user.Id,
-            IsActive = false
         };
         await _clientRepository.AddAsync(client);
     }
-
-    public Task RegisterEmployeeAsync(User user, UserRole role)
+    
+    public async Task<bool> AuthenticateClientAsync()
     {
-        throw new NotImplementedException();
-    }
-
-    public async Task<bool> AuthorizeEmployeeAsync(string email, string password)
-    {
-        var employee = await _userRepository.GetByEmailAsync(email);
-        if (employee == null)
+        var user = _context.CurrentUser;
+        if (user == null)
         {
-            throw new UnauthorizedAccessException("Invalid email or password.");
+            throw new UnauthorizedAccessException("Context user error");
+        }
+        var bank = _context.CurrentBank;
+        if (bank == null)
+        {
+            throw new UnauthorizedAccessException("Context bank error");
+        }
+        var client = await _bankRepository.GetClientByUserIdAsync(user.Id);
+        if (client == null)
+        {
+            throw new UnauthorizedAccessException("Client is not registered with this bank");
         }
         
-        var hashPassword = HashPassword(password);
-        _context.SetCurrent(employee);
-        return employee.HashPassword == hashPassword;
+        return true;
+    }
+
+    public async Task RegisterEmployeeAsync(UserRole role)
+    {
+        var user = _context.CurrentUser;
+        if (user == null)
+        {
+            throw new Exception("Context user error");
+        }
+
+        var employee = new Employee
+        {
+            Role = role,
+            UserId = user.Id,
+        };
+        await _employeeRepository.AddAsync(employee);
+    }
+
+    public async Task<bool> AuthenticateEmployeeAsync()
+    {
+        var user = _context.CurrentUser;
+        if (user == null)
+        {
+            throw new UnauthorizedAccessException("Context user error");
+        }
+        var bank = _context.CurrentBank;
+        if (bank == null)
+        {
+            throw new UnauthorizedAccessException("Context bank error");
+        }
+        var employee = await _bankRepository.GetEmployeeByUserIdAsync(user.Id);
+        if (employee == null)
+        {
+            throw new UnauthorizedAccessException("Employee does not register in this bank");
+        }
+        
+        return true;
     }
 
 
@@ -95,17 +125,17 @@ public class AuthorizationService : IAuthorizationService
         var user = await _userRepository.GetByEmailAsync(email);
         if (user == null)
         {
-            return false;
+            throw new UnauthorizedAccessException("User with such email does not exist");
         }
 
         var hashPassword = HashPassword(password);
+        if (hashPassword != user.HashPassword)
+        {
+            throw new UnauthorizedAccessException("Invalid password");
+        }
+        
         _context.SetCurrent(user);
-        return user.HashPassword == hashPassword;
-    }
-
-    public async Task<User> GetUserByEmaiAsync(string email)
-    {
-         return await _userRepository.GetByEmailAsync(email);
+        return true;
     }
 
     
@@ -124,11 +154,15 @@ public class AuthorizationService : IAuthorizationService
         _context.SetCurrent(bank);
     }
     
-    public async Task ApproveRegistrationUser(int id)
+    public async Task ApproveRegistrationClient(int id)
     {
-        User user = await _userRepository.GetByIdAsync(id);
-        user.IsActive = true;
-        await _userRepository.UpdateAsync(user);
+        var client = await _clientRepository.GetByIdAsync(id);
+        if (client == null)
+        {
+            throw new Exception("User does not exist");
+        }
+        client.Activate();
+        await _clientRepository.UpdateAsync(client);
     }
     
 }
