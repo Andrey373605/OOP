@@ -12,17 +12,15 @@ public class RegistrationClientView : IView
 {
     private readonly IInputHandler _input;
     private readonly IAuthorizationService _auth;
-    private readonly IConsoleView _console;
-    private readonly IContext _context;
+    private readonly IConsole _console;
     
     public PageName? NextViewName { get; private set; }
 
-    public RegistrationClientView(IInputHandler input, IConsoleView console, IAuthorizationService authService, IContext context)
+    public RegistrationClientView(IInputHandler input, IConsole console, IAuthorizationService authService)
     {
         _input = input;
         _auth = authService;
         _console = console;
-        _context = context;
     }
 
     public void Execute()
@@ -33,12 +31,10 @@ public class RegistrationClientView : IView
         string phoneNumber = _input.GetString("Phone number: ", new PhoneValidator());
         string series = _input.GetString("Series: ", new SeriesValidator());
         string identificationNumber = _input.GetString("Identification number: ", new IdentificationNumberValidator());
-
-        var user = _context.CurrentUser;
         
         try
         {
-            _auth.RegisterClientAsync(user, firstName, lastName, middleName, phoneNumber,
+            _auth.RegisterClientAsync(firstName, lastName, middleName, phoneNumber,
                 identificationNumber, series).GetAwaiter().GetResult();
             NextViewName = PageName.RegisterInBankPage;
             _console.WriteLine("Registration successful!");

@@ -13,10 +13,10 @@ public class RegistrationUserView : IView
     
     private readonly IInputHandler _input;
     private readonly IAuthorizationService _auth;
-    private readonly IConsoleView _console;
+    private readonly IConsole _console;
     private readonly IContext _context;
 
-    public RegistrationUserView(IInputHandler input, IAuthorizationService auth, IConsoleView console, IContext context)
+    public RegistrationUserView(IInputHandler input, IAuthorizationService auth, IConsole console, IContext context)
     {
         _input = input;
         _auth = auth;

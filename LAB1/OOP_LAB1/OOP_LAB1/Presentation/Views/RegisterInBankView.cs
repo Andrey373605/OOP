@@ -10,13 +10,13 @@ namespace OOP_LAB1.Presentation.Views;
 
 public class RegisterInBankView : IView
 {
-    private readonly IConsoleView _console;
+    private readonly IConsole _console;
     private readonly IBankService _bankService;
     private readonly IInputHandler _input;
     private readonly IContext _context;
 
     
-    public RegisterInBankView(IConsoleView console, IInputHandler input, IBankService bankService)
+    public RegisterInBankView(IConsole console, IInputHandler input, IBankService bankService)
     {
         _console = console;
         _bankService = bankService;
