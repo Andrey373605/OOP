@@ -6,7 +6,7 @@ public class Context : IContext
 {
     public User? CurrentUser { get; private set; }
     public Bank? CurrentBank { get; private set; }
-
+    
     public void SetCurrent(User user)
     {
         CurrentUser = user;

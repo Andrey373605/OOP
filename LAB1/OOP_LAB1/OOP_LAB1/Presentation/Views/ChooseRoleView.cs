@@ -28,11 +28,23 @@ public class ChooseRoleView : IView
     public void Execute()
     {
         _console.WriteLine("Choose:");
-        _console.WriteLine("1. Become a client in bank");
-        _console.WriteLine("2. Become a employee in bank");
-        _console.WriteLine("3. Log in");
-
+        _console.WriteLine("1. Register as client");
+        _console.WriteLine("2. Login as client");
+        _console.WriteLine("3. Register as employee");
+        _console.WriteLine("4. Login as employee");
+        _console.WriteLine("5. Exit");
+        
         var choice = _console.ReadLine();
+        NextViewName = choice switch
+        {
+            "1" => PageName.RegistrationClientPage,
+            "2" => PageName.LoginClientPage,
+            "3" => PageName.RegistrationEmployeePage,
+            "4" => PageName.LoginEmployeePage,
+            "5" => PageName.ExitPage,
+            _ => NextViewName
+        };
+
         
         
 
