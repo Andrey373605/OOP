@@ -15,7 +15,7 @@ namespace OOP_LAB1.Application.Interfaces
 
         public Task<IEnumerable<string>> GetAllBankNamesAsync();
 
-        public Task<Employee> GetEmployeeByUserIdAsync(int userId);
-        Task<Client> GetClientByUserIdAsync(int userId);
+        public Task<Employee> GetEmployeeByUserIdAsync(int bankId, int userId);
+        Task<Client> GetClientByUserIdAsync(int bankId, int userId);
     }
 }

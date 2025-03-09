@@ -30,13 +30,19 @@ public class AuthorizationService : IAuthorizationService
     
     public async Task RegisterUser(string email, string password)
     {
-        var User = new User
+        var existUser = await _userRepository.GetByEmailAsync(email);
+        if (existUser != null)
+        {
+            throw new ApplicationException("User with this email already exists");
+        }
+        
+        var user = new User
         {
             Email = email,
             HashPassword = HashPassword(password),
         };
         
-        await _userRepository.AddAsync(User);
+        await _userRepository.AddAsync(user);
     }
 
     public async Task RegisterClientAsync(string fisrtName, string lastName, string middleName, string phoneNumber,
@@ -46,6 +52,24 @@ public class AuthorizationService : IAuthorizationService
         if (user == null)
         {
             throw new Exception("Context user error");
+        }
+
+        var bank = _context.CurrentBank;
+        if (bank == null)
+        {
+            throw new Exception("Context bank error");
+        }
+        
+        var existClient = _bankRepository.GetClientByUserIdAsync(bank.Id, user.Id);
+        if (existClient != null)
+        {
+            throw new ApplicationException("You are already a bank client");
+        }
+        
+        var existEmployee = _bankRepository.GetEmployeeByUserIdAsync(bank.Id, user.Id);
+        if (existEmployee != null)
+        {
+            throw new ApplicationException("You are a bank employee");
         }
 
         var client = new Client
@@ -68,12 +92,20 @@ public class AuthorizationService : IAuthorizationService
         {
             throw new UnauthorizedAccessException("Context user error");
         }
+        
         var bank = _context.CurrentBank;
         if (bank == null)
         {
             throw new UnauthorizedAccessException("Context bank error");
         }
-        var client = await _bankRepository.GetClientByUserIdAsync(user.Id);
+        
+        var existEmployee = _bankRepository.GetEmployeeByUserIdAsync(bank.Id, user.Id);
+        if (existEmployee != null)
+        {
+            throw new ApplicationException("You are a bank employee");
+        }
+        
+        var client = await _bankRepository.GetClientByUserIdAsync(bank.Id, user.Id);
         if (client == null)
         {
             throw new UnauthorizedAccessException("Client is not registered with this bank");
@@ -88,6 +120,24 @@ public class AuthorizationService : IAuthorizationService
         if (user == null)
         {
             throw new Exception("Context user error");
+        }
+        
+        var bank = _context.CurrentBank;
+        if (bank == null)
+        {
+            throw new Exception("Context bank error");
+        }
+        
+        var existClient = _bankRepository.GetClientByUserIdAsync(bank.Id, user.Id);
+        if (existClient != null)
+        {
+            throw new ApplicationException("You are a bank client");
+        }
+        
+        var existEmployee = _bankRepository.GetEmployeeByUserIdAsync(bank.Id, user.Id);
+        if (existEmployee != null)
+        {
+            throw new ApplicationException("You are already a bank employee");
         }
 
         var employee = new Employee
@@ -105,16 +155,25 @@ public class AuthorizationService : IAuthorizationService
         {
             throw new UnauthorizedAccessException("Context user error");
         }
+        
         var bank = _context.CurrentBank;
         if (bank == null)
         {
             throw new UnauthorizedAccessException("Context bank error");
         }
-        var employee = await _bankRepository.GetEmployeeByUserIdAsync(user.Id);
+
+        var existClient = _bankRepository.GetClientByUserIdAsync(bank.Id, user.Id);
+        if (existClient != null)
+        {
+            throw new ApplicationException("You are already a bank client");
+        }
+        
+        var employee = await _bankRepository.GetEmployeeByUserIdAsync(bank.Id, user.Id);
         if (employee == null)
         {
             throw new UnauthorizedAccessException("Employee does not register in this bank");
         }
+        
         
         return true;
     }

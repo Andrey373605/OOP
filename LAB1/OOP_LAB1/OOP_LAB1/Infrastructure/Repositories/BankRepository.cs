@@ -32,12 +32,12 @@ public class BankRepository : IBankRepository
         return new List<string>(["ZBANK", "VBANK"]);
     }
 
-    public Task<Employee> GetEmployeeByUserIdAsync(int userId)
+    public Task<Employee> GetEmployeeByUserIdAsync(int bankId, int userId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<Client> GetClientByUserIdAsync(int userId)
+    public Task<Client> GetClientByUserIdAsync(int bankId, int userId)
     {
         throw new NotImplementedException();
     }
