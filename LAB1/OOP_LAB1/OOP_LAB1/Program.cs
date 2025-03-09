@@ -35,6 +35,7 @@ var serviceProvider = new ServiceCollection()
     // регистрация репозиториев
     .AddSingleton<IUserRepository, UserRepository>()
     .AddSingleton<IClientRepository, ClientRepository>()
+    .AddSingleton<IEmployeeRepository, EmployeeRepository>()
     .AddSingleton<IBankRepository, BankRepository>()
     
     // регистрация view
@@ -47,6 +48,8 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<ChooseRoleView>()
     .AddTransient<ChooseBankView>()
     .AddTransient<ClientMainMenuView>()
+    .AddTransient<LoginClientView>()
+    .AddTransient<ExitView>()
     
     // сборка
     .BuildServiceProvider();
@@ -63,6 +66,8 @@ navigator.RegisterView(PageName.LoginUserPage, serviceProvider.GetService<LoginU
 navigator.RegisterView(PageName.ChooseRolePage, serviceProvider.GetService<ChooseRoleView>());
 navigator.RegisterView(PageName.ChooseBankPage, serviceProvider.GetService<ChooseBankView>());
 navigator.RegisterView(PageName.ClientMainMenuPage, serviceProvider.GetService<ClientMainMenuView>());
+navigator.RegisterView(PageName.ExitPage, serviceProvider.GetService<ExitView>());
+navigator.RegisterView(PageName.LoginClientPage, serviceProvider.GetService<LoginClientView>());
 
 
 navigator.Run(PageName.MainMenuPage);

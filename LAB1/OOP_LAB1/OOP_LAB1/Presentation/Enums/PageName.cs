@@ -6,11 +6,14 @@ public enum PageName
     RegisterInBankPage,
     BankMenuPage,
     RegistrationClientPage,
+    LoginClientPage,
     LoginPage,
     RegistrationEmployeePage,
+    LoginEmployeePage,
     RegistrationUserPage,
     LoginUserPage,
     ChooseRolePage,
     ChooseBankPage,
-    ClientMainMenuPage
+    ClientMainMenuPage,
+    ExitPage
 }

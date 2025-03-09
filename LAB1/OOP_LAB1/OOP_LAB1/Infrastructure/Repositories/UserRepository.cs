@@ -48,6 +48,6 @@ public class UserRepository : IUserRepository
     public async Task<User> GetByEmailAsync(string email)
     {
         await Task.Delay(1);
-        return null;
+        return new User{Email = email, HashPassword = "qqq"};
     }
 }
