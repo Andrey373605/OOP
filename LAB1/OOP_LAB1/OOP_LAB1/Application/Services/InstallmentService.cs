@@ -7,9 +7,9 @@ namespace OOP_LAB1.Application.Services;
 
 public class InstallmentService : IInstallmentService
 {
-    readonly IInstallmentRepository _installmentRepository;
-    readonly IAccountRepository _accountRepository;
-    readonly IClientRepository _clientRepository;
+    private readonly IInstallmentRepository _installmentRepository;
+    private readonly IAccountRepository _accountRepository;
+    private readonly IClientRepository _clientRepository;
 
     public InstallmentService(IInstallmentRepository installmentRepository, IAccountRepository accountRepository, IClientRepository clientRepository)
     {

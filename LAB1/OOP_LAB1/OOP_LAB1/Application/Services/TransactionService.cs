@@ -7,8 +7,8 @@ namespace OOP_LAB1.Application.Services;
 
 public class TransactionService : ITransactionService
 {
-    readonly IAccountRepository _accountRepository;
-    readonly ITransactionRepository _transactionRepository;
+    private readonly IAccountRepository _accountRepository;
+    private readonly ITransactionRepository _transactionRepository;
 
     public TransactionService(IAccountRepository accountRepository, ITransactionRepository transactionRepository)
     {

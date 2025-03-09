@@ -11,11 +11,11 @@ namespace OOP_LAB1.Application.Services;
 
 public class AuthorizationService : IAuthorizationService
 {
-    IUserRepository _userRepository;
-    IClientRepository _clientRepository;
-    IEmployeeRepository _employeeRepository;
-    IBankRepository _bankRepository;
-    IContext _context;
+    private readonly IUserRepository _userRepository;
+    private readonly IClientRepository _clientRepository;
+    private readonly IEmployeeRepository _employeeRepository;
+    private readonly IBankRepository _bankRepository;
+    private readonly IContext _context;
 
     public AuthorizationService(IUserRepository userRepository, IClientRepository clientRepository,
         IContext context, IEmployeeRepository employeeRepository, IBankRepository bankRepository)

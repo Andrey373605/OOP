@@ -7,9 +7,9 @@ namespace OOP_LAB1.Application.Services;
 
 public class LoanService : ILoanService
 {
-    readonly ILoanRepository _loanRepository;
-    readonly IAccountRepository _accountRepository;
-    readonly IClientRepository _clientRepository;
+    private readonly ILoanRepository _loanRepository;
+    private readonly IAccountRepository _accountRepository;
+    private readonly IClientRepository _clientRepository;
 
     LoanService(ILoanRepository depositRepository, IAccountRepository accountRepository, IClientRepository clientRepository)
     {

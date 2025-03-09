@@ -7,10 +7,10 @@ namespace OOP_LAB1.Application.Services;
 
 public class SalaryProjectService : ISalaryProjectService
 {
-    IAccountEnterpriseRepository _accountEnterpriseRepository;
-    ISalaryProjectRepository _salaryProjectRepository;
-    IBankRepository _bankRepository;
-    IEnterpriseRepository _enterpriseRepository;
+    private readonly IAccountEnterpriseRepository _accountEnterpriseRepository;
+    private readonly ISalaryProjectRepository _salaryProjectRepository;
+    private readonly IBankRepository _bankRepository;
+    private readonly IEnterpriseRepository _enterpriseRepository;
 
     public SalaryProjectService(ISalaryProjectRepository repository, IAccountEnterpriseRepository accountRepository, 
                                 IBankRepository bankRepository, IEnterpriseRepository enterpriseRepository)

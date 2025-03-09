@@ -7,9 +7,9 @@ namespace OOP_LAB1.Application.Services;
 
 public class AccountService : IAccountService
 {
-    IAccountRepository _accountRepository;
-    IBankRepository _bankRepository;
-    IClientRepository _clientRepository;
+    private readonly IAccountRepository _accountRepository;
+    private readonly IBankRepository _bankRepository;
+    private readonly IClientRepository _clientRepository;
 
     AccountService(IAccountRepository accountRepository, IBankRepository bankRepository, IClientRepository clientRepository)
     {

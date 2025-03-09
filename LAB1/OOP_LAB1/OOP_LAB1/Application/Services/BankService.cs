@@ -7,8 +7,8 @@ namespace OOP_LAB1.Application.Services;
 
 public class BankService : IBankService
 {
-    IContext _context;
-    IBankRepository _bankRepository;
+    private readonly IContext _context;
+    private readonly IBankRepository _bankRepository;
 
     public BankService(IContext context, IBankRepository bankRepository)
     {
