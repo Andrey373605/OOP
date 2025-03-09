@@ -21,16 +21,16 @@ public class InstallmentService : IInstallmentService
     
     public async Task DepositMoney(int installmentId)
     {
-        var loan = await _installmentRepository.GetByIdAsync(installmentId);
+        var installment = await _installmentRepository.GetByIdAsync(installmentId);
         
-        var account = await _accountRepository.GetByIdAsync(loan.AccountId);
+        var account = await _accountRepository.GetByIdAsync(installment.AccountId);
 
-        var sum = loan.CalculateMonthlyPayment();
+        var sum = installment.CalculateMonthlyPayment();
         account.WithdrawAccount(sum);
-        loan.DecreaseRestMonth();
+        installment.DecreaseRestMonth();
         
         await _accountRepository.UpdateAsync(account);
-        await _installmentRepository.UpdateAsync(loan);
+        await _installmentRepository.UpdateAsync(installment);
     }
 
     public async Task AddInstallmentRequest(int clientId, decimal depositAmount, int monthCount)
@@ -55,6 +55,10 @@ public class InstallmentService : IInstallmentService
     public async Task ApproveInstallmentRequest(int installmentId)
     {
         var installmentRequest = await _installmentRepository.GetByIdAsync(installmentId);
+        if (installmentRequest == null)
+        {
+            throw new ApplicationException($"Installment request with id {installmentId} not found");
+        }
         
         var account = new Account
         {
