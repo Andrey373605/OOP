@@ -28,7 +28,7 @@ public class RegistrationUserView : IView
         string email = _input.GetString("Enter email address", new EmailValidator());
         string password = _input.GetString("Enter password", new PasswordValidator());
         
-        _auth.RegisterUser(email, password);
+        _auth.RegisterUser(email, password).GetAwaiter().GetResult();
         
         _console.WriteLine("Registration successful");
 

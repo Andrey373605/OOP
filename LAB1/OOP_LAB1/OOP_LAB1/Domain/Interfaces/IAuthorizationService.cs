@@ -1,4 +1,5 @@
-﻿using OOP_LAB1.Domain.Entities;
+﻿using OOP_LAB1.Application.Context;
+using OOP_LAB1.Domain.Entities;
 using OOP_LAB1.Domain.Enums;
 namespace OOP_LAB1.Domain.Interfaces;
 
@@ -6,18 +7,18 @@ namespace OOP_LAB1.Domain.Interfaces;
 public interface IAuthorizationService
 {
     Task RegisterUser(string email, string password);
-    Task<bool> AuthenticateUserAsync(string email, string password);
+    Task<bool> AuthenticateUserAsync(IContext context, string email, string password);
     
     
     
-    Task RegisterClientAsync(string firstName, string lastName, string middleName, 
+    Task RegisterClientAsync(IContext context, string firstName, string lastName, string middleName, 
         string phoneNumber, string passportNumber, string passportSeries);
     Task ApproveRegistrationClient(int id);
-    Task<bool> AuthenticateClientAsync();
+    Task<bool> AuthenticateClientAsync(IContext context);
 
     
-    Task RegisterEmployeeAsync(UserRole role);
-    Task<bool> AuthenticateEmployeeAsync();
+    Task RegisterEmployeeAsync(IContext context, UserRole role);
+    Task<bool> AuthenticateEmployeeAsync(IContext context);
     
-    void LoginBank(Bank bank);
+    void LoginBank(IContext context, Bank bank);
 }

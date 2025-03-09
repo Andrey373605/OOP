@@ -12,12 +12,14 @@ public class LoginUserView : IView
     private readonly IInputHandler _input;
     private readonly IAuthorizationService _auth;
     private readonly IConsole _console;
+    private readonly IContext _context;
 
-    public LoginUserView(IInputHandler input, IAuthorizationService auth, IConsole console)
+    public LoginUserView(IInputHandler input, IAuthorizationService auth, IConsole console, IContext context)
     {
         _input = input;
         _auth = auth;
         _console = console;
+        _context = context;
     }
     public PageName? NextViewName { get; private set; }
     public void Execute()
@@ -27,7 +29,7 @@ public class LoginUserView : IView
 
         try
         {
-            _auth.AuthenticateUserAsync(email, password).GetAwaiter().GetResult();
+            _auth.AuthenticateUserAsync(_context, email, password).GetAwaiter().GetResult();
             _console.WriteLine($"Successfully logged in");
             NextViewName = PageName.ChooseBankPage;
         }

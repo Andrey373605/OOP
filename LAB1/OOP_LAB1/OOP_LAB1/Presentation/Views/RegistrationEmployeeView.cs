@@ -49,7 +49,7 @@ public class RegistrationEmployeeView : IView
         try
         {
 
-            _auth.RegisterEmployeeAsync(role).GetAwaiter().GetResult();
+            _auth.RegisterEmployeeAsync(_context, role).GetAwaiter().GetResult();
             NextViewName = PageName.RegisterInBankPage;
             _console.WriteLine("Registration successful!");
         }

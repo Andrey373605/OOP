@@ -1,7 +1,9 @@
-﻿using OOP_LAB1.Application.Interfaces;
+﻿using OOP_LAB1.Application.Context;
+using OOP_LAB1.Application.Interfaces;
 using OOP_LAB1.Domain.Interfaces;
 using OOP_LAB1.Domain.Entities;
 using OOP_LAB1.Domain.Enums;
+using SQLitePCL;
 
 namespace OOP_LAB1.Application.Services;
 
@@ -89,6 +91,15 @@ public class AccountService : IAccountService
         
         account.DepositAccount(amount);
         await _accountRepository.UpdateAsync(account);
+    }
+
+    public async Task<IEnumerable<Account>> GetAllClientAccountsAsync(IContext context)
+    {
+        var user = context.CurrentUser;
+        var bank = context.CurrentUser;
+        var client = await _bankRepository.GetClientByUserIdAsync(bank.Id, user.Id);
+        var accounts = await _clientRepository.GetAllAccountsByClientIdAsync(client.Id);
+        return accounts;
     }
 
     public async Task CreateAccountAsync(int clientId, int bankId)

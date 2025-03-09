@@ -29,4 +29,9 @@ public class ClientRepository : IClientRepository
     {
         throw new NotImplementedException();
     }
+
+    public Task<IEnumerable<Account>> GetAllAccountsByClientIdAsync(int clientId)
+    {
+        throw new NotImplementedException();
+    }
 }

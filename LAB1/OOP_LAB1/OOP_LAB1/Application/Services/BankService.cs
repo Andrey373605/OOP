@@ -7,12 +7,10 @@ namespace OOP_LAB1.Application.Services;
 
 public class BankService : IBankService
 {
-    private readonly IContext _context;
     private readonly IBankRepository _bankRepository;
 
-    public BankService(IContext context, IBankRepository bankRepository)
+    public BankService(IBankRepository bankRepository)
     {
-        _context = context;
         _bankRepository = bankRepository;
     }
     public async Task CreateBank(string bankName)

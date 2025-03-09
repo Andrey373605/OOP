@@ -13,14 +13,16 @@ public class RegistrationClientView : IView
     private readonly IInputHandler _input;
     private readonly IAuthorizationService _auth;
     private readonly IConsole _console;
+    private readonly IContext _context;
     
     public PageName? NextViewName { get; private set; }
 
-    public RegistrationClientView(IInputHandler input, IConsole console, IAuthorizationService authService)
+    public RegistrationClientView(IInputHandler input, IConsole console, IAuthorizationService authService, IContext context)
     {
         _input = input;
         _auth = authService;
         _console = console;
+        _context = context;
     }
 
     public void Execute()
@@ -34,7 +36,7 @@ public class RegistrationClientView : IView
         
         try
         {
-            _auth.RegisterClientAsync(firstName, lastName, middleName, phoneNumber,
+            _auth.RegisterClientAsync(_context, firstName, lastName, middleName, phoneNumber,
                 identificationNumber, series).GetAwaiter().GetResult();
             NextViewName = PageName.ChooseRolePage;
             _console.WriteLine("Registration successful!");

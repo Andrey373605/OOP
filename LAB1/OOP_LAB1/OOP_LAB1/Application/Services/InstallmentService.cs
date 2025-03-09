@@ -1,4 +1,5 @@
-﻿using OOP_LAB1.Application.Interfaces;
+﻿using OOP_LAB1.Application.Context;
+using OOP_LAB1.Application.Interfaces;
 using OOP_LAB1.Domain.Entities;
 using OOP_LAB1.Domain.Enums;
 using OOP_LAB1.Domain.Interfaces;
@@ -10,12 +11,14 @@ public class InstallmentService : IInstallmentService
     private readonly IInstallmentRepository _installmentRepository;
     private readonly IAccountRepository _accountRepository;
     private readonly IClientRepository _clientRepository;
+    private readonly IBankRepository _bankRepository;
 
-    public InstallmentService(IInstallmentRepository installmentRepository, IAccountRepository accountRepository, IClientRepository clientRepository)
+    public InstallmentService(IInstallmentRepository installmentRepository, IAccountRepository accountRepository, IClientRepository clientRepository, IBankRepository bankRepository)
     {
         _installmentRepository = installmentRepository;
         _accountRepository = accountRepository;
         _clientRepository = clientRepository;
+        _bankRepository = bankRepository;
     }
     
     
@@ -33,12 +36,18 @@ public class InstallmentService : IInstallmentService
         await _installmentRepository.UpdateAsync(installment);
     }
 
-    public async Task AddInstallmentRequest(int clientId, decimal depositAmount, int monthCount)
+    public async Task CreateInstallmentRequest(IContext context, decimal depositAmount, int monthCount)
     {
-        var client = await _clientRepository.GetByIdAsync(clientId);
+        var user = context.CurrentUser;
+        if (user == null)
+        {
+            throw new NullReferenceException("Context error");
+        }
+        
+        var client = await _bankRepository.GetByIdAsync(user.Id);
         if (client == null)
         {
-            throw new ApplicationException($"Client with id {clientId} not found");
+            throw new ApplicationException($"Client not found");
         }
         
         var installmentRequest = new Installment

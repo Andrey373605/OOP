@@ -4,7 +4,7 @@ public enum PageName
 {
     MainMenuPage,
     RegisterInBankPage,
-    BankMenuPage,
+    BankClientMenuPage,
     RegistrationClientPage,
     LoginClientPage,
     LoginPage,

@@ -1,4 +1,5 @@
-﻿using OOP_LAB1.Application.Interfaces;
+﻿using OOP_LAB1.Application.Context;
+using OOP_LAB1.Application.Interfaces;
 using OOP_LAB1.Domain.Entities;
 using OOP_LAB1.Domain.Enums;
 using OOP_LAB1.Domain.Interfaces;
@@ -10,14 +11,17 @@ public class LoanService : ILoanService
     private readonly ILoanRepository _loanRepository;
     private readonly IAccountRepository _accountRepository;
     private readonly IClientRepository _clientRepository;
+    private readonly IBankRepository _bankRepository;
 
-    LoanService(ILoanRepository depositRepository, IAccountRepository accountRepository, IClientRepository clientRepository)
+    LoanService(ILoanRepository depositRepository, IAccountRepository accountRepository,
+        IClientRepository clientRepository, IBankRepository bankRepository)
     {
         _loanRepository = depositRepository;
         _accountRepository = accountRepository;
         _clientRepository = clientRepository;
     }
     
+
     public async Task ApproveLoanRequest(int loanId)
     {
         var loanRequest = await _loanRepository.GetByIdAsync(loanId);
@@ -64,9 +68,15 @@ public class LoanService : ILoanService
 
 
 
-    public async Task AddLoanRequest(int clientId, decimal depositAmount, int interestRate, int monthCount)
+    public async Task CreateLoanRequest(IContext context, decimal depositAmount, int interestRate, int monthCount)
     {
-        var client = await _clientRepository.GetByIdAsync(clientId);
+        var user = context.CurrentUser;
+        if (user == null)
+        {
+            throw new ApplicationException("Context error");
+        }
+        
+        var client = await _bankRepository.GetByIdAsync(user.Id);
         if (client == null)
         {
             throw new ApplicationException("Client not found");

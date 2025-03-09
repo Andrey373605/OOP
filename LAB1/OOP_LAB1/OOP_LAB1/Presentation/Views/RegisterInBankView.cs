@@ -13,7 +13,7 @@ public class RegisterInBankView : IView
     private readonly IConsole _console;
     private readonly IBankService _bankService;
     private readonly IInputHandler _input;
-    private readonly IContext _context;
+
 
     
     public RegisterInBankView(IConsole console, IInputHandler input, IBankService bankService)

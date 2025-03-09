@@ -70,4 +70,5 @@ navigator.RegisterView(PageName.ExitPage, serviceProvider.GetService<ExitView>()
 navigator.RegisterView(PageName.LoginClientPage, serviceProvider.GetService<LoginClientView>());
 
 
+
 navigator.Run(PageName.MainMenuPage);

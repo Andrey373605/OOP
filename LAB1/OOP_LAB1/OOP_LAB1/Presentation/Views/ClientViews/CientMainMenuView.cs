@@ -8,7 +8,7 @@ namespace OOP_LAB1.Presentation.Views.ClientViews;
 
 public class ClientMainMenuView : IView
 {
-    public PageName? NextViewName { get; }
+    public PageName? NextViewName { get; private set; }
     
     private readonly IInputHandler _input;
     private readonly IAuthorizationService _auth;
@@ -25,6 +25,16 @@ public class ClientMainMenuView : IView
     public void Execute()
     {
         _console.WriteLine("1. Show all accounts");
-        _console.WriteLine("2. Show all customers");
+        
+        var choice = _console.ReadLine();
+        NextViewName = choice switch
+        {
+            "1" => PageName.RegistrationClientPage,
+            "2" => PageName.LoginClientPage,
+            "3" => PageName.RegistrationEmployeePage,
+            "4" => PageName.LoginEmployeePage,
+            "5" => PageName.ExitPage,
+            _ => NextViewName
+        };
     }
 }

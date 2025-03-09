@@ -38,7 +38,7 @@ public class ChooseBankView : IView
         }
         var bankName = _input.GetString("Enter bank name: ", new NameValidator());
         var bank = _bankService.GetBankByName(bankName).GetAwaiter().GetResult();
-        _auth.LoginBank(bank);
+        _auth.LoginBank(_context, bank);
         _console.WriteLine($"Succesfully chosen bank {bankName}");
         _context.SetCurrent(bank);
 

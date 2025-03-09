@@ -1,4 +1,5 @@
-﻿using OOP_LAB1.Domain.Interfaces;
+﻿using OOP_LAB1.Application.Context;
+using OOP_LAB1.Domain.Interfaces;
 using OOP_LAB1.Presentation.Console;
 using OOP_LAB1.Presentation.Enums;
 using OOP_LAB1.Presentation.Handler;
@@ -11,21 +12,23 @@ public class LoginClientView : IView
     private readonly IInputHandler _input;
     private readonly IAuthorizationService _auth;
     private readonly IConsole _console;
+    private readonly IContext _context;
 
-    public LoginClientView(IInputHandler input, IAuthorizationService auth, IConsole console)
+    public LoginClientView(IInputHandler input, IAuthorizationService auth, IConsole console, IContext context)
     {
         _input = input;
         _auth = auth;
         _console = console;
+        _context = context;
     }
     public PageName? NextViewName { get; private set; }
     public void Execute()
     {
         try
         {
-            _auth.AuthenticateClientAsync().GetAwaiter().GetResult();
+            _auth.AuthenticateClientAsync(_context).GetAwaiter().GetResult();
             _console.WriteLine($"Successfully logged in");
-            NextViewName = PageName.ChooseBankPage;
+            NextViewName = PageName.ClientMainMenuPage;
         }
         catch (Exception e)
         {
@@ -33,6 +36,7 @@ public class LoginClientView : IView
             NextViewName = PageName.ChooseRolePage;
         }
         
-        
+        //успешный вход
+        NextViewName = PageName.ClientMainMenuPage;
     }
 }
