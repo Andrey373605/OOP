@@ -15,9 +15,10 @@ public class BankRepository : IBankRepository
         throw new NotImplementedException();
     }
 
-    public Task<Bank> GetByNameAsync(string id)
+    public async Task<Bank> GetByNameAsync(string name)
     {
-        throw new NotImplementedException();
+        await Task.Delay(1);
+        return new Bank { Name = name };
     }
 
     public Task UpdateAsync(Bank bank)
@@ -25,7 +26,18 @@ public class BankRepository : IBankRepository
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<string>> GetAllBankNamesAsync()
+    public async Task<IEnumerable<string>> GetAllBankNamesAsync()
+    {
+        await Task.Delay(1);
+        return new List<string>(["ZBANK", "VBANK"]);
+    }
+
+    public Task<Employee> GetEmployeeByUserIdAsync(int userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<Client> GetClientByUserIdAsync(int userId)
     {
         throw new NotImplementedException();
     }
