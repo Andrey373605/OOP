@@ -30,8 +30,9 @@ public class ClientRepository : IClientRepository
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<Account>> GetAllAccountsByClientIdAsync(int clientId)
+    public async Task<IEnumerable<Account>> GetAllAccountsByClientIdAsync(int clientId)
     {
-        throw new NotImplementedException();
+        await Task.Delay(1);
+        return new List<Account>([new Account { ClientId = clientId, Balance = 100}, new Account { ClientId = clientId, Balance = 200}]);
     }
 }

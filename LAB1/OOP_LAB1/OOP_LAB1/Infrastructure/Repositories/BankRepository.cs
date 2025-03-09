@@ -37,8 +37,13 @@ public class BankRepository : IBankRepository
         throw new NotImplementedException();
     }
 
-    public Task<Client> GetClientByUserIdAsync(int bankId, int userId)
+    public async Task<Client> GetClientByUserIdAsync(int bankId, int userId)
     {
-        throw new NotImplementedException();
+        await Task.Delay(1);
+        return new Client
+        {
+            UserId = userId,
+            BankId = bankId,
+        };
     }
 }

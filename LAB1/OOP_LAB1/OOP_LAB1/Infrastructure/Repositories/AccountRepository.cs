@@ -25,8 +25,9 @@ public class AccountRepository : IAccountRepository
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<Account>> GetAllByUserIdAsync(int userId)
+    public async Task<IEnumerable<Account>> GetAllByUserIdAsync(int userId)
     {
-        throw new NotImplementedException();
+        await Task.Delay(1);
+        return new List<Account>([new Account { Id = userId, Balance = 100}, new Account { Id = userId, Balance = 200}]);
     }
 }

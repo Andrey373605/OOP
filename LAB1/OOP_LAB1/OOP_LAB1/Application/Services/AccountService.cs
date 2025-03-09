@@ -126,11 +126,7 @@ public class AccountService : IAccountService
         };
         await _accountRepository.AddAsync(account);
     }
-
-    public async Task<IEnumerable<Account>> GetAllAccountsAsync(int userId)
-    {
-        return await _accountRepository.GetAllByUserIdAsync(userId);
-    }
+    
 
     
 }
