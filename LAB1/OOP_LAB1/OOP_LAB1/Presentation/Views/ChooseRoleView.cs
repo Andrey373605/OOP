@@ -13,11 +13,11 @@ public class ChooseRoleView : IView
     
     private readonly IInputHandler _input;
     private readonly IAuthorizationService _auth;
-    private readonly IConsoleView _console;
+    private readonly IConsole _console;
     private readonly IContext _context;
     private readonly IBankService _bankService;
 
-    public ChooseRoleView(IInputHandler input, IAuthorizationService auth, IConsoleView console, IContext context, IBankService bankService)
+    public ChooseRoleView(IInputHandler input, IAuthorizationService auth, IConsole console, IContext context, IBankService bankService)
     {
         _input = input;
         _auth = auth;
@@ -33,6 +33,7 @@ public class ChooseRoleView : IView
         _console.WriteLine("3. Log in");
 
         var choice = _console.ReadLine();
+        
         
 
 

@@ -11,15 +11,13 @@ public class LoginUserView : IView
 {
     private readonly IInputHandler _input;
     private readonly IAuthorizationService _auth;
-    private readonly IConsoleView _console;
-    private readonly IContext _context;
+    private readonly IConsole _console;
 
-    public LoginUserView(IInputHandler input, IAuthorizationService auth, IConsoleView console, IContext context)
+    public LoginUserView(IInputHandler input, IAuthorizationService auth, IConsole console)
     {
         _input = input;
         _auth = auth;
         _console = console;
-        _context = context;
     }
     public PageName? NextViewName { get; private set; }
     public void Execute()

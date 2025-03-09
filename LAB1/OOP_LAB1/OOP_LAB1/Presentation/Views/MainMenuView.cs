@@ -6,9 +6,9 @@ namespace OOP_LAB1.Presentation.Views;
 public class MainMenuView : IView
 {
     public PageName? NextViewName { get; private set; }
-    private readonly IConsoleView _console;
+    private readonly IConsole _console;
 
-    public MainMenuView(IConsoleView console)
+    public MainMenuView(IConsole console)
     {
         _console = console;
     }
