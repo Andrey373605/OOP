@@ -4,7 +4,6 @@ public enum PageName
 {
     MainMenuPage,
     RegisterInBankPage,
-    BankClientMenuPage,
     RegistrationClientPage,
     LoginClientPage,
     LoginPage,
@@ -18,5 +17,7 @@ public enum PageName
     ExitPage,
     ClientAllAccountsPage,
     ClientCreateAccountPage,
-    ClientDepositAccountPage
+    ClientDepositAccountPage,
+    ClientTransferAccountPage,
+    ClientWithdrawAccountPage
 }

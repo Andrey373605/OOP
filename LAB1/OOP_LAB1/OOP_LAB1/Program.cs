@@ -56,6 +56,8 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<ClientAllAccountsView>()
     .AddTransient<ClientCreateAccountView>()
     .AddTransient<ClientDepositAccountView>()
+    .AddTransient<ClientTransferAccountView>()
+    .AddTransient<ClientWithdrawAccountView>()
     .AddTransient<ExitView>()
     
     // сборка
@@ -78,6 +80,8 @@ navigator.RegisterView(PageName.LoginClientPage, serviceProvider.GetService<Logi
 navigator.RegisterView(PageName.ClientAllAccountsPage, serviceProvider.GetService<ClientAllAccountsView>());
 navigator.RegisterView(PageName.ClientCreateAccountPage, serviceProvider.GetService<ClientCreateAccountView>());
 navigator.RegisterView(PageName.ClientDepositAccountPage, serviceProvider.GetService<ClientDepositAccountView>());
+navigator.RegisterView(PageName.ClientTransferAccountPage, serviceProvider.GetService<ClientTransferAccountView>());
+navigator.RegisterView(PageName.ClientWithdrawAccountPage, serviceProvider.GetService<ClientWithdrawAccountView>());
 
 
 
