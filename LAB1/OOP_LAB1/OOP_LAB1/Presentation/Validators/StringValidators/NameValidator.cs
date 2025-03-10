@@ -1,7 +1,8 @@
 ﻿
+
 namespace OOP_LAB1.Presentation.Validators;
 
-public class PasswordValidator : IStringValidator
+public class NameValidator : IValidator
 {
     public bool IsValid(string stringToValidate)
     {
@@ -10,6 +11,6 @@ public class PasswordValidator : IStringValidator
 
     public string GetInvalidValidationString()
     {
-        return "Password is too easy";
+        return "Name is invalid";
     }
 }

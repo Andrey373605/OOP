@@ -20,6 +20,7 @@ var serviceProvider = new ServiceCollection()
     .AddSingleton<IBankService, BankService>()
     .AddSingleton<IAccountService, AccountService>()
     .AddSingleton<IApplicationService, ApplicationService>()
+    .AddSingleton<ITransactionService, TransactionService>()
     
     // регистрация контекста
     .AddSingleton<IContext, Context>()
@@ -39,6 +40,7 @@ var serviceProvider = new ServiceCollection()
     .AddSingleton<IAccountRepository, AccountRepository>()
     .AddSingleton<IEmployeeRepository, EmployeeRepository>()
     .AddSingleton<IBankRepository, BankRepository>()
+    .AddSingleton<ITransactionRepository, TransactionRepository>()
     
     // регистрация view
     .AddTransient<MainMenuView>()
@@ -53,6 +55,7 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<LoginClientView>()
     .AddTransient<ClientAllAccountsView>()
     .AddTransient<ClientCreateAccountView>()
+    .AddTransient<ClientDepositAccountView>()
     .AddTransient<ExitView>()
     
     // сборка
@@ -74,6 +77,7 @@ navigator.RegisterView(PageName.ExitPage, serviceProvider.GetService<ExitView>()
 navigator.RegisterView(PageName.LoginClientPage, serviceProvider.GetService<LoginClientView>());
 navigator.RegisterView(PageName.ClientAllAccountsPage, serviceProvider.GetService<ClientAllAccountsView>());
 navigator.RegisterView(PageName.ClientCreateAccountPage, serviceProvider.GetService<ClientCreateAccountView>());
+navigator.RegisterView(PageName.ClientDepositAccountPage, serviceProvider.GetService<ClientDepositAccountView>());
 
 
 

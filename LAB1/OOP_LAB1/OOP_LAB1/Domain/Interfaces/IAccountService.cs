@@ -14,4 +14,5 @@ public interface IAccountService
     public Task DepositAccountAsync(int id, decimal amount);
 
     Task<IEnumerable<Account>> GetAllClientAccountsAsync(int clientId);
+    Task<bool> IsAccountBelongToClient(int accountId, int clientId);
 }

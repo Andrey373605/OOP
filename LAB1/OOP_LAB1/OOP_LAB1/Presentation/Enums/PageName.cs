@@ -17,5 +17,6 @@ public enum PageName
     ClientMainMenuPage,
     ExitPage,
     ClientAllAccountsPage,
-    ClientCreateAccountPage
+    ClientCreateAccountPage,
+    ClientDepositAccountPage
 }

@@ -15,4 +15,5 @@ public interface IApplicationService
     Task RegisterClient(string firstName, string lastName, string middleName, string phoneNumber, string identificationNumber, string series);
     Task RegisterEmployee(UserRole role);
     Task CreateAccount();
+    Task DepositAccount(int accountId, decimal sum);
 }

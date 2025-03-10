@@ -2,7 +2,7 @@
 
 namespace OOP_LAB1.Presentation.Validators;
 
-public class EmailValidator : IStringValidator
+public class EmailValidator : IValidator
 {
     public bool IsValid(string stringToValidate)
     {

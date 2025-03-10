@@ -8,7 +8,7 @@ public class InputHandler : IInputHandler
 
     public InputHandler(IConsole console) => _console = console;
 
-    public string GetString(string prompt, IStringValidator validator)
+    public string GetString(string prompt, IValidator validator)
     {
         _console.WriteLine(prompt);
         while (true)
@@ -19,5 +19,35 @@ public class InputHandler : IInputHandler
         }
     }
 
-
+    public int GetIntNumber(string prompt, IValidator validator)
+    {
+        _console.WriteLine(prompt);
+        while (true)
+        {
+            var input = _console.ReadLine();
+            if (validator.IsValid(input))
+            {
+                Int32.TryParse(input, out var result);
+                return result;
+            }
+            _console.WriteLine(validator.GetInvalidValidationString());
+            
+        }
+    }
+    
+    public decimal GetDecimalNumber(string prompt, IValidator validator)
+    {
+        _console.WriteLine(prompt);
+        while (true)
+        {
+            var input = _console.ReadLine();
+            if (validator.IsValid(input))
+            {
+                Decimal.TryParse(input, out var result);
+                return result;
+            }
+            _console.WriteLine(validator.GetInvalidValidationString());
+            
+        }
+    }
 }

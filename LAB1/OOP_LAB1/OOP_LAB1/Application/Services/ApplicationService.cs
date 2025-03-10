@@ -8,17 +8,21 @@ namespace OOP_LAB1.Application.Services;
 
 public class ApplicationService : IApplicationService
 {
-    IContext _context;
-    IAuthorizationService _authorizationService;
-    IAccountService _accountService;
-    IBankRepository _bankRepository;
+    private readonly IContext _context;
+    private readonly IAuthorizationService _authorizationService;
+    private readonly IAccountService _accountService;
+    private readonly IBankRepository _bankRepository;
+    private readonly ITransactionService _transactionService;
 
-    public ApplicationService(IContext context, IAuthorizationService authorizationService, IAccountService accountService, IBankRepository bankRepository)
+    public ApplicationService(IContext context, IAuthorizationService authorizationService, 
+        IAccountService accountService, IBankRepository bankRepository,
+        ITransactionService transactionService)
     {
         _context = context;
         _authorizationService = authorizationService;
         _accountService = accountService;
         _bankRepository = bankRepository;
+        _transactionService = transactionService;
     }
     
     public async Task LoginUser(string email, string password)
@@ -80,5 +84,16 @@ public class ApplicationService : IApplicationService
     {
         var client = GetCurrentClient();
         await _accountService.CreateAccountAsync(client.Id);
+    }
+
+    public async Task DepositAccount(int accountId, decimal sum)
+    {
+        var client = GetCurrentClient();
+        var check = await _accountService.IsAccountBelongToClient(accountId, client.Id);
+        if (check == false)
+        {
+            throw new ApplicationException("Account is not belong to client");
+        }
+        await _transactionService.DepositFunds(sum, accountId);
     }
 }

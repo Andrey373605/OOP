@@ -101,6 +101,12 @@ public class AccountService : IAccountService
         return accounts;
     }
 
+    public async Task<bool> IsAccountBelongToClient(int accountId, int clientId)
+    {
+        var account = await _accountRepository.GetByIdAsync(accountId);
+        return account.ClientId == clientId;
+    }
+
     public async Task CreateAccountAsync(int clientId)
     {
         var client = await _clientRepository.GetByIdAsync(clientId);

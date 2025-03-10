@@ -1,7 +1,8 @@
 ﻿
+
 namespace OOP_LAB1.Presentation.Validators;
 
-public class PhoneValidator : IStringValidator
+public class IdentificationNumberValidator : IValidator
 {
     public bool IsValid(string stringToValidate)
     {
@@ -10,6 +11,6 @@ public class PhoneValidator : IStringValidator
 
     public string GetInvalidValidationString()
     {
-        return "Invalid phone number";
+        return "Identification Number is invalid";
     }
 }

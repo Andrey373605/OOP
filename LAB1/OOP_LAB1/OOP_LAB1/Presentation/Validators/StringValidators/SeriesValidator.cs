@@ -1,8 +1,7 @@
 ﻿
-
 namespace OOP_LAB1.Presentation.Validators;
 
-public class NameValidator : IStringValidator
+public class SeriesValidator : IValidator
 {
     public bool IsValid(string stringToValidate)
     {
@@ -11,6 +10,6 @@ public class NameValidator : IStringValidator
 
     public string GetInvalidValidationString()
     {
-        return "Name is invalid";
+        return "Invalid passport series";
     }
 }
