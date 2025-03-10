@@ -80,6 +80,7 @@ public class AuthorizationService : IAuthorizationService
             PassportSeries = passportSeries,
             IdentificationNumber = passportNumber,
             UserId = user.Id,
+            BankId = bank.Id,
         };
         await _clientRepository.AddAsync(client);
     }

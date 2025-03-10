@@ -13,7 +13,7 @@ public class MainMenuView : IView
         _console = console;
     }
 
-    public void Execute()
+    public async Task Execute()
     {
         _console.WriteLine("1. Registration");
         _console.WriteLine("2. Login");

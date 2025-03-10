@@ -26,7 +26,7 @@ public class RegistrationEmployeeView : IView
         _context = context;
     }
 
-    public void Execute()
+    public async Task Execute()
     {
         _console.WriteLine("Choose role:");
         _console.WriteLine("1. Operator");
@@ -49,7 +49,7 @@ public class RegistrationEmployeeView : IView
         try
         {
 
-            _auth.RegisterEmployeeAsync(_context, role).GetAwaiter().GetResult();
+            await _auth.RegisterEmployeeAsync(_context, role);
             NextViewName = PageName.RegisterInBankPage;
             _console.WriteLine("Registration successful!");
         }

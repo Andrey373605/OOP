@@ -19,10 +19,10 @@ public class ClientAllAccountsView : IView
         _context = context;
     }
     public PageName? NextViewName { get; private set; }
-    public void Execute()
+    public async Task Execute()
     {
         _console.WriteLine("Accounts:");
-        var accounts = _accountService.GetAllClientAccountsAsync(_context).GetAwaiter().GetResult();
+        var accounts = await _accountService.GetAllClientAccountsAsync(_context);
         foreach (var a in accounts)
         {
             _console.WriteLine($"Id: {a.Id} \t Balance: {a.Balance}" );

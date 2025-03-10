@@ -22,7 +22,7 @@ public class ClientMainMenuView : IView
         _console = console;
         _context = context;
     }
-    public void Execute()
+    public async Task Execute()
     {
         _console.WriteLine("1. Show all accounts");
         

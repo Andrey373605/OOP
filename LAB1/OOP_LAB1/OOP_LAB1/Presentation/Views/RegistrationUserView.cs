@@ -23,15 +23,24 @@ public class RegistrationUserView : IView
         _console = console;
         _context = context;
     }
-    public void Execute()
+    public async Task Execute()
     {
         string email = _input.GetString("Enter email address", new EmailValidator());
         string password = _input.GetString("Enter password", new PasswordValidator());
-        
-        _auth.RegisterUser(email, password).GetAwaiter().GetResult();
-        
-        _console.WriteLine("Registration successful");
 
-        NextViewName = PageName.MainMenuPage;
+        try
+        {
+            await _auth.RegisterUser(email, password);
+        
+            _console.WriteLine("Registration successful");
+
+            NextViewName = PageName.MainMenuPage;
+        }
+        catch (Exception e)
+        {
+            _console.WriteLine(e.Message);
+            NextViewName = PageName.MainMenuPage;
+        }
+        
     }
 }

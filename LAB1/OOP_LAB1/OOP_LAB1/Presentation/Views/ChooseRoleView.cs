@@ -25,7 +25,7 @@ public class ChooseRoleView : IView
         _context = context;
         _bankService = bankService;
     }
-    public void Execute()
+    public async Task Execute()
     {
         _console.WriteLine("Choose:");
         _console.WriteLine("1. Register as client");

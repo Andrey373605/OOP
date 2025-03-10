@@ -25,7 +25,7 @@ public class RegistrationClientView : IView
         _context = context;
     }
 
-    public void Execute()
+    public async Task Execute()
     {
         var firstName = _input.GetString("First name: ", new NameValidator());
         var lastName = _input.GetString("Last name: ", new NameValidator());
@@ -36,14 +36,15 @@ public class RegistrationClientView : IView
         
         try
         {
-            _auth.RegisterClientAsync(_context, firstName, lastName, middleName, phoneNumber,
-                identificationNumber, series).GetAwaiter().GetResult();
+            await _auth.RegisterClientAsync(_context, firstName, lastName, middleName, phoneNumber,
+                identificationNumber, series);
             NextViewName = PageName.ChooseRolePage;
             _console.WriteLine("Registration successful!");
         }
         catch (Exception ex)
         {
             _console.WriteLine($"Error: {ex.Message}");
+            NextViewName = PageName.ChooseRolePage;
         }
         
     }

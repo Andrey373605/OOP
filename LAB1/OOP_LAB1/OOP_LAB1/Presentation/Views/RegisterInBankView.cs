@@ -25,10 +25,10 @@ public class RegisterInBankView : IView
 
     public PageName? NextViewName { get; set; }
 
-    public void Execute()
+    public async Task Execute()
     {
         _console.WriteLine("List of bank:");
-        List<string> bankNames = _bankService.GetAllBankNames().GetAwaiter().GetResult();
+        List<string> bankNames = await _bankService.GetAllBankNames();
         foreach (var b in bankNames)
         {
             _console.WriteLine(b);
@@ -37,7 +37,7 @@ public class RegisterInBankView : IView
         _console.WriteLine("Choose bank:");
         string bankName = _console.ReadLine();
         
-        Bank bank = _bankService.GetBankByName(bankName).GetAwaiter().GetResult();
+        Bank bank = await _bankService.GetBankByName(bankName);
         
         
         _console.WriteLine($"Successfully chosen bank: {bank.Name}");

@@ -36,8 +36,8 @@ public class Navigator : INavigator
                 currentViewName = null;
                 continue;
             }
-
-            currentView.Execute();
+            
+            currentView.Execute().GetAwaiter().GetResult();
             currentViewName = currentView.NextViewName;
         }
     }

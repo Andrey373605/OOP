@@ -12,7 +12,7 @@ public class ExitView : IView
         _console = console;
     }
     public PageName? NextViewName { get; }
-    public void Execute()
+    public async Task Execute()
     {
         _console.WriteLine("Exit");
     }

@@ -22,11 +22,11 @@ public class LoginClientView : IView
         _context = context;
     }
     public PageName? NextViewName { get; private set; }
-    public void Execute()
+    public async Task Execute()
     {
         try
         {
-            _auth.AuthenticateClientAsync(_context).GetAwaiter().GetResult();
+            await _auth.AuthenticateClientAsync(_context);
             _console.WriteLine($"Successfully logged in");
             NextViewName = PageName.ClientMainMenuPage;
         }

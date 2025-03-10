@@ -22,14 +22,14 @@ public class LoginUserView : IView
         _context = context;
     }
     public PageName? NextViewName { get; private set; }
-    public void Execute()
+    public async Task Execute()
     {
         string email = _input.GetString("Email: ", new EmailValidator());
         string password = _input.GetString("Password: ", new PasswordValidator());
 
         try
         {
-            _auth.AuthenticateUserAsync(_context, email, password).GetAwaiter().GetResult();
+            await _auth.AuthenticateUserAsync(_context, email, password);
             _console.WriteLine($"Successfully logged in");
             NextViewName = PageName.ChooseBankPage;
         }

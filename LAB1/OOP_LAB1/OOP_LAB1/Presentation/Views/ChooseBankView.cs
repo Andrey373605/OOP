@@ -29,15 +29,15 @@ public class ChooseBankView : IView
         _bankService = bankService;
     }
     
-    public void Execute()
+    public async Task Execute()
     {
-        List<string> banks = _bankService.GetAllBankNames().GetAwaiter().GetResult();
+        List<string> banks = await _bankService.GetAllBankNames();
         foreach (string b in banks)
         {
             _console.WriteLine(b);
         }
         var bankName = _input.GetString("Enter bank name: ", new NameValidator());
-        var bank = _bankService.GetBankByName(bankName).GetAwaiter().GetResult();
+        var bank = await _bankService.GetBankByName(bankName);
         _auth.LoginBank(_context, bank);
         _console.WriteLine($"Succesfully chosen bank {bankName}");
         _context.SetCurrent(bank);
