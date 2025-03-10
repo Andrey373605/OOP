@@ -96,4 +96,31 @@ public class ApplicationService : IApplicationService
         }
         await _transactionService.DepositFunds(sum, accountId);
     }
+
+    public async Task TransferAccount(int fromAccountId, int toAccountId, decimal sum)
+    {
+        var client = GetCurrentClient();
+        var check = await _accountService.IsAccountBelongToClient(fromAccountId, client.Id);
+        if (check == false)
+        {
+            throw new ApplicationException("From account is not belong to client");
+        }
+
+        if (fromAccountId == toAccountId)
+        {
+            throw new ApplicationException("From account id can't be the same");
+        }
+        await _transactionService.TransferFunds(sum, fromAccountId, toAccountId);
+    }
+    
+    public async Task WithdrawAccount(int accountId, decimal sum)
+    {
+        var client = GetCurrentClient();
+        var check = await _accountService.IsAccountBelongToClient(accountId, client.Id);
+        if (check == false)
+        {
+            throw new ApplicationException("From account is not belong to client");
+        }
+        await _transactionService.WithdrawFunds(sum, accountId);
+    }
 }

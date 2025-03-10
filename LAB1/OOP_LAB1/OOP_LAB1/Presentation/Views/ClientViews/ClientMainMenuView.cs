@@ -26,7 +26,8 @@ public class ClientMainMenuView : IView
     {
         _console.WriteLine("1. Show all accounts");
         _console.WriteLine("2. Create a new account");
-        _console.WriteLine("3. Deposit Account");
+        _console.WriteLine("3. Deposit account");
+        _console.WriteLine("4. Transfer money");
         
         var choice = _console.ReadLine();
         NextViewName = choice switch
@@ -34,7 +35,7 @@ public class ClientMainMenuView : IView
             "1" => PageName.ClientAllAccountsPage,
             "2" => PageName.ClientCreateAccountPage,
             "3" => PageName.ClientDepositAccountPage,
-            "4" => PageName.LoginEmployeePage,
+            "4" => PageName.ClientTransferAccountPage,
             "5" => PageName.ExitPage,
             _ => NextViewName
         };

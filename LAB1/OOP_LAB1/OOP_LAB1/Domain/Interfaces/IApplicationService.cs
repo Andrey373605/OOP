@@ -16,4 +16,5 @@ public interface IApplicationService
     Task RegisterEmployee(UserRole role);
     Task CreateAccount();
     Task DepositAccount(int accountId, decimal sum);
+    Task TransferAccount(int fromAccountId, int toAccountId, decimal sum);
 }

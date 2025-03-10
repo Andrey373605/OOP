@@ -26,7 +26,16 @@ public class ClientCreateAccountView : IView
         
         if (choice == "1")
         {
-            await _applicationService.CreateAccount();
+            try
+            {
+                await _applicationService.CreateAccount();
+                _console.WriteLine("Account created successfully");
+            }
+            catch (Exception e)
+            {
+                System.Console.WriteLine(e);
+            }
+            
         }
 
         NextViewName = PageName.ClientMainMenuPage;
