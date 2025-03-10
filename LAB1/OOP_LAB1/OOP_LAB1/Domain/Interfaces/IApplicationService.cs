@@ -17,4 +17,7 @@ public interface IApplicationService
     Task CreateAccount();
     Task DepositAccount(int accountId, decimal sum);
     Task TransferAccount(int fromAccountId, int toAccountId, decimal sum);
+    Task FreezeAccount(int accountId);
+    
+    Task UnfreezeAccount(int accountId);
 }

@@ -58,6 +58,8 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<ClientDepositAccountView>()
     .AddTransient<ClientTransferAccountView>()
     .AddTransient<ClientWithdrawAccountView>()
+    .AddTransient<ClientFreezeAccountView>()
+    .AddTransient<ClientUnfreezeAccountView>()
     .AddTransient<ExitView>()
     
     // сборка
@@ -82,7 +84,8 @@ navigator.RegisterView(PageName.ClientCreateAccountPage, serviceProvider.GetServ
 navigator.RegisterView(PageName.ClientDepositAccountPage, serviceProvider.GetService<ClientDepositAccountView>());
 navigator.RegisterView(PageName.ClientTransferAccountPage, serviceProvider.GetService<ClientTransferAccountView>());
 navigator.RegisterView(PageName.ClientWithdrawAccountPage, serviceProvider.GetService<ClientWithdrawAccountView>());
-
+navigator.RegisterView(PageName.ClientFreezeAccountPage, serviceProvider.GetService<ClientFreezeAccountView>());
+navigator.RegisterView(PageName.ClientUnfreezeAccountPage, serviceProvider.GetService<ClientUnfreezeAccountView>());
 
 
 navigator.Run(PageName.MainMenuPage);

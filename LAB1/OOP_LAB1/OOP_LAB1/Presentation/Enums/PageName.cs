@@ -19,5 +19,7 @@ public enum PageName
     ClientCreateAccountPage,
     ClientDepositAccountPage,
     ClientTransferAccountPage,
-    ClientWithdrawAccountPage
+    ClientWithdrawAccountPage,
+    ClientUnfreezeAccountPage,
+    ClientFreezeAccountPage
 }

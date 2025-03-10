@@ -112,7 +112,29 @@ public class ApplicationService : IApplicationService
         }
         await _transactionService.TransferFunds(sum, fromAccountId, toAccountId);
     }
+
+    public async Task FreezeAccount(int accountId)
+    {
+        var client = GetCurrentClient();
+        var check = await _accountService.IsAccountBelongToClient(accountId, client.Id);
+        if (check == false)
+        {
+            throw new ApplicationException("You can not freeze account that doesn't belong to you");
+        }
+        await _accountService.FreezeAccountAsync(accountId);
+    }
     
+    public async Task UnfreezeAccount(int accountId)
+    {
+        var client = GetCurrentClient();
+        var check = await _accountService.IsAccountBelongToClient(accountId, client.Id);
+        if (check == false)
+        {
+            throw new ApplicationException("You can not unfreeze account that doesn't belong to you");
+        }
+        await _accountService.UnfreezeAccountAsync(accountId);
+    }
+
     public async Task WithdrawAccount(int accountId, decimal sum)
     {
         var client = GetCurrentClient();

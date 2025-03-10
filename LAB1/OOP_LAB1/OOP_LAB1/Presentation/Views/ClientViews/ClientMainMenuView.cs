@@ -28,6 +28,8 @@ public class ClientMainMenuView : IView
         _console.WriteLine("2. Create a new account");
         _console.WriteLine("3. Deposit account");
         _console.WriteLine("4. Transfer money");
+        _console.WriteLine("5. Freeze account");
+        _console.WriteLine("6. Unfreeze account");
         
         var choice = _console.ReadLine();
         NextViewName = choice switch
@@ -36,7 +38,8 @@ public class ClientMainMenuView : IView
             "2" => PageName.ClientCreateAccountPage,
             "3" => PageName.ClientDepositAccountPage,
             "4" => PageName.ClientTransferAccountPage,
-            "5" => PageName.ExitPage,
+            "5" => PageName.ClientFreezeAccountPage,
+            "6" => PageName.ClientUnfreezeAccountPage,
             _ => NextViewName
         };
     }
