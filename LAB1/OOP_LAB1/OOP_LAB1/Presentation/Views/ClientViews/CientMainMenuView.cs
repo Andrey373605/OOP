@@ -13,24 +13,26 @@ public class ClientMainMenuView : IView
     private readonly IInputHandler _input;
     private readonly IAuthorizationService _auth;
     private readonly IConsole _console;
-    private readonly IContext _context;
+    private readonly IApplicationService _applicationService;
 
-    public ClientMainMenuView(IInputHandler input, IAuthorizationService auth, IConsole console, IContext context)
+    public ClientMainMenuView(IInputHandler input, IAuthorizationService auth, IConsole console, IApplicationService applicationService)
     {
         _input = input;
         _auth = auth;
         _console = console;
-        _context = context;
+        _applicationService = applicationService;
     }
     public async Task Execute()
     {
         _console.WriteLine("1. Show all accounts");
+        _console.WriteLine("2. Create a new account");
+        _console.WriteLine("3. Create a new account");
         
         var choice = _console.ReadLine();
         NextViewName = choice switch
         {
             "1" => PageName.ClientAllAccountsPage,
-            "2" => PageName.LoginClientPage,
+            "2" => PageName.ClientCreateAccountPage,
             "3" => PageName.RegistrationEmployeePage,
             "4" => PageName.LoginEmployeePage,
             "5" => PageName.ExitPage,

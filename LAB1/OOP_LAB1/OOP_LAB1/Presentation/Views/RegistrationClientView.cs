@@ -13,16 +13,16 @@ public class RegistrationClientView : IView
     private readonly IInputHandler _input;
     private readonly IAuthorizationService _auth;
     private readonly IConsole _console;
-    private readonly IContext _context;
+    private readonly IApplicationService _applicationService;
     
     public PageName? NextViewName { get; private set; }
 
-    public RegistrationClientView(IInputHandler input, IConsole console, IAuthorizationService authService, IContext context)
+    public RegistrationClientView(IInputHandler input, IConsole console, IAuthorizationService authService, IApplicationService applicationService)
     {
         _input = input;
         _auth = authService;
         _console = console;
-        _context = context;
+        _applicationService = applicationService;
     }
 
     public async Task Execute()
@@ -36,7 +36,7 @@ public class RegistrationClientView : IView
         
         try
         {
-            await _auth.RegisterClientAsync(_context, firstName, lastName, middleName, phoneNumber,
+            await _applicationService.RegisterClient(firstName, lastName, middleName, phoneNumber,
                 identificationNumber, series);
             NextViewName = PageName.ChooseRolePage;
             _console.WriteLine("Registration successful!");

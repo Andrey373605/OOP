@@ -6,7 +6,7 @@ public interface IInstallmentService
 {
     public Task DepositMoney(int installmentId);
 
-    public Task CreateInstallmentRequest(IContext context, decimal depositAmount, int monthCount);
+    public Task CreateInstallmentRequest(int clientId, decimal depositAmount, int monthCount);
 
     public Task ApproveInstallmentRequest(int loanId);
 }

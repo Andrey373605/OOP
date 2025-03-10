@@ -36,15 +36,9 @@ public class InstallmentService : IInstallmentService
         await _installmentRepository.UpdateAsync(installment);
     }
 
-    public async Task CreateInstallmentRequest(IContext context, decimal depositAmount, int monthCount)
+    public async Task CreateInstallmentRequest(int  clientId, decimal depositAmount, int monthCount)
     {
-        var user = context.CurrentUser;
-        if (user == null)
-        {
-            throw new NullReferenceException("Context error");
-        }
-        
-        var client = await _bankRepository.GetByIdAsync(user.Id);
+        var client = await _bankRepository.GetByIdAsync(clientId);
         if (client == null)
         {
             throw new ApplicationException($"Client not found");

@@ -44,16 +44,16 @@ public class AuthorizationService : IAuthorizationService
     }
 
 
-    public async Task RegisterClientAsync(IContext context, string fisrtName, string lastName, string middleName, string phoneNumber,
+    public async Task RegisterClientAsync(int userId, int bankId, string firstName, string lastName, string middleName, string phoneNumber,
         string passportNumber, string passportSeries)
     {
-        var user = context.CurrentUser;
+        var user = await _userRepository.GetByIdAsync(userId);
         if (user == null)
         {
             throw new Exception("Context user error");
         }
 
-        var bank = context.CurrentBank;
+        var bank = await _bankRepository.GetByIdAsync(bankId);
         if (bank == null)
         {
             throw new Exception("Context bank error");
@@ -73,7 +73,7 @@ public class AuthorizationService : IAuthorizationService
 
         var client = new Client
         {
-            FirstName = fisrtName,
+            FirstName = firstName,
             LastName = lastName,
             MiddleName = middleName,
             Phone = phoneNumber,
@@ -85,15 +85,15 @@ public class AuthorizationService : IAuthorizationService
         await _clientRepository.AddAsync(client);
     }
     
-    public async Task<bool> AuthenticateClientAsync(IContext context)
+    public async Task<Client> AuthenticateClientAsync(int userId, int bankId)
     {
-        var user = context.CurrentUser;
+        var user = await _userRepository.GetByIdAsync(userId);
         if (user == null)
         {
             throw new UnauthorizedAccessException("Context user error");
         }
         
-        var bank = context.CurrentBank;
+        var bank = await _bankRepository.GetByIdAsync(bankId);
         if (bank == null)
         {
             throw new UnauthorizedAccessException("Context bank error");
@@ -110,19 +110,19 @@ public class AuthorizationService : IAuthorizationService
         {
             throw new UnauthorizedAccessException("Client is not registered with this bank");
         }
-        
-        return true;
+
+        return client;
     }
 
-    public async Task RegisterEmployeeAsync(IContext context, UserRole role)
+    public async Task RegisterEmployeeAsync(int userId, int bankId, UserRole role)
     {
-        var user = context.CurrentUser;
+        var user = await _userRepository.GetByIdAsync(userId);
         if (user == null)
         {
             throw new Exception("Context user error");
         }
         
-        var bank = context.CurrentBank;
+        var bank = await _bankRepository.GetByIdAsync(bankId);
         if (bank == null)
         {
             throw new Exception("Context bank error");
@@ -148,15 +148,15 @@ public class AuthorizationService : IAuthorizationService
         await _employeeRepository.AddAsync(employee);
     }
 
-    public async Task<bool> AuthenticateEmployeeAsync(IContext context)
+    public async Task<Employee> AuthenticateEmployeeAsync(int userId, int bankId)
     {
-        var user = context.CurrentUser;
+        var user = await _userRepository.GetByIdAsync(userId);
         if (user == null)
         {
             throw new UnauthorizedAccessException("Context user error");
         }
         
-        var bank = context.CurrentBank;
+        var bank = await _bankRepository.GetByIdAsync(bankId);
         if (bank == null)
         {
             throw new UnauthorizedAccessException("Context bank error");
@@ -173,13 +173,13 @@ public class AuthorizationService : IAuthorizationService
         {
             throw new UnauthorizedAccessException("Employee does not register in this bank");
         }
-        
-        
-        return true;
+
+
+        return employee;
     }
 
 
-    public async Task<bool> AuthenticateUserAsync(IContext context, string email, string password)
+    public async Task<User> AuthenticateUserAsync(string email, string password)
     {
         var user = await _userRepository.GetByEmailAsync(email);
         if (user == null)
@@ -192,10 +192,8 @@ public class AuthorizationService : IAuthorizationService
         {
             //throw new UnauthorizedAccessException("Invalid password");
         }
-        
-        
-        context.SetCurrent(user);
-        return true;
+
+        return user;
     }
 
     
@@ -209,10 +207,6 @@ public class AuthorizationService : IAuthorizationService
         }
     }
     
-    public void LoginBank(IContext context, Bank bank)
-    {
-        context.SetCurrent(bank);
-    }
     
     public async Task ApproveRegistrationClient(int id)
     {

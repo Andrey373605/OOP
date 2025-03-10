@@ -15,17 +15,15 @@ public class ChooseBankView : IView
     
 
     private readonly IInputHandler _input;
-    private readonly IAuthorizationService _auth;
     private readonly IConsole _console;
-    private readonly IContext _context;
+    private readonly IApplicationService _applicationService;
     private readonly IBankService _bankService;
 
-    public ChooseBankView(IInputHandler input, IAuthorizationService auth, IConsole console, IContext context, IBankService bankService)
+    public ChooseBankView(IInputHandler input, IConsole console, IApplicationService applicationService, IBankService bankService)
     {
         _input = input;
-        _auth = auth;
         _console = console;
-        _context = context;
+        _applicationService = applicationService;
         _bankService = bankService;
     }
     
@@ -38,9 +36,8 @@ public class ChooseBankView : IView
         }
         var bankName = _input.GetString("Enter bank name: ", new NameValidator());
         var bank = await _bankService.GetBankByName(bankName);
-        _auth.LoginBank(_context, bank);
+        _applicationService.LoginBank(bank);
         _console.WriteLine($"Succesfully chosen bank {bankName}");
-        _context.SetCurrent(bank);
 
         NextViewName = PageName.ChooseRolePage;
     }

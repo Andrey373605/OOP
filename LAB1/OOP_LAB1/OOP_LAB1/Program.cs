@@ -19,6 +19,7 @@ var serviceProvider = new ServiceCollection()
     .AddSingleton<IAuthorizationService, AuthorizationService>()
     .AddSingleton<IBankService, BankService>()
     .AddSingleton<IAccountService, AccountService>()
+    .AddSingleton<IApplicationService, ApplicationService>()
     
     // регистрация контекста
     .AddSingleton<IContext, Context>()

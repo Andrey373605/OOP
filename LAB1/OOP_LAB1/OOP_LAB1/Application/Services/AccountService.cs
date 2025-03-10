@@ -20,9 +20,9 @@ public class AccountService : IAccountService
         _clientRepository = clientRepository;
     }
     
-    public async Task FreezeAccountAsync(int id)
+    public async Task FreezeAccountAsync(int accountId)
     {
-        Account account = await _accountRepository.GetByIdAsync(id);
+        Account account = await _accountRepository.GetByIdAsync(accountId);
         if (account == null)
         {
             throw new NullReferenceException("Account not found");
@@ -33,9 +33,9 @@ public class AccountService : IAccountService
         
     }
 
-    public async Task UnfreezeAccountAsync(int id)
+    public async Task UnfreezeAccountAsync(int accountId)
     {
-        Account account = await _accountRepository.GetByIdAsync(id);
+        Account account = await _accountRepository.GetByIdAsync(accountId);
         if (account == null)
         {
             throw new NullReferenceException("Account not found");
@@ -45,9 +45,9 @@ public class AccountService : IAccountService
         await _accountRepository.UpdateAsync(account);
     }
 
-    public async Task BlockAccountAsync(int id)
+    public async Task BlockAccountAsync(int accountId)
     {
-        Account account = await _accountRepository.GetByIdAsync(id);
+        Account account = await _accountRepository.GetByIdAsync(accountId);
         if (account == null)
         {
             throw new NullReferenceException("Account not found");
@@ -57,9 +57,9 @@ public class AccountService : IAccountService
         await _accountRepository.UpdateAsync(account);
     }
 
-    public async Task UnblockAccountAsync(int id)
+    public async Task UnblockAccountAsync(int accountId)
     {
-        Account account = await _accountRepository.GetByIdAsync(id);
+        Account account = await _accountRepository.GetByIdAsync(accountId);
         if (account == null)
         {
             throw new NullReferenceException("Account not found");
@@ -70,9 +70,10 @@ public class AccountService : IAccountService
     }
     
 
-    public async Task DeleteAccountAsync(int id)
+
+    public async Task DeleteAccountAsync(int accountId)
     {
-        Account account = await _accountRepository.GetByIdAsync(id);
+        Account account = await _accountRepository.GetByIdAsync(accountId);
         if (account == null)
         {
             throw new NullReferenceException("Account not found");
@@ -80,6 +81,7 @@ public class AccountService : IAccountService
         
         await _accountRepository.RemoveAsync(account);
     }
+    
 
     public async Task DepositAccountAsync(int accountId, decimal amount)
     {
@@ -93,32 +95,25 @@ public class AccountService : IAccountService
         await _accountRepository.UpdateAsync(account);
     }
 
-    public async Task<IEnumerable<Account>> GetAllClientAccountsAsync(IContext context)
+    public async Task<IEnumerable<Account>> GetAllClientAccountsAsync(int clientId)
     {
-        var user = context.CurrentUser;
-        var bank = context.CurrentUser;
-        var client = await _bankRepository.GetClientByUserIdAsync(bank.Id, user.Id);
-        var accounts = await _clientRepository.GetAllAccountsByClientIdAsync(client.Id);
+        var accounts = await _clientRepository.GetAllAccountsByClientIdAsync(clientId);
         return accounts;
     }
 
-    public async Task CreateAccountAsync(int clientId, int bankId)
+    public async Task CreateAccountAsync(int clientId)
     {
         var client = await _clientRepository.GetByIdAsync(clientId);
         if (client == null)
         {
-            throw new NullReferenceException("User does not exist");
+            throw new NullReferenceException("Context user error");
         }
-        var bank = await _bankRepository.GetByIdAsync(bankId);
-        if (bank == null)
-        {
-            throw new NullReferenceException("Bank does not exist");
-        }
+        
         
         Account account = new Account
         {
             ClientId = client.Id,
-            BankId = bank.Id,
+            BankId = client.BankId,
             Balance = 0,
             IsFrozen = false,
             IsBlocked = false,

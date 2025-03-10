@@ -7,7 +7,7 @@ public interface ILoanService
 {
     public Task DepositMoney(int loanId);
 
-    public Task CreateLoanRequest(IContext context, decimal depositAmount, int interestRate, int monthCount);
+    public Task CreateLoanRequest(int clientId, decimal depositAmount, int interestRate, int monthCount);
 
     public Task ApproveLoanRequest(int loanId);
 }

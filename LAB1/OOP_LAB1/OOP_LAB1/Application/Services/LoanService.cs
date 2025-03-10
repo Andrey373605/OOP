@@ -68,15 +68,9 @@ public class LoanService : ILoanService
 
 
 
-    public async Task CreateLoanRequest(IContext context, decimal depositAmount, int interestRate, int monthCount)
+    public async Task CreateLoanRequest(int clientId, decimal depositAmount, int interestRate, int monthCount)
     {
-        var user = context.CurrentUser;
-        if (user == null)
-        {
-            throw new ApplicationException("Context error");
-        }
-        
-        var client = await _bankRepository.GetByIdAsync(user.Id);
+        var client = await _bankRepository.GetByIdAsync(clientId);
         if (client == null)
         {
             throw new ApplicationException("Client not found");

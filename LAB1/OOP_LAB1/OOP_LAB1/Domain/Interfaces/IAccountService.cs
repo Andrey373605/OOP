@@ -9,9 +9,9 @@ public interface IAccountService
     public Task UnfreezeAccountAsync(int id);
     public Task BlockAccountAsync(int id);
     public Task UnblockAccountAsync(int id);
-    public Task CreateAccountAsync(int clientId, int bankId);
+    public Task CreateAccountAsync(int clientId);
     public Task DeleteAccountAsync(int id);
     public Task DepositAccountAsync(int id, decimal amount);
 
-    Task<IEnumerable<Account>> GetAllClientAccountsAsync(IContext context);
+    Task<IEnumerable<Account>> GetAllClientAccountsAsync(int clientId);
 }

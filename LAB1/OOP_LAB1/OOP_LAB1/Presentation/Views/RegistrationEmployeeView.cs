@@ -14,16 +14,16 @@ public class RegistrationEmployeeView : IView
     private readonly IInputHandler _input;
     private readonly IAuthorizationService _auth;
     private readonly IConsole _console;
-    private readonly IContext _context;
+    private readonly IApplicationService _applicationService;
     
     public PageName? NextViewName { get; private set; }
 
-    public RegistrationEmployeeView(IInputHandler input, IConsole console, IAuthorizationService authService, IContext context)
+    public RegistrationEmployeeView(IInputHandler input, IConsole console, IAuthorizationService authService, IApplicationService applicationService)
     {
         _input = input;
         _auth = authService;
         _console = console;
-        _context = context;
+        _applicationService = applicationService;
     }
 
     public async Task Execute()
@@ -49,7 +49,7 @@ public class RegistrationEmployeeView : IView
         try
         {
 
-            await _auth.RegisterEmployeeAsync(_context, role);
+            await _applicationService.RegisterEmployee(role);
             NextViewName = PageName.RegisterInBankPage;
             _console.WriteLine("Registration successful!");
         }

@@ -14,14 +14,13 @@ public class RegistrationUserView : IView
     private readonly IInputHandler _input;
     private readonly IAuthorizationService _auth;
     private readonly IConsole _console;
-    private readonly IContext _context;
 
-    public RegistrationUserView(IInputHandler input, IAuthorizationService auth, IConsole console, IContext context)
+    public RegistrationUserView(IInputHandler input, IAuthorizationService auth, IConsole console)
     {
         _input = input;
         _auth = auth;
         _console = console;
-        _context = context;
+
     }
     public async Task Execute()
     {

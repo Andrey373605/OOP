@@ -9,24 +9,20 @@ namespace OOP_LAB1.Presentation.Views;
 
 public class LoginClientView : IView
 {
-    private readonly IInputHandler _input;
-    private readonly IAuthorizationService _auth;
     private readonly IConsole _console;
-    private readonly IContext _context;
+    private readonly IApplicationService _applicationService;
 
-    public LoginClientView(IInputHandler input, IAuthorizationService auth, IConsole console, IContext context)
+    public LoginClientView(IConsole console, IApplicationService applicationService)
     {
-        _input = input;
-        _auth = auth;
         _console = console;
-        _context = context;
+        _applicationService = applicationService;
     }
     public PageName? NextViewName { get; private set; }
     public async Task Execute()
     {
         try
         {
-            await _auth.AuthenticateClientAsync(_context);
+            await _applicationService.LoginClient();
             _console.WriteLine($"Successfully logged in");
             NextViewName = PageName.ClientMainMenuPage;
         }

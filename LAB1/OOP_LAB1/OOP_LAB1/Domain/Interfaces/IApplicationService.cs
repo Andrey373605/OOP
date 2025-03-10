@@ -1,0 +1,17 @@
+﻿using System.Collections;
+using OOP_LAB1.Application.Context;
+using OOP_LAB1.Domain.Entities;
+using OOP_LAB1.Domain.Enums;
+
+namespace OOP_LAB1.Domain.Interfaces;
+
+public interface IApplicationService
+{
+    public Task LoginUser(string email, string password);
+
+    public Task<IEnumerable<Account>> GetCurrentClientAccounts();
+    void LoginBank(Bank bank);
+    Task LoginClient();
+    Task RegisterClient(string firstName, string lastName, string middleName, string phoneNumber, string identificationNumber, string series);
+    Task RegisterEmployee(UserRole role);
+}

@@ -11,19 +11,15 @@ public class ChooseRoleView : IView
 {
     public PageName? NextViewName { get; private set; }
     
-    private readonly IInputHandler _input;
-    private readonly IAuthorizationService _auth;
-    private readonly IConsole _console;
-    private readonly IContext _context;
-    private readonly IBankService _bankService;
 
-    public ChooseRoleView(IInputHandler input, IAuthorizationService auth, IConsole console, IContext context, IBankService bankService)
+    private readonly IConsole _console;
+
+
+    public ChooseRoleView(IConsole console)
     {
-        _input = input;
-        _auth = auth;
+
         _console = console;
-        _context = context;
-        _bankService = bankService;
+
     }
     public async Task Execute()
     {
