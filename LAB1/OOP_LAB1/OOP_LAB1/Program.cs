@@ -52,6 +52,7 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<ClientMainMenuView>()
     .AddTransient<LoginClientView>()
     .AddTransient<ClientAllAccountsView>()
+    .AddTransient<ClientCreateAccountView>()
     .AddTransient<ExitView>()
     
     // сборка
@@ -72,6 +73,7 @@ navigator.RegisterView(PageName.ClientMainMenuPage, serviceProvider.GetService<C
 navigator.RegisterView(PageName.ExitPage, serviceProvider.GetService<ExitView>());
 navigator.RegisterView(PageName.LoginClientPage, serviceProvider.GetService<LoginClientView>());
 navigator.RegisterView(PageName.ClientAllAccountsPage, serviceProvider.GetService<ClientAllAccountsView>());
+navigator.RegisterView(PageName.ClientCreateAccountPage, serviceProvider.GetService<ClientCreateAccountView>());
 
 
 

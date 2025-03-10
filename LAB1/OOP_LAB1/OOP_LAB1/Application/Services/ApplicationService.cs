@@ -75,4 +75,10 @@ public class ApplicationService : IApplicationService
         var bank = _context.CurrentBank;
         await _authorizationService.RegisterEmployeeAsync(user.Id, bank.Id, role);
     }
+
+    public async Task CreateAccount()
+    {
+        var client = GetCurrentClient();
+        await _accountService.CreateAccountAsync(client.Id);
+    }
 }

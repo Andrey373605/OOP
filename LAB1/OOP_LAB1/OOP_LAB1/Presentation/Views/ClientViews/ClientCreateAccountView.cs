@@ -20,8 +20,16 @@ public class ClientCreateAccountView : IView
     public PageName? NextViewName { get; private set; }
     public async Task Execute()
     {
-        _console.WriteLine("Create acount");
+        _console.WriteLine("1. Create acount");
+        _console.WriteLine("2. Return back");
+        var choice = _console.ReadLine();
         
+        if (choice == "1")
+        {
+            await _applicationService.CreateAccount();
+        }
+
+        NextViewName = PageName.ClientMainMenuPage;
 
     }
 }
