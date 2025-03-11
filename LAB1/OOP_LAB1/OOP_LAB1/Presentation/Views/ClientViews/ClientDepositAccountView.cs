@@ -27,7 +27,7 @@ public class ClientDepositAccountView : IView
         {
             _console.WriteLine($"Id: {a.Id} \t Balance: {a.Balance} \t Active: {!a.IsBlocked}" );
         }
-        var accountId = _input.GetIntNumber("Enter Account Id", new IdValidator());
+        var accountId = _input.GetIntNumber("Enter Account Id", new IntValidator());
         
         var sum = _input.GetDecimalNumber("Enter Sum Of Amount", new SumValidator());
 

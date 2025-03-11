@@ -6,35 +6,36 @@ using OOP_LAB1.Presentation.Validators;
 
 namespace OOP_LAB1.Presentation.Views.ClientViews;
 
-public class ClientUnfreezeAccountView : IView
+public class ClientInstallmentRequestView : IView
 {
-    private readonly IConsole _console;
-    private readonly IAccountService _accountService;
-    private readonly IApplicationService _applicationService;
-    private readonly IInputHandler _input;
+    IConsole _console;
+    IApplicationService _applicationService;
+    IInputHandler _input;
 
-    public ClientUnfreezeAccountView(IConsole console, IAccountService accountService, IApplicationService applicationService, IInputHandler input)
+    public ClientInstallmentRequestView(IConsole console, IApplicationService applicationService, IInputHandler inputHandler)
     {
         _console = console;
-        _accountService = accountService;
         _applicationService = applicationService;
-        _input = input;
+        _input = inputHandler;
     }
+    
     public PageName? NextViewName { get; private set; }
     public async Task Execute()
     {
-        _console.WriteLine("1. Unfreeze account");
+        _console.WriteLine("1. Continue");
         _console.WriteLine("2. Return back");
         
         var choice = _console.ReadLine();
         if (choice == "1")
         {
-            var accountId = _input.GetIntNumber("Account Id", new IntValidator());
+            var sum = _input.GetDecimalNumber("Enter sum: ", new SumValidator());
+            
+            var duration = _input.GetIntNumber("Enter month count: ", new MonthValidator());
             
             try
             {
-                await _applicationService.UnfreezeAccount(accountId);
-                _console.WriteLine("Account unfreeze successfully");
+                await _applicationService.CreateInstallmentRequest(sum, duration);
+                _console.WriteLine("Request created successfully");
             }
             catch (Exception e)
             {
@@ -42,8 +43,8 @@ public class ClientUnfreezeAccountView : IView
             }
             
         }
-
+        
         NextViewName = PageName.ClientMainMenuPage;
-
+        
     }
 }

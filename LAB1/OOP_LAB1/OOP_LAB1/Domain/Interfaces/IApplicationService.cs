@@ -20,4 +20,6 @@ public interface IApplicationService
     Task FreezeAccount(int accountId);
     
     Task UnfreezeAccount(int accountId);
+    Task CreateInstallmentRequest(decimal sum, int duration);
+    Task CreateLoanRequest(decimal sum, int rate, int duration);
 }

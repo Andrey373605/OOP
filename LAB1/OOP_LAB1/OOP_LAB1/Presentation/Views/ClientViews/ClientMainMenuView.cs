@@ -30,6 +30,8 @@ public class ClientMainMenuView : IView
         _console.WriteLine("4. Transfer money");
         _console.WriteLine("5. Freeze account");
         _console.WriteLine("6. Unfreeze account");
+        _console.WriteLine("7. Loan request");
+        _console.WriteLine("8. Installment request");
         
         var choice = _console.ReadLine();
         NextViewName = choice switch
@@ -40,6 +42,8 @@ public class ClientMainMenuView : IView
             "4" => PageName.ClientTransferAccountPage,
             "5" => PageName.ClientFreezeAccountPage,
             "6" => PageName.ClientUnfreezeAccountPage,
+            "7" => PageName.ClientLoanRequestPage,
+            "8" => PageName.CleintInstallmentRequstPage,
             _ => NextViewName
         };
     }

@@ -29,7 +29,7 @@ public class ClientFreezeAccountView : IView
         var choice = _console.ReadLine();
         if (choice == "1")
         {
-            var accountId = _input.GetIntNumber("Account Id", new IdValidator());
+            var accountId = _input.GetIntNumber("Account Id", new IntValidator());
             
             try
             {

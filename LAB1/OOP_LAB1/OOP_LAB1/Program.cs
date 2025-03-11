@@ -21,6 +21,8 @@ var serviceProvider = new ServiceCollection()
     .AddSingleton<IAccountService, AccountService>()
     .AddSingleton<IApplicationService, ApplicationService>()
     .AddSingleton<ITransactionService, TransactionService>()
+    .AddSingleton<ILoanService, LoanService>()
+    .AddSingleton<IInstallmentService, InstallmentService>()
     
     // регистрация контекста
     .AddSingleton<IContext, Context>()
@@ -41,6 +43,8 @@ var serviceProvider = new ServiceCollection()
     .AddSingleton<IEmployeeRepository, EmployeeRepository>()
     .AddSingleton<IBankRepository, BankRepository>()
     .AddSingleton<ITransactionRepository, TransactionRepository>()
+    .AddSingleton<IInstallmentRepository, InstallmentRepository>()
+    .AddSingleton<ILoanRepository, LoanRepository>()
     
     // регистрация view
     .AddTransient<MainMenuView>()
@@ -60,6 +64,8 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<ClientWithdrawAccountView>()
     .AddTransient<ClientFreezeAccountView>()
     .AddTransient<ClientUnfreezeAccountView>()
+    .AddTransient<ClientLoanRequestView>()
+    .AddTransient<ClientInstallmentRequestView>()
     .AddTransient<ExitView>()
     
     // сборка
@@ -86,6 +92,8 @@ navigator.RegisterView(PageName.ClientTransferAccountPage, serviceProvider.GetSe
 navigator.RegisterView(PageName.ClientWithdrawAccountPage, serviceProvider.GetService<ClientWithdrawAccountView>());
 navigator.RegisterView(PageName.ClientFreezeAccountPage, serviceProvider.GetService<ClientFreezeAccountView>());
 navigator.RegisterView(PageName.ClientUnfreezeAccountPage, serviceProvider.GetService<ClientUnfreezeAccountView>());
+navigator.RegisterView(PageName.ClientLoanRequestPage, serviceProvider.GetService<ClientLoanRequestView>());
+navigator.RegisterView(PageName.CleintInstallmentRequstPage, serviceProvider.GetService<ClientInstallmentRequestView>());
 
 
 navigator.Run(PageName.MainMenuPage);

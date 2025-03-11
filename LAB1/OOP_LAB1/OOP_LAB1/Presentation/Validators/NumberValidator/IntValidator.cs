@@ -1,10 +1,10 @@
 ﻿namespace OOP_LAB1.Presentation.Validators;
 
-public class IdValidator : IValidator
+public class IntValidator : IValidator
 {
     public bool IsValid(string stringToValidate)
     {
-        return Int16.TryParse(stringToValidate, out Int16 parsedStringToValidate);
+        return Int16.TryParse(stringToValidate, out Int16 parsedStringToValidate) && parsedStringToValidate > 0;
         
     }
 

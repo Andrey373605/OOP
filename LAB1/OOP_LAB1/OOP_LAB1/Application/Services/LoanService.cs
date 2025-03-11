@@ -13,7 +13,7 @@ public class LoanService : ILoanService
     private readonly IClientRepository _clientRepository;
     private readonly IBankRepository _bankRepository;
 
-    LoanService(ILoanRepository depositRepository, IAccountRepository accountRepository,
+    public LoanService(ILoanRepository depositRepository, IAccountRepository accountRepository,
         IClientRepository clientRepository, IBankRepository bankRepository)
     {
         _loanRepository = depositRepository;

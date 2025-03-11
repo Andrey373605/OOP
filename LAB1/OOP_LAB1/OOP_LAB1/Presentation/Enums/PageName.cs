@@ -21,5 +21,7 @@ public enum PageName
     ClientTransferAccountPage,
     ClientWithdrawAccountPage,
     ClientUnfreezeAccountPage,
-    ClientFreezeAccountPage
+    ClientFreezeAccountPage,
+    ClientLoanRequestPage,
+    CleintInstallmentRequstPage
 }

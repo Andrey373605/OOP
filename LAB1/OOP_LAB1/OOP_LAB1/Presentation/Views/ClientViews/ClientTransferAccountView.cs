@@ -27,9 +27,9 @@ public class ClientTransferAccountView : IView
         {
             _console.WriteLine($"Id: {a.Id} \t Balance: {a.Balance} \t Active: {!a.IsBlocked}" );
         }
-        var fromAccountId = _input.GetIntNumber("Enter from Account Id", new IdValidator());
+        var fromAccountId = _input.GetIntNumber("Enter from Account Id", new IntValidator());
         
-        var toAccountId = _input.GetIntNumber("Enter to Account Id", new IdValidator());
+        var toAccountId = _input.GetIntNumber("Enter to Account Id", new IntValidator());
         
         var sum = _input.GetDecimalNumber("Enter Sum Of Amount", new SumValidator());
 

@@ -13,16 +13,20 @@ public class ApplicationService : IApplicationService
     private readonly IAccountService _accountService;
     private readonly IBankRepository _bankRepository;
     private readonly ITransactionService _transactionService;
+    private readonly IInstallmentService _installmentService;
+    private readonly ILoanService _loanService;
 
     public ApplicationService(IContext context, IAuthorizationService authorizationService, 
         IAccountService accountService, IBankRepository bankRepository,
-        ITransactionService transactionService)
+        ITransactionService transactionService, IInstallmentService installmentService, ILoanService loanService)
     {
         _context = context;
         _authorizationService = authorizationService;
         _accountService = accountService;
         _bankRepository = bankRepository;
         _transactionService = transactionService;
+        _installmentService = installmentService;
+        _loanService = loanService;
     }
     
     public async Task LoginUser(string email, string password)
@@ -133,6 +137,18 @@ public class ApplicationService : IApplicationService
             throw new ApplicationException("You can not unfreeze account that doesn't belong to you");
         }
         await _accountService.UnfreezeAccountAsync(accountId);
+    }
+
+    public async Task CreateInstallmentRequest(decimal sum, int duration)
+    {
+        var client = GetCurrentClient();
+        await _installmentService.CreateInstallmentRequest(client.Id, sum, duration);
+    }
+
+    public async Task CreateLoanRequest(decimal sum, int rate, int duration)
+    {
+        var client = GetCurrentClient();
+        await _loanService.CreateLoanRequest(client.Id, sum, rate, duration);
     }
 
     public async Task WithdrawAccount(int accountId, decimal sum)
