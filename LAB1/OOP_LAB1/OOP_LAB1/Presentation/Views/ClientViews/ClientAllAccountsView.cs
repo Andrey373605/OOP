@@ -1,5 +1,6 @@
 ﻿using OOP_LAB1.Application.Context;
 using OOP_LAB1.Domain.Entities;
+using OOP_LAB1.Domain.Enums;
 using OOP_LAB1.Domain.Interfaces;
 using OOP_LAB1.Presentation.Console;
 using OOP_LAB1.Presentation.Enums;
@@ -25,7 +26,15 @@ public class ClientAllAccountsView : IView
         var accounts = await _applicationService.GetCurrentClientAccounts();
         foreach (var a in accounts)
         {
-            _console.WriteLine($"Id: {a.Id} \t Balance: {a.Balance} \t Active: {!a.IsBlocked}" );
+            _console.WriteLine(a.AccountType.ToString());
+            var type = a.AccountType switch
+            {
+                AccountType.Loan => "loan",
+                AccountType.Installment => "installment",
+                AccountType.Saving => "saving",
+                _ => "error"
+            };
+            _console.WriteLine($"Id: {a.Id} \t Balance: {a.Balance} \t Active: {!a.IsBlocked} \t Type: {type}" );
         }
 
         NextViewName = PageName.ClientMainMenuPage;
