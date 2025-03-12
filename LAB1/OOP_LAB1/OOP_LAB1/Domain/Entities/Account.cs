@@ -10,30 +10,29 @@ namespace OOP_LAB1.Domain.Entities
         public int BankId { get; set; }
         public decimal Balance { get; set; }
         public int ClientId { get; set; }
-        public bool IsBlocked { get; set; }
-        public bool IsFrozen { get; set; }
         
+        public AccountStatus Status { get; set; }
         public AccountType AccountType { get; set; }
         
 
         public void FreezeAccount()
         {
-            IsFrozen = true;
+            Status = AccountStatus.Frozen;
         }
         
         public void UnfreezeAccount()
         {
-            IsFrozen = false;
+            Status = AccountStatus.Normal;
         }
 
         public void BlockAccount()
         {
-            IsBlocked = true;
+            Status = AccountStatus.Blocked;
         }
 
         public void UnblockAccount()
         {
-            IsBlocked = false;
+            Status = AccountStatus.Normal;
         }
 
         public void DepositAccount(decimal amount)

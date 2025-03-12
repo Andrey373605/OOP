@@ -27,6 +27,10 @@ var serviceProvider = new ServiceCollection()
     // регистрация контекста
     .AddSingleton<IContext, Context>()
     
+    //
+    .AddScoped<IDataBaseHelper>(provider =>
+            new DatabaseHelper("Data Source=../../../Infrastructure/DataBase/sample.db;"))
+    
     // регистрация консоли 
     .AddSingleton<IConsole, Console>()
     

@@ -66,8 +66,7 @@ public class InstallmentService : IInstallmentService
         var account = new Account
         {
             Balance = 0,
-            IsBlocked = false,
-            IsFrozen = false,
+            Status = AccountStatus.Normal,
             AccountType = AccountType.Installment,
             ClientId = installmentRequest.ClientId,
         };

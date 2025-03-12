@@ -190,7 +190,7 @@ public class AuthorizationService : IAuthorizationService
         var hashPassword = HashPassword(password);
         if (hashPassword != user.HashPassword)
         {
-            //throw new UnauthorizedAccessException("Invalid password");
+            throw new UnauthorizedAccessException("Invalid password");
         }
 
         return user;

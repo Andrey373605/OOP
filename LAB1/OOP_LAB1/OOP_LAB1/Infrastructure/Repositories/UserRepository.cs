@@ -1,38 +1,79 @@
 ﻿using OOP_LAB1.Application.Interfaces;
 using OOP_LAB1.Domain.Entities;
+using OOP_LAB1.Infrastructure.Data;
 
 namespace OOP_LAB1.Infrastructure.Repositories;
 
 public class UserRepository : IUserRepository
 {
-    public Task CreateAsync(User user)
+    IDataBaseHelper _databaseHelper;
+
+    public UserRepository(IDataBaseHelper databaseHelper)
     {
-        throw new NotImplementedException();
+        _databaseHelper = databaseHelper;
+    }
+    
+    public async Task AddAsync(User user)
+    {
+        string query = @"INSERT INTO User 
+                         (Email, HashPassword) 
+                         VALUES 
+                         (@Email, @HashPassword)";
+
+        var parameters = new Dictionary<string, object>
+        {
+            {"Email", user.Email},
+            {"HashPassword", user.HashPassword}
+        };
+
+        await Task.Run(() => _databaseHelper.ExecuteNonQuery(query, parameters));
     }
 
-    public Task AddAsync(User user)
+    public async Task<User> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        string query = @"SELECT Id, Email, HashPassword 
+                         FROM User 
+                         WHERE Id = @Id";
+
+        var parameters = new Dictionary<string, object>
+        {
+            {"Id", id}
+        };
+
+        var result = await Task.Run(() => _databaseHelper.ExecuteQuery(query, parameters));
+
+        if (result.Count == 0)
+        {
+            return null; // Если пользователь не найден
+        }
+
+        var row = result[0];
+        
+        var user = new User
+        {
+            Id = Convert.ToInt32(row["Id"]),
+            Email = row["Email"].ToString(),
+            HashPassword = row["HashPassword"].ToString()
+        };
+
+        return user;
     }
 
-    public async Task CreateRequestAsync(Client client)
+    public async Task UpdateAsync(User user)
     {
-        return;
-    }
+        string query = @"UPDATE User 
+                         SET Email = @Email, 
+                             HashPassword = @HashPassword 
+                         WHERE Id = @Id";
 
-    public Task<Client> GetRequestByIdAsync(int id)
-    {
-        throw new NotImplementedException();
-    }
+        var parameters = new Dictionary<string, object>
+        {
+            {"Id", user.Id},
+            {"Email", user.Email},
+            {"HashPassword", user.HashPassword}
+        };
 
-    public Task<User> GetByIdAsync(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task UpdateAsync(User user)
-    {
-        throw new NotImplementedException();
+        await Task.Run(() => _databaseHelper.ExecuteNonQuery(query, parameters));
     }
 
     public Task DeleteAsync(int id)
@@ -47,7 +88,31 @@ public class UserRepository : IUserRepository
 
     public async Task<User> GetByEmailAsync(string email)
     {
-        await Task.Delay(1);
-        return new User{Email = email, HashPassword = "qqq"};
+        string query = @"SELECT Id, Email, HashPassword 
+                         FROM User 
+                         WHERE Email = @Email";
+
+        var parameters = new Dictionary<string, object>
+        {
+            {"Email", email}
+        };
+
+        var result = await Task.Run(() => _databaseHelper.ExecuteQuery(query, parameters));
+
+        if (result.Count == 0)
+        {
+            return null; // Если пользователь не найден
+        }
+
+        var row = result[0];
+        
+        var user = new User
+        {
+            Id = Convert.ToInt32(row["Id"]),
+            Email = row["Email"].ToString(),
+            HashPassword = row["HashPassword"].ToString()
+        };
+
+        return user;
     }
 }

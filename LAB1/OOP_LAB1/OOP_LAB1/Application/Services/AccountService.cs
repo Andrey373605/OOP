@@ -79,7 +79,8 @@ public class AccountService : IAccountService
             throw new NullReferenceException("Account not found");
         }
         
-        await _accountRepository.RemoveAsync(account);
+        account.Status = AccountStatus.Deleted;
+        await _accountRepository.UpdateAsync(account);
     }
     
 
@@ -121,8 +122,7 @@ public class AccountService : IAccountService
             ClientId = client.Id,
             BankId = client.BankId,
             Balance = 0,
-            IsFrozen = false,
-            IsBlocked = false,
+            Status = AccountStatus.Normal,
             AccountType = AccountType.Saving
         };
         await _accountRepository.AddAsync(account);

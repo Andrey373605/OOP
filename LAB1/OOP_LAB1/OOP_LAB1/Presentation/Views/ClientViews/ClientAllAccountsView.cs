@@ -26,15 +26,9 @@ public class ClientAllAccountsView : IView
         var accounts = await _applicationService.GetCurrentClientAccounts();
         foreach (var a in accounts)
         {
-            _console.WriteLine(a.AccountType.ToString());
-            var type = a.AccountType switch
-            {
-                AccountType.Loan => "loan",
-                AccountType.Installment => "installment",
-                AccountType.Saving => "saving",
-                _ => "error"
-            };
-            _console.WriteLine($"Id: {a.Id} \t Balance: {a.Balance} \t Active: {!a.IsBlocked} \t Type: {type}" );
+
+            _console.WriteLine($"Id: {a.Id} \t Balance: {a.Balance} \t Active: {a.Status.ToString()}" +
+                               $" \t Type: {a.AccountType.ToString()}" );
         }
 
         NextViewName = PageName.ClientMainMenuPage;

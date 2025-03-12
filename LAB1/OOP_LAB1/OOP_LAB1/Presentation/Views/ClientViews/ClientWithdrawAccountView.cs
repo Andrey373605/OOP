@@ -25,7 +25,8 @@ public class ClientWithdrawAccountView : IView
         var accounts = await _applicationService.GetCurrentClientAccounts();
         foreach (var a in accounts)
         {
-            _console.WriteLine($"Id: {a.Id} \t Balance: {a.Balance} \t Active: {!a.IsBlocked}" );
+            _console.WriteLine($"Id: {a.Id} \t Balance: {a.Balance} " +
+                               $"\t Active: {a.Status.ToString()} \t Type: {a.AccountType.ToString()}" );
         }
         var accountId = _input.GetIntNumber("Enter Account Id", new IntValidator());
         

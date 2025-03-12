@@ -6,10 +6,6 @@ namespace OOP_LAB1.Application.Interfaces
     {
         Task AddAsync(User user);
         
-        Task CreateRequestAsync(Client client);
-        
-        Task<Client> GetRequestByIdAsync(int id);
-
         Task<User> GetByIdAsync(int id);
 
         Task UpdateAsync(User user);

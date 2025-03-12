@@ -3,7 +3,7 @@ using Microsoft.Data.Sqlite;
 
 namespace OOP_LAB1.Infrastructure.Data;
 
-public class DatabaseHelper
+public class DatabaseHelper : IDataBaseHelper
 {
     private readonly string _connectionString;
 
