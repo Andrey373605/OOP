@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OOP_LAB1.Domain.Enums
 {
-    public enum UserRole
+    public enum EmployeeRole
     {
         Operator = 1,
         Manager = 2,

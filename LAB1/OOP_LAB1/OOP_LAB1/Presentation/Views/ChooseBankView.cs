@@ -35,10 +35,23 @@ public class ChooseBankView : IView
             _console.WriteLine(b);
         }
         var bankName = _input.GetString("Enter bank name: ", new NameValidator());
-        var bank = await _bankService.GetBankByName(bankName);
-        _applicationService.LoginBank(bank);
-        _console.WriteLine($"Succesfully chosen bank {bankName}");
+        
 
-        NextViewName = PageName.ChooseRolePage;
+        try
+        {
+            var bank = await _bankService.GetBankByName(bankName);
+            _applicationService.LoginBank(bank);
+            _console.WriteLine($"Succesfully chosen bank {bankName}");
+            NextViewName = PageName.ChooseRolePage;
+        }
+        catch (Exception e)
+        {
+            _console.WriteLine(e.Message);
+            NextViewName = PageName.ChooseBankPage;
+            
+        }
+        
+
+        
     }
 }

@@ -24,12 +24,16 @@ public class ClientAllAccountsView : IView
     {
         _console.WriteLine("Accounts:");
         var accounts = await _applicationService.GetCurrentClientAccounts();
-        foreach (var a in accounts)
+        if (accounts.Any())
         {
+            foreach (var a in accounts)
+            {
 
-            _console.WriteLine($"Id: {a.Id} \t Balance: {a.Balance} \t Active: {a.Status.ToString()}" +
-                               $" \t Type: {a.AccountType.ToString()}" );
+                _console.WriteLine($"Id: {a.Id} \t Balance: {a.Balance} \t Active: {a.Status.ToString()}" +
+                                   $" \t Type: {a.AccountType.ToString()}" );
+            }
         }
+        
 
         NextViewName = PageName.ClientMainMenuPage;
 

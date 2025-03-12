@@ -6,5 +6,7 @@ public class Employee
 {
     public int Id { get; set; }
     public int UserId { get; set; }
-    public UserRole Role { get; set; }
+    
+    public int BankId { get; set; }
+    public EmployeeRole Role { get; set; }
 }

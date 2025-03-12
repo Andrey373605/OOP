@@ -38,7 +38,7 @@ public class ChooseRoleView : IView
             "3" => PageName.RegistrationEmployeePage,
             "4" => PageName.LoginEmployeePage,
             "5" => PageName.ExitPage,
-            _ => NextViewName
+            _ => PageName.ChooseRolePage
         };
 
         

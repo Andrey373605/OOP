@@ -31,8 +31,6 @@ public class LoginClientView : IView
             _console.WriteLine(e.Message);
             NextViewName = PageName.ChooseRolePage;
         }
-        
-        //успешный вход
-        NextViewName = PageName.ClientMainMenuPage;
+
     }
 }

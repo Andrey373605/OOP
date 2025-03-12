@@ -15,10 +15,13 @@ public class ApplicationService : IApplicationService
     private readonly ITransactionService _transactionService;
     private readonly IInstallmentService _installmentService;
     private readonly ILoanService _loanService;
+    private readonly IEmployeeRepository _employeeRepository;
+    private readonly IClientRepository _clientRepository;
 
     public ApplicationService(IContext context, IAuthorizationService authorizationService, 
         IAccountService accountService, IBankRepository bankRepository,
-        ITransactionService transactionService, IInstallmentService installmentService, ILoanService loanService)
+        ITransactionService transactionService, IInstallmentService installmentService, ILoanService loanService,
+        IEmployeeRepository employeeRepository,IClientRepository clientRepository)
     {
         _context = context;
         _authorizationService = authorizationService;
@@ -27,6 +30,8 @@ public class ApplicationService : IApplicationService
         _transactionService = transactionService;
         _installmentService = installmentService;
         _loanService = loanService;
+        _employeeRepository = employeeRepository;
+        _clientRepository = clientRepository;
     }
     
     public async Task LoginUser(string email, string password)
@@ -38,23 +43,45 @@ public class ApplicationService : IApplicationService
     public async Task<IEnumerable<Account>> GetCurrentClientAccounts()
     {
         var client = await GetCurrentClient();
+        if (client == null)
+        {
+            return new List<Account>();
+        }
         
         var accounts = await _accountService.GetAllClientAccountsAsync(client.Id);
-        return accounts;
+        return accounts.ToList();
     }
 
     public async Task<Client> GetCurrentClient()
     {
         var user = _context.CurrentUser;
         var bank = _context.CurrentBank;
-        return await _bankRepository.GetClientByUserIdAsync(user.Id, bank.Id);
+        if (user == null)
+        {
+            throw new UnauthorizedAccessException("User null");
+        }
+
+        if (bank == null)
+        {
+            throw new UnauthorizedAccessException("Bank null");
+        }
+        return await _clientRepository.GetClientByUserIdAsync(bank.Id, user.Id);
     }
     
     public async Task<Employee> GetCurrentEmployee()
     {
         var user = _context.CurrentUser;
         var bank = _context.CurrentBank;
-        return await _bankRepository.GetEmployeeByUserIdAsync(user.Id, bank.Id);
+        if (user == null)
+        {
+            throw new UnauthorizedAccessException("User null");
+        }
+
+        if (bank == null)
+        {
+            throw new UnauthorizedAccessException("Bank null");
+        }
+        return await _employeeRepository.GetEmployeeByUserIdAsync(bank.Id, user.Id);
     }
 
     public void LoginBank(Bank bank)
@@ -77,7 +104,7 @@ public class ApplicationService : IApplicationService
         await _authorizationService.RegisterClientAsync(user.Id, bank.Id, firstName, lastName, middleName, phoneNumber, identificationNumber, series);
     }
 
-    public async Task RegisterEmployee(UserRole role)
+    public async Task RegisterEmployee(EmployeeRole role)
     {
         var user = _context.CurrentUser;
         var bank = _context.CurrentBank;

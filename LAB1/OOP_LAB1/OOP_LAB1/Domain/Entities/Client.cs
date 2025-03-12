@@ -13,7 +13,7 @@ public class Client
     public string PassportSeries { get; set; }
     public string IdentificationNumber { get; set; }
     public string Phone { get; set; }
-    public bool IsActive { get; private set; } = false;
+    public bool IsActive { get; set; } = false;
 
     public void Activate()
     {

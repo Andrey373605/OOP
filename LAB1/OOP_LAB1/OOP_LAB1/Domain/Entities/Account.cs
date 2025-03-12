@@ -22,7 +22,7 @@ namespace OOP_LAB1.Domain.Entities
         
         public void UnfreezeAccount()
         {
-            Status = AccountStatus.Normal;
+            Status = AccountStatus.Active;
         }
 
         public void BlockAccount()
@@ -32,7 +32,7 @@ namespace OOP_LAB1.Domain.Entities
 
         public void UnblockAccount()
         {
-            Status = AccountStatus.Normal;
+            Status = AccountStatus.Active;
         }
 
         public void DepositAccount(decimal amount)

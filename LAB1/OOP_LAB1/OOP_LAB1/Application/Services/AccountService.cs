@@ -99,7 +99,7 @@ public class AccountService : IAccountService
     public async Task<IEnumerable<Account>> GetAllClientAccountsAsync(int clientId)
     {
         var accounts = await _clientRepository.GetAllAccountsByClientIdAsync(clientId);
-        return accounts;
+        return accounts.ToList();
     }
 
     public async Task<bool> IsAccountBelongToClient(int accountId, int clientId)
@@ -122,7 +122,7 @@ public class AccountService : IAccountService
             ClientId = client.Id,
             BankId = client.BankId,
             Balance = 0,
-            Status = AccountStatus.Normal,
+            Status = AccountStatus.Active,
             AccountType = AccountType.Saving
         };
         await _accountRepository.AddAsync(account);

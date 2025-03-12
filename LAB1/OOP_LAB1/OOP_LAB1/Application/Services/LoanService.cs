@@ -34,7 +34,7 @@ public class LoanService : ILoanService
         {
             Balance = 0,
             AccountType = AccountType.Loan,
-            Status = AccountStatus.Normal,
+            Status = AccountStatus.Active,
             ClientId = loanRequest.ClientId
         };
         

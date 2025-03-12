@@ -9,4 +9,6 @@ public interface IClientRepository
     public Task AddAsync(Client client);
     public Task<Client> GetByIdAsync(int clientId);
     public Task<IEnumerable<Account>> GetAllAccountsByClientIdAsync(int clientId);
+
+    public Task<Client> GetClientByUserIdAsync(int bankId, int userId);
 }

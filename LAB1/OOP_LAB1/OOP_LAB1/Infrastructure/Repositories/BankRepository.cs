@@ -1,49 +1,121 @@
 ﻿using OOP_LAB1.Application.Interfaces;
 using OOP_LAB1.Domain.Entities;
+using OOP_LAB1.Infrastructure.Data;
 
 namespace OOP_LAB1.Infrastructure.Repositories;
 
 public class BankRepository : IBankRepository
 {
-    public Task AddAsync(Bank bank)
+    IDataBaseHelper _dataBaseHelper;
+
+    public BankRepository(IDataBaseHelper dataBaseHelper)
     {
-        throw new NotImplementedException();
+        _dataBaseHelper = dataBaseHelper;
+    }
+    public async Task AddAsync(Bank bank)
+    {
+        string query = @"INSERT INTO Bank 
+                         (Name) 
+                         VALUES 
+                         (@Name)";
+
+        var parameters = new Dictionary<string, object>
+        {
+            {"Name", bank.Name}
+        };
+
+        await Task.Run(() => _dataBaseHelper.ExecuteNonQuery(query, parameters));
     }
 
-    public Task<Bank> GetByIdAsync(int id)
+    public async Task<Bank> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        string query = @"SELECT Id, Name 
+                         FROM Bank 
+                         WHERE Id = @Id";
+
+        var parameters = new Dictionary<string, object>
+        {
+            {"Id", id}
+        };
+
+        var result = await Task.Run(() => _dataBaseHelper.ExecuteQuery(query, parameters));
+
+        if (result.Count == 0)
+        {
+            return null; // Если банк не найден
+        }
+
+        var row = result[0];
+        
+        var bank = new Bank
+        {
+            Id = Convert.ToInt32(row["Id"]),
+            Name = row["Name"].ToString()
+        };
+
+        return bank;
     }
 
     public async Task<Bank> GetByNameAsync(string name)
     {
-        await Task.Delay(1);
-        return new Bank { Name = name };
+        string query = @"SELECT Id, Name 
+                         FROM Bank 
+                         WHERE Name = @Name";
+
+        var parameters = new Dictionary<string, object>
+        {
+            {"Name", name}
+        };
+
+        var result = await Task.Run(() => _dataBaseHelper.ExecuteQuery(query, parameters));
+
+        if (result.Count == 0)
+        {
+            return null; // Если банк не найден
+        }
+
+        var row = result[0];
+        
+        var bank = new Bank
+        {
+            Id = Convert.ToInt32(row["Id"]),
+            Name = row["Name"].ToString()
+        };
+
+        return bank;
     }
 
-    public Task UpdateAsync(Bank bank)
+    public async Task UpdateAsync(Bank bank)
     {
-        throw new NotImplementedException();
+        string query = @"UPDATE Bank 
+                         SET Name = @Name 
+                         WHERE Id = @Id";
+
+        var parameters = new Dictionary<string, object>
+        {
+            {"Id", bank.Id},
+            {"Name", bank.Name}
+        };
+
+        await Task.Run(() => _dataBaseHelper.ExecuteNonQuery(query, parameters));
     }
 
     public async Task<IEnumerable<string>> GetAllBankNamesAsync()
     {
-        await Task.Delay(1);
-        return new List<string>(["ZBANK", "VBANK"]);
-    }
+        string query = @"SELECT Name 
+                         FROM Bank";
 
-    public Task<Employee> GetEmployeeByUserIdAsync(int bankId, int userId)
-    {
-        throw new NotImplementedException();
-    }
+        var result = await Task.Run(() => _dataBaseHelper.ExecuteQuery(query));
 
-    public async Task<Client> GetClientByUserIdAsync(int bankId, int userId)
-    {
-        await Task.Delay(1);
-        return new Client
+        var bankNames = new List<string>();
+
+        foreach (var row in result)
         {
-            UserId = userId,
-            BankId = bankId,
-        };
+            bankNames.Add(row["Name"].ToString());
+        }
+
+        return bankNames;
     }
+
+    
 }

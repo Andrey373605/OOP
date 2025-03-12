@@ -8,4 +8,6 @@ public interface IEmployeeRepository
     public Task DeleteAsync(Employee employee);
     public Task<Employee> GetByIdAsync(int id);
     public Task UpdateAsync(Employee employee);
+
+    public Task<Employee> GetEmployeeByUserIdAsync(int bankId, int userId);
 }

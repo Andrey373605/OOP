@@ -13,7 +13,7 @@ public interface IApplicationService
     void LoginBank(Bank bank);
     Task LoginClient();
     Task RegisterClient(string firstName, string lastName, string middleName, string phoneNumber, string identificationNumber, string series);
-    Task RegisterEmployee(UserRole role);
+    Task RegisterEmployee(EmployeeRole role);
     Task CreateAccount();
     Task DepositAccount(int accountId, decimal sum);
     Task TransferAccount(int fromAccountId, int toAccountId, decimal sum);

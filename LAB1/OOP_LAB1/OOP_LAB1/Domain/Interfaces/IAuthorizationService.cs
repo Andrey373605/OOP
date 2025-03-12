@@ -17,7 +17,7 @@ public interface IAuthorizationService
     Task<Client> AuthenticateClientAsync(int userId, int bankId);
 
     
-    Task RegisterEmployeeAsync(int userId, int bankId, UserRole role);
+    Task RegisterEmployeeAsync(int userId, int bankId, EmployeeRole role);
     Task<Employee> AuthenticateEmployeeAsync(int userId, int bankId);
     
 }

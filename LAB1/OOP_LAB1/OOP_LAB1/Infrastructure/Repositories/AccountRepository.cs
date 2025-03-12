@@ -57,7 +57,7 @@ public class AccountRepository : IAccountRepository
         await Task.Run(() => _databaseHelper.ExecuteNonQuery(query, parameters));
     }
 
-    public async Task RemoveAsync(Account account)
+    public async Task DeleteAsync(Account account)
     {
         throw new NotImplementedException();
     }

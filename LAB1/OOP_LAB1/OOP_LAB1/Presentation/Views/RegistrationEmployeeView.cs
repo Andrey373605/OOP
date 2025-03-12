@@ -35,13 +35,13 @@ public class RegistrationEmployeeView : IView
         _console.WriteLine("4. Administrator");
         string choice = _console.ReadLine();
 
-        UserRole role = choice switch
+        EmployeeRole role = choice switch
         {
-            "1" => UserRole.Operator,
-            "2" => UserRole.Manager,
-            "3" => UserRole.ExternalSpecialist,
-            "4" => UserRole.Administrator,
-            _ => UserRole.Operator
+            "1" => EmployeeRole.Operator,
+            "2" => EmployeeRole.Manager,
+            "3" => EmployeeRole.ExternalSpecialist,
+            "4" => EmployeeRole.Administrator,
+            _ => EmployeeRole.Operator
         };
         
         _console.WriteLine($"Succesfully choosen role {role.ToString()}");
