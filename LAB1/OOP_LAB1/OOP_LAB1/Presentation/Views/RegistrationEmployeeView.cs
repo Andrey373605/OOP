@@ -56,6 +56,7 @@ public class RegistrationEmployeeView : IView
         catch (Exception ex)
         {
             _console.WriteLine($"Error: {ex.Message}");
+            NextViewName = PageName.ChooseRolePage;
         }
         
     }

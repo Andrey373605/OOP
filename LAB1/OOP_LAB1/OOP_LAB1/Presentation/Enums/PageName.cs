@@ -23,5 +23,9 @@ public enum PageName
     ClientUnfreezeAccountPage,
     ClientFreezeAccountPage,
     ClientLoanRequestPage,
-    CleintInstallmentRequstPage
+    CleintInstallmentRequstPage,
+    AdministratorMainMenuPage,
+    OperatorMainMenuPage,
+    ManagerMainMenuPage,
+    ExternalSpecialistMainMenuPage
 }

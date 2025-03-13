@@ -22,4 +22,6 @@ public interface IApplicationService
     Task UnfreezeAccount(int accountId);
     Task CreateInstallmentRequest(decimal sum, int duration);
     Task CreateLoanRequest(decimal sum, int rate, int duration);
+    Task LoginEmployee();
+    Task<EmployeeRole> GetCurrentEmployeeRole();
 }

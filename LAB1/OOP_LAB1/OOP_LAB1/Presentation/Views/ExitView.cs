@@ -1,4 +1,5 @@
-﻿using OOP_LAB1.Presentation.Console;
+﻿using OOP_LAB1.Domain.Interfaces;
+using OOP_LAB1.Presentation.Console;
 using OOP_LAB1.Presentation.Enums;
 
 namespace OOP_LAB1.Presentation.Views;

@@ -15,13 +15,13 @@ public class ApplicationService : IApplicationService
     private readonly ITransactionService _transactionService;
     private readonly IInstallmentService _installmentService;
     private readonly ILoanService _loanService;
-    private readonly IEmployeeRepository _employeeRepository;
-    private readonly IClientRepository _clientRepository;
+    private readonly IEmployeeService _employeeService;
+    private readonly IClientService _clientService;
+
 
     public ApplicationService(IContext context, IAuthorizationService authorizationService, 
         IAccountService accountService, IBankRepository bankRepository,
-        ITransactionService transactionService, IInstallmentService installmentService, ILoanService loanService,
-        IEmployeeRepository employeeRepository,IClientRepository clientRepository)
+        ITransactionService transactionService, IInstallmentService installmentService, ILoanService loanService)
     {
         _context = context;
         _authorizationService = authorizationService;
@@ -30,8 +30,6 @@ public class ApplicationService : IApplicationService
         _transactionService = transactionService;
         _installmentService = installmentService;
         _loanService = loanService;
-        _employeeRepository = employeeRepository;
-        _clientRepository = clientRepository;
     }
     
     public async Task LoginUser(string email, string password)
@@ -65,7 +63,7 @@ public class ApplicationService : IApplicationService
         {
             throw new UnauthorizedAccessException("Bank null");
         }
-        return await _clientRepository.GetClientByUserIdAsync(bank.Id, user.Id);
+        return await _clientService.GetClientByUserIdAsync(bank.Id, user.Id);
     }
     
     public async Task<Employee> GetCurrentEmployee()
@@ -81,7 +79,7 @@ public class ApplicationService : IApplicationService
         {
             throw new UnauthorizedAccessException("Bank null");
         }
-        return await _employeeRepository.GetEmployeeByUserIdAsync(bank.Id, user.Id);
+        return await _employeeService.GetEmployeeByUserIdAsync(bank.Id, user.Id);
     }
 
     public void LoginBank(Bank bank)
@@ -113,13 +111,13 @@ public class ApplicationService : IApplicationService
 
     public async Task CreateAccount()
     {
-        var client = GetCurrentClient();
+        var client = await GetCurrentClient();
         await _accountService.CreateAccountAsync(client.Id);
     }
 
     public async Task DepositAccount(int accountId, decimal sum)
     {
-        var client = GetCurrentClient();
+        var client = await GetCurrentClient();
         var check = await _accountService.IsAccountBelongToClient(accountId, client.Id);
         if (check == false)
         {
@@ -130,7 +128,7 @@ public class ApplicationService : IApplicationService
 
     public async Task TransferAccount(int fromAccountId, int toAccountId, decimal sum)
     {
-        var client = GetCurrentClient();
+        var client = await GetCurrentClient();
         var check = await _accountService.IsAccountBelongToClient(fromAccountId, client.Id);
         if (check == false)
         {
@@ -146,7 +144,7 @@ public class ApplicationService : IApplicationService
 
     public async Task FreezeAccount(int accountId)
     {
-        var client = GetCurrentClient();
+        var client = await GetCurrentClient();
         var check = await _accountService.IsAccountBelongToClient(accountId, client.Id);
         if (check == false)
         {
@@ -157,7 +155,7 @@ public class ApplicationService : IApplicationService
     
     public async Task UnfreezeAccount(int accountId)
     {
-        var client = GetCurrentClient();
+        var client = await GetCurrentClient();
         var check = await _accountService.IsAccountBelongToClient(accountId, client.Id);
         if (check == false)
         {
@@ -168,19 +166,33 @@ public class ApplicationService : IApplicationService
 
     public async Task CreateInstallmentRequest(decimal sum, int duration)
     {
-        var client = GetCurrentClient();
+        var client = await GetCurrentClient();
         await _installmentService.CreateInstallmentRequest(client.Id, sum, duration);
     }
 
     public async Task CreateLoanRequest(decimal sum, int rate, int duration)
     {
-        var client = GetCurrentClient();
+        var client = await GetCurrentClient();
         await _loanService.CreateLoanRequest(client.Id, sum, rate, duration);
+    }
+
+    public async Task LoginEmployee()
+    {
+        var user = _context.CurrentUser;
+        var bank = _context.CurrentBank;
+        await _authorizationService.AuthenticateEmployeeAsync(user.Id, bank.Id);
+    }
+
+    public async Task<EmployeeRole> GetCurrentEmployeeRole()
+    {
+        var user = _context.CurrentUser;
+        var bank = _context.CurrentBank;
+        return await _employeeService.GetEmployeeRole(user.Id, bank.Id);
     }
 
     public async Task WithdrawAccount(int accountId, decimal sum)
     {
-        var client = GetCurrentClient();
+        var client = await GetCurrentClient();
         var check = await _accountService.IsAccountBelongToClient(accountId, client.Id);
         if (check == false)
         {
