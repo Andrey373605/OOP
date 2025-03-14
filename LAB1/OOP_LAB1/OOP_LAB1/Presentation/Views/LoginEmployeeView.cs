@@ -35,8 +35,8 @@ public class LoginEmployeeView : IView
         }
         catch (Exception e)
         {
-            System.Console.WriteLine(e);
-            throw;
+            _console.WriteLine(e.Message);
+            NextViewName = PageName.ChooseRolePage;
         }
     }
     

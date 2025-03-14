@@ -25,8 +25,8 @@ public class ClientFreezeAccountView : IView
     {
         _console.WriteLine("1. Freeze account");
         _console.WriteLine("2. Return back");
-        
-        var choice = _console.ReadLine();
+
+        var choice = _input.GetNumberVariant(2);
         if (choice == "1")
         {
             var accountId = _input.GetIntNumber("Account Id", new IntValidator());

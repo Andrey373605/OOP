@@ -50,4 +50,20 @@ public class InputHandler : IInputHandler
             
         }
     }
+
+    public string GetNumberVariant(int maxNumber)
+    {
+        _console.WriteLine("Enter variant number: ");
+        while (true)
+        {
+            var input = _console.ReadLine();
+            if (Int32.TryParse(input, out var result) && result <= maxNumber && result > 0)
+            {
+
+                return input;
+            }
+            _console.WriteLine("Invalid variant");
+            
+        }
+    }
 }

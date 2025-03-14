@@ -12,6 +12,8 @@ using OOP_LAB1.Presentation.Navigator;
 using OOP_LAB1.Presentation.Views;
 using OOP_LAB1.Presentation.Views.ClientViews;
 using Console = OOP_LAB1.Presentation.Console.Console;
+using System.Linq;
+using System.Reflection;
 
 // Настройка DI
 var serviceProvider = new ServiceCollection()
@@ -23,6 +25,8 @@ var serviceProvider = new ServiceCollection()
     .AddSingleton<ITransactionService, TransactionService>()
     .AddSingleton<ILoanService, LoanService>()
     .AddSingleton<IInstallmentService, InstallmentService>()
+    .AddSingleton<IClientService, ClientService>()
+    .AddSingleton<IEmployeeService, EmployeeService>()
     
     // регистрация контекста
     .AddSingleton<IContext, Context>()
@@ -61,6 +65,7 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<ChooseBankView>()
     .AddTransient<ClientMainMenuView>()
     .AddTransient<LoginClientView>()
+    
     .AddTransient<ClientAllAccountsView>()
     .AddTransient<ClientCreateAccountView>()
     .AddTransient<ClientDepositAccountView>()
@@ -70,6 +75,8 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<ClientUnfreezeAccountView>()
     .AddTransient<ClientLoanRequestView>()
     .AddTransient<ClientInstallmentRequestView>()
+    
+    .AddTransient<LoginEmployeeView>()
     .AddTransient<ExitView>()
     
     // сборка
@@ -98,6 +105,6 @@ navigator.RegisterView(PageName.ClientFreezeAccountPage, serviceProvider.GetServ
 navigator.RegisterView(PageName.ClientUnfreezeAccountPage, serviceProvider.GetService<ClientUnfreezeAccountView>());
 navigator.RegisterView(PageName.ClientLoanRequestPage, serviceProvider.GetService<ClientLoanRequestView>());
 navigator.RegisterView(PageName.CleintInstallmentRequstPage, serviceProvider.GetService<ClientInstallmentRequestView>());
-
+navigator.RegisterView(PageName.LoginEmployeePage, serviceProvider.GetService<LoginEmployeeView>());
 
 navigator.Run(PageName.MainMenuPage);

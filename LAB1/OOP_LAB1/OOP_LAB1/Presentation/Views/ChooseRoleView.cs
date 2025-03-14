@@ -13,12 +13,14 @@ public class ChooseRoleView : IView
     
 
     private readonly IConsole _console;
+    private readonly IInputHandler _inputHandler;
 
 
-    public ChooseRoleView(IConsole console)
+    public ChooseRoleView(IConsole console, IInputHandler inputHandler)
     {
 
         _console = console;
+        _inputHandler = inputHandler;
 
     }
     public async Task Execute()
@@ -29,8 +31,8 @@ public class ChooseRoleView : IView
         _console.WriteLine("3. Register as employee");
         _console.WriteLine("4. Login as employee");
         _console.WriteLine("5. Exit");
-        
-        var choice = _console.ReadLine();
+
+        var choice = _inputHandler.GetNumberVariant(5);
         NextViewName = choice switch
         {
             "1" => PageName.RegistrationClientPage,

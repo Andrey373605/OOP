@@ -24,8 +24,8 @@ public class ClientInstallmentRequestView : IView
     {
         _console.WriteLine("1. Continue");
         _console.WriteLine("2. Return back");
-        
-        var choice = _console.ReadLine();
+
+        var choice = _input.GetNumberVariant(2);
         if (choice == "1")
         {
             var sum = _input.GetDecimalNumber("Enter sum: ", new SumValidator());

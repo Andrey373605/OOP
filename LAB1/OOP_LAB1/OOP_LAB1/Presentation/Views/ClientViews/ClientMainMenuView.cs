@@ -32,8 +32,8 @@ public class ClientMainMenuView : IView
         _console.WriteLine("6. Unfreeze account");
         _console.WriteLine("7. Loan request");
         _console.WriteLine("8. Installment request");
-        
-        var choice = _console.ReadLine();
+
+        var choice = _input.GetNumberVariant(8);
         NextViewName = choice switch
         {
             "1" => PageName.ClientAllAccountsPage,

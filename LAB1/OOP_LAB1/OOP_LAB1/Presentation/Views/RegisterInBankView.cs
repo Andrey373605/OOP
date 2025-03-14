@@ -41,9 +41,9 @@ public class RegisterInBankView : IView
         
         
         _console.WriteLine($"Successfully chosen bank: {bank.Name}");
-        
-        
-        string role = _console.ReadLine();
+
+
+        string role = _input.GetNumberVariant(2);
         NextViewName = role switch
         {
             "1" => PageName.MainMenuPage,

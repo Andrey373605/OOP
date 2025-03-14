@@ -3,6 +3,7 @@ using OOP_LAB1.Application.Interfaces;
 using OOP_LAB1.Domain.Entities;
 using OOP_LAB1.Domain.Enums;
 using OOP_LAB1.Domain.Interfaces;
+using OOP_LAB1.Infrastructure.Data;
 
 namespace OOP_LAB1.Application.Services;
 
@@ -11,14 +12,15 @@ public class LoanService : ILoanService
     private readonly ILoanRepository _loanRepository;
     private readonly IAccountRepository _accountRepository;
     private readonly IClientRepository _clientRepository;
-    private readonly IBankRepository _bankRepository;
+    private readonly IDataBaseHelper _dataBaseHelper;
 
     public LoanService(ILoanRepository depositRepository, IAccountRepository accountRepository,
-        IClientRepository clientRepository, IBankRepository bankRepository)
+        IClientRepository clientRepository, IDataBaseHelper dataBaseHelper)
     {
         _loanRepository = depositRepository;
         _accountRepository = accountRepository;
         _clientRepository = clientRepository;
+        _dataBaseHelper = dataBaseHelper;
     }
     
 
@@ -29,17 +31,14 @@ public class LoanService : ILoanService
         {
             throw new ApplicationException($"Loan request with id: {loanId} does not exist");
         }
-
-        var account = new Account
-        {
-            Balance = 0,
-            AccountType = AccountType.Loan,
-            Status = AccountStatus.Active,
-            ClientId = loanRequest.ClientId
-        };
         
         loanRequest.SetActive();
-        await _accountRepository.AddAsync(account);
+        
+        var account = await _accountRepository.GetByIdAsync(loanRequest.AccountId);
+        account.DepositAccount(loanRequest.Amount);
+        account.Status = AccountStatus.Active;
+
+        await _accountRepository.UpdateAsync(account);
         await _loanRepository.UpdateAsync(loanRequest);
     }
     
@@ -69,16 +68,31 @@ public class LoanService : ILoanService
 
     public async Task CreateLoanRequest(int clientId, decimal depositAmount, int interestRate, int monthCount)
     {
-        var client = await _bankRepository.GetByIdAsync(clientId);
+        var client = await _clientRepository.GetByIdAsync(clientId);
         if (client == null)
         {
             throw new ApplicationException("Client not found");
         }
 
+        var account = new Account
+        {
+            Balance = 0,
+            AccountType = AccountType.Loan,
+            Status = AccountStatus.Blocked,
+            ClientId = client.Id,
+            BankId = client.BankId
+        };
+        
+        await _accountRepository.AddAsync(account);
+        var accointId = _dataBaseHelper.GetLastInsertId();
+        
+
         Loan loanRequest = new Loan
         {
             ClientId = client.Id,
+            AccountId = accointId,
             NumberOfPayments = monthCount,
+            RestMonth = monthCount,
             InterestRate = interestRate,
             Amount = depositAmount,
             IsActive = false

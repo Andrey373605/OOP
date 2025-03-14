@@ -33,8 +33,8 @@ public class RegistrationEmployeeView : IView
         _console.WriteLine("2. Manager");
         _console.WriteLine("3. Specialist");
         _console.WriteLine("4. Administrator");
-        string choice = _console.ReadLine();
-
+        
+        string choice = _input.GetNumberVariant(4);
         EmployeeRole role = choice switch
         {
             "1" => EmployeeRole.Operator,

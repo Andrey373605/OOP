@@ -21,7 +21,8 @@ public class ApplicationService : IApplicationService
 
     public ApplicationService(IContext context, IAuthorizationService authorizationService, 
         IAccountService accountService, IBankRepository bankRepository,
-        ITransactionService transactionService, IInstallmentService installmentService, ILoanService loanService)
+        ITransactionService transactionService, IInstallmentService installmentService, ILoanService loanService,
+        IClientService clientService, IEmployeeService employeeService)
     {
         _context = context;
         _authorizationService = authorizationService;
@@ -30,6 +31,8 @@ public class ApplicationService : IApplicationService
         _transactionService = transactionService;
         _installmentService = installmentService;
         _loanService = loanService;
+        _clientService = clientService;
+        _employeeService = employeeService;
     }
     
     public async Task LoginUser(string email, string password)
@@ -63,7 +66,8 @@ public class ApplicationService : IApplicationService
         {
             throw new UnauthorizedAccessException("Bank null");
         }
-        return await _clientService.GetClientByUserIdAsync(bank.Id, user.Id);
+        var client = await _clientService.GetClientByUserIdAsync(bank.Id, user.Id);
+        return client;
     }
     
     public async Task<Employee> GetCurrentEmployee()
