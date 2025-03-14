@@ -33,9 +33,34 @@ public class LoanRepository : ILoanRepository
         await Task.Run(() => _dataBaseHelper.ExecuteNonQuery(query, parameters));
     }
 
-    public Task UpdateAsync(Loan loan)
+    public async Task UpdateAsync(Loan loan)
     {
-        throw new NotImplementedException();
+        var query = @"
+            UPDATE Loan
+            SET AccountId = @AccountId,
+                ClientId = @ClientId,
+                Amount = @Amount,
+                NumberOfPayments = @NumberOfPayments,
+                InterestRate = @InterestRate,
+                RestMonth = @RestMonth,
+                IsActive = @IsActive
+            WHERE Id = @Id;
+        ";
+
+        var parameters = new Dictionary<string, object>
+        {
+            { "Id", loan.Id },
+            { "AccountId", loan.AccountId },
+            { "ClientId", loan.ClientId },
+            { "Amount", loan.Amount },
+            { "NumberOfPayments", loan.NumberOfPayments },
+            { "InterestRate", loan.InterestRate },
+            { "RestMonth", loan.RestMonth },
+            { "IsActive", loan.IsActive }
+        };
+
+        await Task.Run(() => _dataBaseHelper.ExecuteNonQuery(query, parameters));
+        
     }
 
     public Task DeleteAsync(Loan loan)
@@ -43,8 +68,37 @@ public class LoanRepository : ILoanRepository
         throw new NotImplementedException();
     }
 
-    public Task<Loan> GetByIdAsync(int loanId)
+    public async Task<Loan> GetByIdAsync(int loanId)
     {
-        throw new NotImplementedException();
+        var query = @"
+                SELECT Id, AccountId, ClientId, Amount, NumberOfPayments, InterestRate, RestMonth, IsActive
+                FROM Loan
+                WHERE Id = @Id;
+            ";
+
+        var parameters = new Dictionary<string, object>
+        {
+            { "Id", loanId }
+        };
+
+        var result = await Task.Run(() =>_dataBaseHelper.ExecuteQuery(query, parameters));
+
+        if (result.Count == 0)
+        {
+            return null;
+        }
+
+        var row = result[0];
+        return new Loan
+        {
+            Id = Convert.ToInt32(row["Id"]),
+            AccountId = Convert.ToInt32(row["AccountId"]),
+            ClientId = Convert.ToInt32(row["ClientId"]),
+            Amount = Convert.ToDecimal(row["Amount"]),
+            NumberOfPayments = Convert.ToInt32(row["NumberOfPayments"]),
+            InterestRate = Convert.ToInt32(row["InterestRate"]),
+            RestMonth = Convert.ToDecimal(row["RestMonth"]),
+            IsActive = Convert.ToBoolean(row["IsActive"])
+        };
     }
 }

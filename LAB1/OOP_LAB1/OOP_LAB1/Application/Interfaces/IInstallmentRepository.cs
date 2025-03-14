@@ -6,8 +6,6 @@ public interface IInstallmentRepository
 {
     public Task AddAsync(Installment installment);
     
-    public Task CreateAsync(Installment installment);
-    
     public Task UpdateAsync(Installment installment);
     
     public Task DeleteAsync(Installment installment);

@@ -14,11 +14,7 @@ public class ClientRepository : IClientRepository
     {
         _dataBaseHelper = dataBaseHelper;
     }
-    public Task AddClient(Client client)
-    {
-        throw new NotImplementedException();
-    }
-
+    
     public async Task UpdateAsync(Client client)
     {
         string query = @"UPDATE Client 
