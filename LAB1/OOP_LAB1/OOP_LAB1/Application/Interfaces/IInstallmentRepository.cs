@@ -1,4 +1,5 @@
-﻿using OOP_LAB1.Domain.Entities;
+﻿using System.Collections;
+using OOP_LAB1.Domain.Entities;
 
 namespace OOP_LAB1.Application.Interfaces;
 
@@ -10,4 +11,5 @@ public interface IInstallmentRepository
     
     public Task DeleteAsync(Installment installment);
     public Task<Installment> GetByIdAsync(int installmentId);
+    Task<IEnumerable<Installment>> GetAllByClientId(int clientId);
 }

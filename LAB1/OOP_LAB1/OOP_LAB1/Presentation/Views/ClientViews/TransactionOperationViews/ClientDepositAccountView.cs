@@ -2,10 +2,12 @@
 using OOP_LAB1.Presentation.Console;
 using OOP_LAB1.Presentation.Enums;
 using OOP_LAB1.Presentation.Handler;
+using OOP_LAB1.Presentation.Navigator;
 using OOP_LAB1.Presentation.Validators;
 
-namespace OOP_LAB1.Presentation.Views.ClientViews;
+namespace OOP_LAB1.Presentation.Views;
 
+[ViewMapping(PageName.ClientDepositAccountPage)]
 public class ClientDepositAccountView : IView
 {
     private readonly IApplicationService _applicationService;
@@ -31,6 +33,7 @@ public class ClientDepositAccountView : IView
         
         var sum = _input.GetDecimalNumber("Enter Sum Of Amount", new SumValidator());
 
+        _console.Clear();
         try
         {
             await _applicationService.DepositAccount(accountId, sum);
@@ -41,7 +44,7 @@ public class ClientDepositAccountView : IView
             _console.WriteLine(e.Message);
         }
 
-        NextViewName = PageName.ClientMainMenuPage;
+        NextViewName = PageName.ClientTransactionMenuPage;
 
     }
 }

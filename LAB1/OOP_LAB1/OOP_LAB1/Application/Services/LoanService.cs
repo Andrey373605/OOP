@@ -41,7 +41,12 @@ public class LoanService : ILoanService
         await _accountRepository.UpdateAsync(account);
         await _loanRepository.UpdateAsync(loanRequest);
     }
-    
+
+    public async Task<IEnumerable<Loan>> GetAllClientLoansAsync(int clientId)
+    {
+        return await _loanRepository.GetAllByClientId(clientId);
+    }
+
     public async Task DepositMoney(int loanId)
     {
         Loan loan = await _loanRepository.GetByIdAsync(loanId);

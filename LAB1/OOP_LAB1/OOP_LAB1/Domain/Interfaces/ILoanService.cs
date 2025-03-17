@@ -1,4 +1,5 @@
-﻿using OOP_LAB1.Application.Context;
+﻿using System.Collections;
+using OOP_LAB1.Application.Context;
 using OOP_LAB1.Domain.Entities;
 
 namespace OOP_LAB1.Domain.Interfaces;
@@ -10,4 +11,5 @@ public interface ILoanService
     public Task CreateLoanRequest(int clientId, decimal depositAmount, int interestRate, int monthCount);
 
     public Task ApproveLoanRequest(int loanId);
+    Task<IEnumerable<Loan>> GetAllClientLoansAsync(int clientId);
 }

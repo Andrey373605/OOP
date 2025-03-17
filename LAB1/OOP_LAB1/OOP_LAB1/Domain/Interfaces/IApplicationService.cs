@@ -24,4 +24,6 @@ public interface IApplicationService
     Task CreateLoanRequest(decimal sum, int rate, int duration);
     Task LoginEmployee();
     Task<EmployeeRole> GetCurrentEmployeeRole();
+    Task<IEnumerable<Loan>> GetCurrentClientLoans();
+    Task<IEnumerable<Installment>> GetCurrentClientInstallments();
 }

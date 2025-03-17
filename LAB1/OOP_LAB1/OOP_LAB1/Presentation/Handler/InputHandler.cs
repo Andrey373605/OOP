@@ -41,9 +41,10 @@ public class InputHandler : IInputHandler
         while (true)
         {
             var input = _console.ReadLine();
+            
             if (validator.IsValid(input))
             {
-                Decimal.TryParse(input, out var result);
+                Decimal.TryParse(input.Replace(".", ","), out var result);
                 return result;
             }
             _console.WriteLine(validator.GetInvalidValidationString());

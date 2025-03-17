@@ -76,5 +76,10 @@ public class InstallmentService : IInstallmentService
         await _installmentRepository.UpdateAsync(installmentRequest);
         
     }
+
+    public async Task<IEnumerable<Installment>> GetAllClientInstallmentsAsync(int clientId)
+    {
+        return await _installmentRepository.GetAllByClientId(clientId);
+    }
 }
 

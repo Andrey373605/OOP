@@ -2,17 +2,19 @@
 using OOP_LAB1.Presentation.Console;
 using OOP_LAB1.Presentation.Enums;
 using OOP_LAB1.Presentation.Handler;
+using OOP_LAB1.Presentation.Navigator;
 using OOP_LAB1.Presentation.Validators;
 
-namespace OOP_LAB1.Presentation.Views.ClientViews;
+namespace OOP_LAB1.Presentation.Views;
 
-public class ClientWithdrawAccountView : IView
+[ViewMapping(PageName.ClientTransferAccountPage)]
+public class ClientTransferAccountView : IView
 {
     private readonly IApplicationService _applicationService;
     private readonly IConsole _console;
     private readonly IInputHandler _input;
 
-    public ClientWithdrawAccountView(IApplicationService applicationService, IConsole console, IInputHandler input)
+    public ClientTransferAccountView(IApplicationService applicationService, IConsole console, IInputHandler input)
     {
         _applicationService = applicationService;
         _console = console;
@@ -28,14 +30,17 @@ public class ClientWithdrawAccountView : IView
             _console.WriteLine($"Id: {a.Id} \t Balance: {a.Balance} " +
                                $"\t Active: {a.Status.ToString()} \t Type: {a.AccountType.ToString()}" );
         }
-        var accountId = _input.GetIntNumber("Enter Account Id", new IntValidator());
+        var fromAccountId = _input.GetIntNumber("Enter from Account Id", new IntValidator());
+        
+        var toAccountId = _input.GetIntNumber("Enter to Account Id", new IntValidator());
         
         var sum = _input.GetDecimalNumber("Enter Sum Of Amount", new SumValidator());
 
+        _console.Clear();
         try
         {
-            await _applicationService.DepositAccount(accountId, sum);
-            _console.WriteLine("Success withdraw!");
+            await _applicationService.TransferAccount(fromAccountId, toAccountId, sum);
+            _console.WriteLine("Success!");
         }
         catch (Exception e)
         {

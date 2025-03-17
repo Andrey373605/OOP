@@ -3,9 +3,11 @@ using OOP_LAB1.Domain.Interfaces;
 using OOP_LAB1.Presentation.Console;
 using OOP_LAB1.Presentation.Enums;
 using OOP_LAB1.Presentation.Handler;
+using OOP_LAB1.Presentation.Navigator;
 
-namespace OOP_LAB1.Presentation.Views.ClientViews;
+namespace OOP_LAB1.Presentation.Views;
 
+[ViewMapping(PageName.ClientCreateAccountPage)]
 public class ClientCreateAccountView : IView
 {
     private readonly IConsole _console;
@@ -27,6 +29,7 @@ public class ClientCreateAccountView : IView
         
         if (choice == "1")
         {
+            _console.Clear();
             try
             {
                 await _applicationService.CreateAccount();

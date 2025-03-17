@@ -2,10 +2,12 @@
 using OOP_LAB1.Presentation.Console;
 using OOP_LAB1.Presentation.Enums;
 using OOP_LAB1.Presentation.Handler;
+using OOP_LAB1.Presentation.Navigator;
 using OOP_LAB1.Presentation.Validators;
 
-namespace OOP_LAB1.Presentation.Views.ClientViews;
+namespace OOP_LAB1.Presentation.Views;
 
+[ViewMapping(PageName.ClientLoanRequestPage)]
 public class ClientLoanRequestView : IView
 {
     IConsole _console;
@@ -39,6 +41,7 @@ public class ClientLoanRequestView : IView
             
             var rate = _input.GetIntNumber("Enter rate:", new RateValidator());
             
+            _console.Clear();
             try
             {
                 await _applicationService.CreateLoanRequest(sum, rate, duration);
@@ -51,7 +54,7 @@ public class ClientLoanRequestView : IView
             
         }
         
-        NextViewName = PageName.ClientMainMenuPage;
+        NextViewName = PageName.ClientLoanMenuPage;
         
     }
 }

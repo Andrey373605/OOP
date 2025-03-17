@@ -2,10 +2,12 @@
 using OOP_LAB1.Presentation.Console;
 using OOP_LAB1.Presentation.Enums;
 using OOP_LAB1.Presentation.Handler;
+using OOP_LAB1.Presentation.Navigator;
 using OOP_LAB1.Presentation.Validators;
 
-namespace OOP_LAB1.Presentation.Views.ClientViews;
+namespace OOP_LAB1.Presentation.Views;
 
+[ViewMapping(PageName.ClientFreezeAccountPage)]
 public class ClientFreezeAccountView : IView
 {
     private readonly IConsole _console;
@@ -31,6 +33,7 @@ public class ClientFreezeAccountView : IView
         {
             var accountId = _input.GetIntNumber("Account Id", new IntValidator());
             
+            _console.Clear();
             try
             {
                 await _applicationService.FreezeAccount(accountId);
@@ -43,7 +46,7 @@ public class ClientFreezeAccountView : IView
             
         }
 
-        NextViewName = PageName.ClientMainMenuPage;
+        NextViewName = PageName.ClientAccountMenuPage;
 
     }
 }

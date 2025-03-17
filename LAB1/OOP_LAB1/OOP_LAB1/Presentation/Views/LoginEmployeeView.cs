@@ -2,9 +2,11 @@
 using OOP_LAB1.Domain.Interfaces;
 using OOP_LAB1.Presentation.Console;
 using OOP_LAB1.Presentation.Enums;
+using OOP_LAB1.Presentation.Navigator;
 
 namespace OOP_LAB1.Presentation.Views;
 
+[ViewMapping(PageName.LoginEmployeePage)]
 public class LoginEmployeeView : IView
 {
     IApplicationService _applicationService;
@@ -18,6 +20,7 @@ public class LoginEmployeeView : IView
     public PageName? NextViewName { get; private set; }
     public async Task Execute()
     {
+        _console.Clear();
         try
         {
             await _applicationService.LoginEmployee();

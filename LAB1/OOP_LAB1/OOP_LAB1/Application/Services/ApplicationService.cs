@@ -1,4 +1,5 @@
-﻿using OOP_LAB1.Application.Context;
+﻿using System.Collections;
+using OOP_LAB1.Application.Context;
 using OOP_LAB1.Application.Interfaces;
 using OOP_LAB1.Domain.Entities;
 using OOP_LAB1.Domain.Enums;
@@ -192,6 +193,30 @@ public class ApplicationService : IApplicationService
         var user = _context.CurrentUser;
         var bank = _context.CurrentBank;
         return await _employeeService.GetEmployeeRole(user.Id, bank.Id);
+    }
+
+    public async Task<IEnumerable<Loan>> GetCurrentClientLoans()
+    {
+        var client = await GetCurrentClient();
+        if (client == null)
+        {
+            return new List<Loan>();
+        }
+        
+        var accounts = await _loanService.GetAllClientLoansAsync(client.Id);
+        return accounts.ToList();
+    }
+
+    public async Task<IEnumerable<Installment>> GetCurrentClientInstallments()
+    {
+        var client = await GetCurrentClient();
+        if (client == null)
+        {
+            return new List<Installment>();
+        }
+        
+        var accounts = await _installmentService.GetAllClientInstallmentsAsync(client.Id);
+        return accounts.ToList();
     }
 
     public async Task WithdrawAccount(int accountId, decimal sum)

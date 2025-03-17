@@ -3,9 +3,11 @@ using OOP_LAB1.Domain.Interfaces;
 using OOP_LAB1.Presentation.Console;
 using OOP_LAB1.Presentation.Enums;
 using OOP_LAB1.Presentation.Handler;
+using OOP_LAB1.Presentation.Navigator;
 
-namespace OOP_LAB1.Presentation.Views.ClientViews;
+namespace OOP_LAB1.Presentation.Views;
 
+[ViewMapping(PageName.ClientMainMenuPage)]
 public class ClientMainMenuView : IView
 {
     public PageName? NextViewName { get; private set; }
@@ -24,26 +26,23 @@ public class ClientMainMenuView : IView
     }
     public async Task Execute()
     {
-        _console.WriteLine("1. Show all accounts");
-        _console.WriteLine("2. Create a new account");
-        _console.WriteLine("3. Deposit account");
-        _console.WriteLine("4. Transfer money");
-        _console.WriteLine("5. Freeze account");
-        _console.WriteLine("6. Unfreeze account");
-        _console.WriteLine("7. Loan request");
-        _console.WriteLine("8. Installment request");
+        var menu_list = new List<string>
+        {
+            "Account manage",
+            "Loan manage",
+            "Installment manage",
+            "Transfer manage",
+        };
+        
+        _console.WriteMenuList(menu_list);
 
-        var choice = _input.GetNumberVariant(8);
+        var choice = _input.GetNumberVariant(4);
         NextViewName = choice switch
         {
-            "1" => PageName.ClientAllAccountsPage,
-            "2" => PageName.ClientCreateAccountPage,
-            "3" => PageName.ClientDepositAccountPage,
-            "4" => PageName.ClientTransferAccountPage,
-            "5" => PageName.ClientFreezeAccountPage,
-            "6" => PageName.ClientUnfreezeAccountPage,
-            "7" => PageName.ClientLoanRequestPage,
-            "8" => PageName.CleintInstallmentRequstPage,
+            "1" => PageName.ClientAccountMenuPage,
+            "2" => PageName.ClientLoanMenuPage,
+            "3" => PageName.ClientInstallmentMenuPage,
+            "4" => PageName.ClientTransactionMenuPage,
             _ => NextViewName
         };
     }

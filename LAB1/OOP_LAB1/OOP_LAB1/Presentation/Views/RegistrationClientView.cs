@@ -4,10 +4,12 @@ using OOP_LAB1.Domain.Interfaces;
 using OOP_LAB1.Presentation.Console;
 using OOP_LAB1.Presentation.Enums;
 using OOP_LAB1.Presentation.Handler;
+using OOP_LAB1.Presentation.Navigator;
 using OOP_LAB1.Presentation.Validators;
 
 namespace OOP_LAB1.Presentation.Views;
 
+[ViewMapping(PageName.RegistrationClientPage)]
 public class RegistrationClientView : IView
 {
     private readonly IInputHandler _input;
@@ -34,6 +36,7 @@ public class RegistrationClientView : IView
         var series = _input.GetString("Series: ", new SeriesValidator());
         var identificationNumber = _input.GetString("Identification number: ", new IdentificationNumberValidator());
         
+        _console.Clear();
         try
         {
             await _applicationService.RegisterClient(firstName, lastName, middleName, phoneNumber,

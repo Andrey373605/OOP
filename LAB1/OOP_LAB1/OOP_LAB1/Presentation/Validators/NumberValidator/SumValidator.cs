@@ -6,7 +6,7 @@ public class SumValidator : IValidator
 {
     public bool IsValid(string stringToValidate)
     {
-        return Regex.IsMatch(stringToValidate, @"^\d+(\.\d{0,2})?$");
+        return Regex.IsMatch(stringToValidate, @"^\d+(?:[\.,]\d{1,2})?$");
     }
 
     public string GetInvalidValidationString()

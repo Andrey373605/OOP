@@ -1,4 +1,5 @@
-﻿using OOP_LAB1.Infrastructure.Data;
+﻿using System.Reflection;
+using OOP_LAB1.Infrastructure.Data;
 using Microsoft.Extensions.DependencyInjection;
 using OOP_LAB1.Application.Context;
 using OOP_LAB1.Application.Interfaces;
@@ -10,10 +11,8 @@ using OOP_LAB1.Presentation.Enums;
 using OOP_LAB1.Presentation.Handler;
 using OOP_LAB1.Presentation.Navigator;
 using OOP_LAB1.Presentation.Views;
-using OOP_LAB1.Presentation.Views.ClientViews;
 using Console = OOP_LAB1.Presentation.Console.Console;
-using System.Linq;
-using System.Reflection;
+
 
 // Настройка DI
 var serviceProvider = new ServiceCollection()
@@ -63,18 +62,32 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<LoginUserView>()
     .AddTransient<ChooseRoleView>()
     .AddTransient<ChooseBankView>()
-    .AddTransient<ClientMainMenuView>()
     .AddTransient<LoginClientView>()
     
-    .AddTransient<ClientAllAccountsView>()
-    .AddTransient<ClientCreateAccountView>()
+    .AddTransient<ClientMainMenuView>()
+    //transactions view
+    .AddTransient<ClientTransactionMenuView>()
     .AddTransient<ClientDepositAccountView>()
     .AddTransient<ClientTransferAccountView>()
     .AddTransient<ClientWithdrawAccountView>()
+    //account views
+    .AddTransient<ClientAccountMenuView>()
+    .AddTransient<ClientAllAccountsView>()
+    .AddTransient<ClientWithdrawAccountView>()
     .AddTransient<ClientFreezeAccountView>()
     .AddTransient<ClientUnfreezeAccountView>()
+    .AddTransient<ClientCreateAccountView>()
+    
+    //loan views
+    .AddTransient<ClientLoanMenuView>()
     .AddTransient<ClientLoanRequestView>()
+    .AddTransient<ClientAllLoanView>()
+    
+    //installment views
+    .AddTransient<ClientInstallmentMenuView>()
     .AddTransient<ClientInstallmentRequestView>()
+    .AddTransient<ClientAllInstallmentView>()
+    
     
     .AddTransient<LoginEmployeeView>()
     .AddTransient<ExitView>()
@@ -85,26 +98,26 @@ var serviceProvider = new ServiceCollection()
 
 var navigator = serviceProvider.GetService<INavigator>();
 
-navigator.RegisterView(PageName.RegisterInBankPage, serviceProvider.GetService<RegisterInBankView>());
-navigator.RegisterView(PageName.MainMenuPage, serviceProvider.GetService<MainMenuView>());
-navigator.RegisterView(PageName.RegistrationUserPage, serviceProvider.GetService<RegistrationUserView>());
-navigator.RegisterView(PageName.RegistrationClientPage, serviceProvider.GetService<RegistrationClientView>());
-navigator.RegisterView(PageName.RegistrationEmployeePage, serviceProvider.GetService<RegistrationEmployeeView>());
-navigator.RegisterView(PageName.LoginUserPage, serviceProvider.GetService<LoginUserView>());
-navigator.RegisterView(PageName.ChooseRolePage, serviceProvider.GetService<ChooseRoleView>());
-navigator.RegisterView(PageName.ChooseBankPage, serviceProvider.GetService<ChooseBankView>());
-navigator.RegisterView(PageName.ClientMainMenuPage, serviceProvider.GetService<ClientMainMenuView>());
-navigator.RegisterView(PageName.ExitPage, serviceProvider.GetService<ExitView>());
-navigator.RegisterView(PageName.LoginClientPage, serviceProvider.GetService<LoginClientView>());
-navigator.RegisterView(PageName.ClientAllAccountsPage, serviceProvider.GetService<ClientAllAccountsView>());
-navigator.RegisterView(PageName.ClientCreateAccountPage, serviceProvider.GetService<ClientCreateAccountView>());
-navigator.RegisterView(PageName.ClientDepositAccountPage, serviceProvider.GetService<ClientDepositAccountView>());
-navigator.RegisterView(PageName.ClientTransferAccountPage, serviceProvider.GetService<ClientTransferAccountView>());
-navigator.RegisterView(PageName.ClientWithdrawAccountPage, serviceProvider.GetService<ClientWithdrawAccountView>());
-navigator.RegisterView(PageName.ClientFreezeAccountPage, serviceProvider.GetService<ClientFreezeAccountView>());
-navigator.RegisterView(PageName.ClientUnfreezeAccountPage, serviceProvider.GetService<ClientUnfreezeAccountView>());
-navigator.RegisterView(PageName.ClientLoanRequestPage, serviceProvider.GetService<ClientLoanRequestView>());
-navigator.RegisterView(PageName.CleintInstallmentRequstPage, serviceProvider.GetService<ClientInstallmentRequestView>());
-navigator.RegisterView(PageName.LoginEmployeePage, serviceProvider.GetService<LoginEmployeeView>());
+var viewTypes = Assembly.GetExecutingAssembly().GetTypes()
+    .Where(t => typeof(IView).IsAssignableFrom(t) 
+                && !t.IsInterface 
+                && !t.IsAbstract)
+    .ToList();
+
+foreach (var viewType in viewTypes)
+{
+    // Находим атрибут ViewMapping на классе
+    var attribute = viewType.GetCustomAttribute<ViewMappingAttribute>();
+    if (attribute != null)
+    {
+        // Создаем экземпляр view через DI
+        var view = (IView)serviceProvider.GetService(viewType);
+        if (view != null)
+        {
+            // Регистрируем view в навигаторе
+            navigator.RegisterView(attribute.PageName, view);
+        }
+    }
+}
 
 navigator.Run(PageName.MainMenuPage);

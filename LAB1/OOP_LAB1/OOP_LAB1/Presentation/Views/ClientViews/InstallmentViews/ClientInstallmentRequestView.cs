@@ -2,10 +2,12 @@
 using OOP_LAB1.Presentation.Console;
 using OOP_LAB1.Presentation.Enums;
 using OOP_LAB1.Presentation.Handler;
+using OOP_LAB1.Presentation.Navigator;
 using OOP_LAB1.Presentation.Validators;
 
-namespace OOP_LAB1.Presentation.Views.ClientViews;
+namespace OOP_LAB1.Presentation.Views;
 
+[ViewMapping(PageName.ClientInstallmentRequestPage)]
 public class ClientInstallmentRequestView : IView
 {
     IConsole _console;
@@ -32,6 +34,7 @@ public class ClientInstallmentRequestView : IView
             
             var duration = _input.GetIntNumber("Enter month count: ", new MonthValidator());
             
+            _console.Clear();
             try
             {
                 await _applicationService.CreateInstallmentRequest(sum, duration);
@@ -44,7 +47,7 @@ public class ClientInstallmentRequestView : IView
             
         }
         
-        NextViewName = PageName.ClientMainMenuPage;
+        NextViewName = PageName.ClientInstallmentMenuPage;
         
     }
 }

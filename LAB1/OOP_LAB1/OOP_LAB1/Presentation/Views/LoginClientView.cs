@@ -3,10 +3,12 @@ using OOP_LAB1.Domain.Interfaces;
 using OOP_LAB1.Presentation.Console;
 using OOP_LAB1.Presentation.Enums;
 using OOP_LAB1.Presentation.Handler;
+using OOP_LAB1.Presentation.Navigator;
 using OOP_LAB1.Presentation.Validators;
 
 namespace OOP_LAB1.Presentation.Views;
 
+[ViewMapping(PageName.LoginClientPage)]
 public class LoginClientView : IView
 {
     private readonly IConsole _console;
@@ -20,6 +22,7 @@ public class LoginClientView : IView
     public PageName? NextViewName { get; private set; }
     public async Task Execute()
     {
+        _console.Clear();
         try
         {
             await _applicationService.LoginClient();

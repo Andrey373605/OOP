@@ -3,10 +3,12 @@ using OOP_LAB1.Domain.Interfaces;
 using OOP_LAB1.Presentation.Console;
 using OOP_LAB1.Presentation.Enums;
 using OOP_LAB1.Presentation.Handler;
+using OOP_LAB1.Presentation.Navigator;
 using OOP_LAB1.Presentation.Validators;
 
 namespace OOP_LAB1.Presentation.Views;
 
+[ViewMapping(PageName.LoginUserPage)]
 public class LoginUserView : IView
 {
     private readonly IInputHandler _input;
@@ -27,6 +29,7 @@ public class LoginUserView : IView
         string email = _input.GetString("Email: ", new EmailValidator());
         string password = _input.GetString("Password: ", new PasswordValidator());
 
+        _console.Clear();
         try
         {
             await _applicationService.LoginUser(email, password);

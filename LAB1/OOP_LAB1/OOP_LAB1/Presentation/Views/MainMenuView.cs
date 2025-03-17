@@ -1,9 +1,11 @@
 ﻿using OOP_LAB1.Presentation.Console;
 using OOP_LAB1.Presentation.Enums;
 using OOP_LAB1.Presentation.Handler;
+using OOP_LAB1.Presentation.Navigator;
 
 namespace OOP_LAB1.Presentation.Views;
 
+[ViewMapping(PageName.MainMenuPage)]
 public class MainMenuView : IView
 {
     public PageName? NextViewName { get; private set; }
@@ -22,7 +24,9 @@ public class MainMenuView : IView
         _console.WriteLine("2. Login");
         _console.WriteLine("3. Exit");
 
+        
         var choice = _inputHandler.GetNumberVariant(3);
+        _console.Clear();
         NextViewName = choice switch
         {
             "1" => PageName.RegistrationUserPage,

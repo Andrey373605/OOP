@@ -5,9 +5,11 @@ using OOP_LAB1.Presentation.Enums;
 using OOP_LAB1.Presentation.Handler;
 using OOP_LAB1.Presentation.Validators;
 using OOP_LAB1.Domain.Entities;
+using OOP_LAB1.Presentation.Navigator;
 
 namespace OOP_LAB1.Presentation.Views;
 
+[ViewMapping(PageName.RegisterInBankPage)]
 public class RegisterInBankView : IView
 {
     private readonly IConsole _console;
@@ -39,7 +41,7 @@ public class RegisterInBankView : IView
         
         Bank bank = await _bankService.GetBankByName(bankName);
         
-        
+        _console.Clear();
         _console.WriteLine($"Successfully chosen bank: {bank.Name}");
 
 

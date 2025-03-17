@@ -1,4 +1,5 @@
-﻿using OOP_LAB1.Application.Interfaces;
+﻿using System.Collections;
+using OOP_LAB1.Application.Interfaces;
 using OOP_LAB1.Domain.Entities;
 using OOP_LAB1.Infrastructure.Data;
 
@@ -96,5 +97,44 @@ public class InstallmentRepository : IInstallmentRepository
             RestMonth = Convert.ToInt32(row["RestMonth"]),
             IsActive = Convert.ToBoolean(row["IsActive"])
         };
+    }
+
+    public async Task<IEnumerable<Installment>> GetAllByClientId(int clientId)
+    {
+        var query = @"
+                SELECT Id, AccountId, ClientId, Amount, NumberOfPayments, RestMonth, IsActive
+                FROM Installment
+                WHERE ClientId = @ClientId;
+            ";
+
+        var parameters = new Dictionary<string, object>
+        {
+            { "ClientId", clientId }
+        };
+
+        var result = await Task.Run(() =>_dataBaseHelper.ExecuteQuery(query, parameters));
+
+        if (result.Count == 0)
+        {
+            return null;
+        }
+        
+        var installments = new List<Installment>();
+
+        foreach (var row in result)
+        {
+            installments.Add(new Installment
+            {
+                Id = Convert.ToInt32(row["Id"]),
+                AccountId = Convert.ToInt32(row["AccountId"]),
+                ClientId = Convert.ToInt32(row["ClientId"]),
+                Amount = Convert.ToDecimal(row["Amount"]),
+                NumberOfPayments = Convert.ToInt32(row["NumberOfPayments"]),
+                RestMonth = Convert.ToInt32(row["RestMonth"]),
+                IsActive = Convert.ToBoolean(row["IsActive"])
+            });
+        }
+
+        return installments;
     }
 }

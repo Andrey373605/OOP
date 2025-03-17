@@ -5,10 +5,12 @@ using OOP_LAB1.Domain.Interfaces;
 using OOP_LAB1.Presentation.Console;
 using OOP_LAB1.Presentation.Enums;
 using OOP_LAB1.Presentation.Handler;
+using OOP_LAB1.Presentation.Navigator;
 using OOP_LAB1.Presentation.Validators;
 
 namespace OOP_LAB1.Presentation.Views;
 
+[ViewMapping(PageName.ChooseBankPage)]
 public class ChooseBankView : IView
 {
     public PageName? NextViewName { get; private set; }
@@ -37,6 +39,7 @@ public class ChooseBankView : IView
         var bankName = _input.GetString("Enter bank name: ", new NameValidator());
         
 
+        _console.Clear();
         try
         {
             var bank = await _bankService.GetBankByName(bankName);

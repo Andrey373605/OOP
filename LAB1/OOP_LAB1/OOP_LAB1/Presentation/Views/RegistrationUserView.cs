@@ -3,10 +3,12 @@ using OOP_LAB1.Domain.Interfaces;
 using OOP_LAB1.Presentation.Console;
 using OOP_LAB1.Presentation.Enums;
 using OOP_LAB1.Presentation.Handler;
+using OOP_LAB1.Presentation.Navigator;
 using OOP_LAB1.Presentation.Validators;
 
 namespace OOP_LAB1.Presentation.Views;
 
+[ViewMapping(PageName.RegistrationUserPage)]
 public class RegistrationUserView : IView
 {
     public PageName? NextViewName { get; private set; }
@@ -27,6 +29,7 @@ public class RegistrationUserView : IView
         string email = _input.GetString("Enter email address", new EmailValidator());
         string password = _input.GetString("Enter password", new PasswordValidator());
 
+        _console.Clear();
         try
         {
             await _auth.RegisterUser(email, password);

@@ -16,92 +16,102 @@ public class TransactionService : ITransactionService
         _transactionRepository = transactionRepository;
     }
     
-    public async Task<(bool, string)> WithdrawFunds(decimal amount, int accountId)
+    public async Task<bool> WithdrawFunds(decimal amount, int accountId)
     {
-        try
-        {
-            var account = await _accountRepository.GetByIdAsync(accountId);
-            account.WithdrawAccount(amount);
-
-            await _accountRepository.UpdateAsync(account);
-            
-            var transaction = new Transaction
-            {
-                FromAccountId = accountId,
-                ToAccountId = null,
-                Amount = amount,
-                Date = DateTime.UtcNow,
-                Type = TransactionType.Withdraw
-            };
-            
-            await _transactionRepository.AddAsync(transaction);
-            
-            return (true, "successful withdraw");
-        }
-        catch (Exception e)
-        {
-            return (false, e.Message);
-        }
         
+        var account = await _accountRepository.GetByIdAsync(accountId);
+        account.WithdrawAccount(amount);
+
+        await _accountRepository.UpdateAsync(account);
+        
+        var transaction = new Transaction
+        {
+            FromAccountId = accountId,
+            ToAccountId = null,
+            Amount = amount,
+            Date = DateTime.UtcNow,
+            Type = TransactionType.Withdraw
+        };
+        
+        await _transactionRepository.AddAsync(transaction);
+        
+        return true;
     }
 
-    public async Task<(bool, string)> TransferFunds(decimal amount, int fromAccountId, int toAccountId)
+    public async Task<bool> TransferFunds(decimal amount, int fromAccountId, int toAccountId)
     {
-        try
+        
+        var fromAccount = await _accountRepository.GetByIdAsync(fromAccountId);
+        var toAccount = await _accountRepository.GetByIdAsync(toAccountId);
+
+        if (fromAccount == null || toAccount == null)
         {
-            var fromAccount = await _accountRepository.GetByIdAsync(fromAccountId);
-            var toAccount = await _accountRepository.GetByIdAsync(toAccountId);
-            fromAccount.WithdrawAccount(amount);
-            toAccount.DepositAccount(amount);
-            await _accountRepository.UpdateAsync(fromAccount);
-            await _accountRepository.UpdateAsync(toAccount);
-            
-            var transaction = new Transaction
-            {
-                FromAccountId = fromAccountId,
-                ToAccountId = toAccountId,
-                Amount = amount,
-                Date = DateTime.UtcNow,
-                Type = TransactionType.Withdraw
-            };
-            
-            await _transactionRepository.AddAsync(transaction);
-            
-            return (true, "successful transfer");
+            throw new NullReferenceException("Account dose not exist");
         }
-        catch (Exception e)
+
+        if (fromAccount.Status != AccountStatus.Active)
         {
-            return (false, e.Message);
+            throw new ArgumentException("From Account is not active");
+        }
+
+        if (toAccount.Status != AccountStatus.Active)
+        {
+            throw new ArgumentException("To Account is not active");
+        }
+
+        if (toAccountId == fromAccountId)
+        {
+            throw new ArgumentException("From Account Id is equal to To Account Id");
+        }
+
+        if (fromAccount.Balance < amount)
+        {
+            throw new ArgumentException("Not enough balance");
+        }
+
+        if (amount == 0)
+        {
+            throw new ArgumentException("Amount is equal to 0");
         }
         
+        var transaction = new Transaction
+        {
+            FromAccountId = fromAccountId,
+            ToAccountId = toAccountId,
+            Amount = amount,
+            Date = DateTime.UtcNow,
+            Type = TransactionType.Withdraw
+        };
+        
+        await _transactionRepository.AddAsync(transaction);
+        
+        fromAccount.WithdrawAccount(amount);
+        toAccount.DepositAccount(amount);
+        await _accountRepository.UpdateAsync(fromAccount);
+        await _accountRepository.UpdateAsync(toAccount);
+        
+        return true;
     }
 
-    public async Task<(bool, string)> DepositFunds(decimal amount, int accountId)
+    public async Task<bool> DepositFunds(decimal amount, int accountId)
     {
-        try
-        {
-            //обращение к терминалу???
-            var account = await _accountRepository.GetByIdAsync(accountId);
-            account.DepositAccount(amount);
-            await _accountRepository.UpdateAsync(account);
-            
-            var transaction = new Transaction
-            {
-                FromAccountId = null,
-                ToAccountId = accountId,
-                Amount = amount,
-                Date = DateTime.UtcNow,
-                Type = TransactionType.Withdraw
-            };
-            
-            await _transactionRepository.AddAsync(transaction);
-            
-            return (true, "successful deposit");
-        }
-        catch (Exception e)
-        {
-            return (false, e.Message);
-        }
+        //обращение к терминалу???
+        var account = await _accountRepository.GetByIdAsync(accountId);
+        account.DepositAccount(amount);
+        await _accountRepository.UpdateAsync(account);
         
+        var transaction = new Transaction
+        {
+            FromAccountId = null,
+            ToAccountId = accountId,
+            Amount = amount,
+            Date = DateTime.UtcNow,
+            Type = TransactionType.Withdraw
+        };
+        
+        await _transactionRepository.AddAsync(transaction);
+
+        return true;
+
     }
 }

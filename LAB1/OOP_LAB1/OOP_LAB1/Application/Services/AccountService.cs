@@ -27,6 +27,11 @@ public class AccountService : IAccountService
         {
             throw new NullReferenceException("Account not found");
         }
+
+        if (account.Status != AccountStatus.Active)
+        {
+            throw new UnauthorizedAccessException("Account is not active");
+        }
         
         account.FreezeAccount();
         await _accountRepository.UpdateAsync(account);
@@ -39,6 +44,11 @@ public class AccountService : IAccountService
         if (account == null)
         {
             throw new NullReferenceException("Account not found");
+        }
+        
+        if (account.Status != AccountStatus.Frozen)
+        {
+            throw new UnauthorizedAccessException("Account is not frozen");
         }
         
         account.UnfreezeAccount();

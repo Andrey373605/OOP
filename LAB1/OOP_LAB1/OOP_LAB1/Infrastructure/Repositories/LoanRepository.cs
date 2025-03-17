@@ -16,8 +16,7 @@ public class LoanRepository : ILoanRepository
     {
         var query = @"
         INSERT INTO Loan (AccountId, ClientId, Amount, NumberOfPayments, InterestRate, RestMonth, IsActive)
-        VALUES (@AccountId, @ClientId, @Amount, @NumberOfPayments, @InterestRate, @RestMonth, @IsActive);
-    ";
+        VALUES (@AccountId, @ClientId, @Amount, @NumberOfPayments, @InterestRate, @RestMonth, @IsActive);";
 
         var parameters = new Dictionary<string, object>
         {
@@ -100,5 +99,45 @@ public class LoanRepository : ILoanRepository
             RestMonth = Convert.ToDecimal(row["RestMonth"]),
             IsActive = Convert.ToBoolean(row["IsActive"])
         };
+    }
+
+    public async Task<IEnumerable<Loan>> GetAllByClientId(int clientId)
+    {
+        var query = @"
+                SELECT Id, AccountId, ClientId, Amount, NumberOfPayments, InterestRate, RestMonth, IsActive
+                FROM Loan
+                WHERE ClientId = @ClientId;
+            ";
+
+        var parameters = new Dictionary<string, object>
+        {
+            { "ClientId", clientId }
+        };
+
+        var result = await Task.Run(() =>_dataBaseHelper.ExecuteQuery(query, parameters));
+
+        if (result.Count == 0)
+        {
+            return null;
+        }
+        
+        var loans = new List<Loan>();
+
+        foreach (var row in result)
+        {
+            loans.Add(new Loan
+            {
+                Id = Convert.ToInt32(row["Id"]),
+                AccountId = Convert.ToInt32(row["AccountId"]),
+                ClientId = Convert.ToInt32(row["ClientId"]),
+                Amount = Convert.ToDecimal(row["Amount"]),
+                NumberOfPayments = Convert.ToInt32(row["NumberOfPayments"]),
+                InterestRate = Convert.ToInt32(row["InterestRate"]),
+                RestMonth = Convert.ToDecimal(row["RestMonth"]),
+                IsActive = Convert.ToBoolean(row["IsActive"])
+            });
+        }
+
+        return loans;
     }
 }

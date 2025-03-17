@@ -6,14 +6,11 @@ namespace OOP_LAB1.Domain.Entities
     public class Account
     {
         public int Id { get; set; }
-
         public int BankId { get; set; }
         public decimal Balance { get; set; }
         public int ClientId { get; set; }
-        
         public AccountStatus Status { get; set; }
         public AccountType AccountType { get; set; }
-        
 
         public void FreezeAccount()
         {
