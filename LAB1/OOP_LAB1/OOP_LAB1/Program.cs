@@ -10,6 +10,7 @@ using OOP_LAB1.Presentation.Console;
 using OOP_LAB1.Presentation.Enums;
 using OOP_LAB1.Presentation.Handler;
 using OOP_LAB1.Presentation.Navigator;
+using OOP_LAB1.Presentation.Registration;
 using OOP_LAB1.Presentation.Views;
 using Console = OOP_LAB1.Presentation.Console.Console;
 
@@ -70,6 +71,7 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<ClientDepositAccountView>()
     .AddTransient<ClientTransferAccountView>()
     .AddTransient<ClientWithdrawAccountView>()
+    
     //account views
     .AddTransient<ClientAccountMenuView>()
     .AddTransient<ClientAllAccountsView>()
@@ -98,26 +100,6 @@ var serviceProvider = new ServiceCollection()
 
 var navigator = serviceProvider.GetService<INavigator>();
 
-var viewTypes = Assembly.GetExecutingAssembly().GetTypes()
-    .Where(t => typeof(IView).IsAssignableFrom(t) 
-                && !t.IsInterface 
-                && !t.IsAbstract)
-    .ToList();
-
-foreach (var viewType in viewTypes)
-{
-    // Находим атрибут ViewMapping на классе
-    var attribute = viewType.GetCustomAttribute<ViewMappingAttribute>();
-    if (attribute != null)
-    {
-        // Создаем экземпляр view через DI
-        var view = (IView)serviceProvider.GetService(viewType);
-        if (view != null)
-        {
-            // Регистрируем view в навигаторе
-            navigator.RegisterView(attribute.PageName, view);
-        }
-    }
-}
+ViewRegistrar.RegisterViews(serviceProvider, navigator);
 
 navigator.Run(PageName.MainMenuPage);

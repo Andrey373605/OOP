@@ -7,7 +7,7 @@ using OOP_LAB1.Presentation.Navigator;
 namespace OOP_LAB1.Presentation.Views;
 
 [ViewMapping(PageName.ClientAccountMenuPage)]
-public class ClientAccountMenuView
+public class ClientAccountMenuView : IView
 {
     IConsole _console;
     IInputHandler _input;

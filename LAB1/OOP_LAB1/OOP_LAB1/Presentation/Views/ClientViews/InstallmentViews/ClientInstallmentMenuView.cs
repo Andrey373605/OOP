@@ -7,7 +7,7 @@ using OOP_LAB1.Presentation.Navigator;
 namespace OOP_LAB1.Presentation.Views;
 
 [ViewMapping(PageName.ClientInstallmentMenuPage)]
-public class ClientInstallmentMenuView
+public class ClientInstallmentMenuView : IView
 {
     IConsole _console;
     IInputHandler _input;
@@ -23,7 +23,7 @@ public class ClientInstallmentMenuView
     public async Task Execute()
     {
         _console.WriteLine("1. All my installments");
-        _console.WriteLine("2. Instalmment request");
+        _console.WriteLine("2. Installment request");
         _console.WriteLine("3. Return back");
 
         var choice = _input.GetNumberVariant(3);
