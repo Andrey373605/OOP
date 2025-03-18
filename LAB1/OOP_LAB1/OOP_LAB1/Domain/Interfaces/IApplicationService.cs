@@ -31,4 +31,5 @@ public interface IApplicationService
     Task<IEnumerable<Transaction>> GetDepositsByAccountIdAsync(int accountId);
     Task<IEnumerable<Transaction>> GetWithdrawsByAccountIdAsync(int accountId);
     Task LogOutUser();
+    Task CancelTransfer(int numberTransfer);
 }

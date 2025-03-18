@@ -8,14 +8,14 @@ using OOP_LAB1.Presentation.Validators;
 
 namespace OOP_LAB1.Presentation.Views;
 
-[ViewMapping(PageName.ClientAllWithdrawsPage)]
-public class ClientAllWithdrawsView : IView
+[ViewMapping(PageName.OperatorAllDepositsPage)]
+public class OperatorAllDepositsView : IView
 {
     IConsole _console;
     IApplicationService _applicationService;
     private IInputHandler _input;
 
-    public ClientAllWithdrawsView(IConsole console, IApplicationService applicationService, IInputHandler input)
+    public OperatorAllDepositsView(IConsole console, IApplicationService applicationService, IInputHandler input)
     {
         _console = console;
         _applicationService = applicationService;
@@ -24,34 +24,16 @@ public class ClientAllWithdrawsView : IView
     public PageName? NextViewName { get; private set; }
     public async Task Execute()
     {
-        _console.WriteLine("Accounts: ");
-        try
-        {
-            var accounts = await _applicationService.GetCurrentClientAccounts();
-            if (accounts.Any())
-            {
-                foreach (var a in accounts)
-                {
 
-                    _console.WriteLine($"Id: {a.Id} \t Balance: {a.Balance} \t Active: {a.Status.ToString()}" +
-                                       $" \t Type: {a.AccountType.ToString()}" );
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            _console.WriteLine(e.Message);
-        }
-        
         var accountId = _input.GetIntNumber("Enter account number: ", new IntValidator());
         _console.Clear();
         try
         {
-            var transfers = await _applicationService.GetWithdrawsByAccountIdAsync(accountId);
-            _console.WriteLine("Withdraws by account: ");
+            var transfers = await _applicationService.GetDepositsByAccountIdAsync(accountId);
+            _console.WriteLine("Deposit by account: ");
             foreach (var t in transfers)
             {
-                _console.WriteLine($"From: {t.FromAccountId}\t" +
+                _console.WriteLine($"To: {t.ToAccountId}\t" +
                                    $"Amount: {t.Amount}\t" +
                                    $"Date: {t.Date}");
             }

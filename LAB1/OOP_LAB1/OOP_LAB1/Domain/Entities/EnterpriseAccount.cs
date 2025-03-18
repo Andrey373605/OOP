@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using OOP_LAB1.Domain.Enums;
 
 namespace OOP_LAB1.Domain.Entities;
 
@@ -9,27 +10,26 @@ public class EnterpriseAccount
     public int BankId { get; set; }
     private decimal Balance { get; set; }
     public int EnterpriseId { get; set; }
-    public bool IsBlocked { get; set; }
-    public bool IsFrozen { get; set; }
+    public AccountStatus Status { get; set; }
     
     public void FreezeAccount()
     {
-        IsFrozen = true;
+        Status = AccountStatus.Frozen;
     }
         
     public void UnfreezeAccount()
     {
-        IsFrozen = false;
+        Status = AccountStatus.Active;
     }
 
     public void BlockAccount()
     {
-        IsBlocked = true;
+        Status = AccountStatus.Blocked;
     }
 
     public void UnblockAccount()
     {
-        IsBlocked = false;
+        Status = AccountStatus.Active;
     }
 
     public void DepositAccount(decimal amount)

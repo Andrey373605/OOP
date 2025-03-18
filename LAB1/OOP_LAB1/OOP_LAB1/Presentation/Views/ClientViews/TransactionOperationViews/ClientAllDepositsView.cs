@@ -56,11 +56,12 @@ public class ClientAllDepositsView : IView
                                    $"Date: {t.Date}");
             }
 
-            NextViewName = PageName.ClientTransactionMenuPage;
+            
         }
         catch (Exception e)
         {
             _console.WriteLine(e.Message);
         }
+        NextViewName = PageName.ClientTransactionMenuPage;
     }
 }

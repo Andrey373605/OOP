@@ -59,11 +59,12 @@ public class ClientAllTransfersView : IView
                                    $"Type: {type}");
             }
 
-            NextViewName = PageName.ClientTransactionMenuPage;
+            
         }
         catch (Exception e)
         {
             _console.WriteLine(e.Message);
         }
+        NextViewName = PageName.ClientTransactionMenuPage;
     }
 }

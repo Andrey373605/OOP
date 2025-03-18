@@ -11,14 +11,17 @@ public class SalaryProjectService : ISalaryProjectService
     private readonly ISalaryProjectRepository _salaryProjectRepository;
     private readonly IBankRepository _bankRepository;
     private readonly IEnterpriseRepository _enterpriseRepository;
+    private readonly IAccountRepository _accountRepository;
 
-    public SalaryProjectService(ISalaryProjectRepository repository, IAccountEnterpriseRepository accountRepository, 
-                                IBankRepository bankRepository, IEnterpriseRepository enterpriseRepository)
+    public SalaryProjectService(ISalaryProjectRepository repository, IAccountEnterpriseRepository enterpriseAccountRepository, 
+                                IBankRepository bankRepository, IEnterpriseRepository enterpriseRepository, IAccountRepository accountRepository)
     {
         _salaryProjectRepository = repository;
-        _accountEnterpriseRepository = accountRepository;
+        _accountEnterpriseRepository = enterpriseAccountRepository;
         _bankRepository = bankRepository;
         _enterpriseRepository = enterpriseRepository;
+        _accountRepository = accountRepository;
+            
     }
 
     public async Task CreateSalaryProjectApplication(int bankId, int enterpriseId, int enterpriseAccountId)
@@ -50,7 +53,6 @@ public class SalaryProjectService : ISalaryProjectService
         {
             BankId = bank.Id,
             EnterpriseId = enterprise.Id,
-            AccountId = account.Id,
             IsActive = false,
         };
         await _salaryProjectRepository.AddAsync(project);
@@ -76,16 +78,7 @@ public class SalaryProjectService : ISalaryProjectService
 
     public async Task PaySalary(int projectId)
     {
-        var project = await _salaryProjectRepository.GetByIdAsync(projectId);
-        var salaries = await _salaryProjectRepository.GetSalaryAmounts(project);
-        var projectAccount = await _accountEnterpriseRepository.GetByIdAsync(project.AccountId);
-        foreach (var s in salaries)
-        {
-            s.Key.DepositAccount(s.Value);
-            projectAccount.WithdrawAccount(s.Value);
-        }
-        await _salaryProjectRepository.UpdateAsync(project);
-        await _accountEnterpriseRepository.UpdateAsync(projectAccount);
+        
     }
 
     public async Task UpdateUserSalaryAmount(int projectId, int accountId, int amount)
@@ -97,9 +90,6 @@ public class SalaryProjectService : ISalaryProjectService
 
     public async Task DepositProjectAccount(int projectId, decimal amount)
     {
-        var project = await _salaryProjectRepository.GetByIdAsync(projectId);
-        var account = await _accountEnterpriseRepository.GetByIdAsync(project.AccountId);
-        account.DepositAccount(amount);
-        await _accountEnterpriseRepository.UpdateAsync(account);
+        
     }
 }

@@ -15,6 +15,10 @@ public class ClientService : IClientService
     public async Task<Client> GetClientByUserIdAsync(int bankId, int userId)
     {
         var client = await _clientRepository.GetClientByUserIdAsync(bankId, userId);
+        if (client == null)
+        {
+            throw new NullReferenceException($"Client with id {userId} not found");
+        }
         return client;
     }
 }

@@ -127,6 +127,11 @@ public class TransactionService : ITransactionService
 
     }
 
+    public async Task<Transaction> GetTransferById(int transferId)
+    {
+        return await _transactionRepository.GetByIdAsync(transferId);
+    }
+
     public async Task<IEnumerable<Transaction>> GetTransferByAccountId(int accountId)
     {
         return await _transactionRepository.GetTransferByAccountIdAsync(accountId);

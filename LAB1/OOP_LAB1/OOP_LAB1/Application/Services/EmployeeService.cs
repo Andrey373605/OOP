@@ -22,6 +22,11 @@ public class EmployeeService : IEmployeeService
 
     public async Task<Employee> GetEmployeeByUserIdAsync(int bankId, int userId)
     {
-        return await _employeeRepository.GetEmployeeByUserIdAsync(bankId, userId);
+        var employee = await _employeeRepository.GetEmployeeByUserIdAsync(bankId, userId);
+        if (employee == null)
+        {
+            throw new NullReferenceException("Employee not found");
+        }
+        return employee;
     }
 }

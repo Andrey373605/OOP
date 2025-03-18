@@ -54,6 +54,20 @@ public class ApplicationService : IApplicationService
         return accounts.ToList();
     }
 
+    public async Task<bool> IsCurrentUserClient()
+    {
+        try
+        {
+            var client = await GetCurrentClient();
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+        
+    }
+
     public async Task<Client> GetCurrentClient()
     {
         var user = _context.CurrentUser;
@@ -68,6 +82,10 @@ public class ApplicationService : IApplicationService
             throw new UnauthorizedAccessException("Bank null");
         }
         var client = await _clientService.GetClientByUserIdAsync(bank.Id, user.Id);
+        if (client == null)
+        {
+            throw new UnauthorizedAccessException("Client null");
+        }
         return client;
     }
     
@@ -84,7 +102,13 @@ public class ApplicationService : IApplicationService
         {
             throw new UnauthorizedAccessException("Bank null");
         }
-        return await _employeeService.GetEmployeeByUserIdAsync(bank.Id, user.Id);
+        var employee = await _employeeService.GetEmployeeByUserIdAsync(user.Id, bank.Id);
+        if (employee == null)
+        {
+            throw new UnauthorizedAccessException("Employee null");
+        }
+
+        return employee;
     }
 
     public void LoginBank(Bank bank)
@@ -221,37 +245,52 @@ public class ApplicationService : IApplicationService
 
     public async Task<IEnumerable<Transaction>> GetTransfersByAccountIdAsync(int accountId)
     {
-        var client = await GetCurrentClient();
-        var check = await _accountService.IsAccountBelongToClient(accountId, client.Id);
-        if (!check)
+        var checkClient = await IsCurrentUserClient();
+        if (checkClient)
         {
-            throw new ApplicationException("Account is not belong to client");
+            var client = await GetCurrentClient();
+            var check = await _accountService.IsAccountBelongToClient(accountId, client.Id);
+        
+            if (!check)
+            {
+                throw new ApplicationException("Account is not belong to client");
+            }
         }
-
+        
         return await _transactionService.GetTransferByAccountId(accountId);
     }
 
     public async Task<IEnumerable<Transaction>> GetDepositsByAccountIdAsync(int accountId)
     {
-        var client = await GetCurrentClient();
-        var check = await _accountService.IsAccountBelongToClient(accountId, client.Id);
-        if (!check)
+        var checkClient = await IsCurrentUserClient();
+        if (checkClient)
         {
-            throw new ApplicationException("Account is not belong to client");
+            var client = await GetCurrentClient();
+            var check = await _accountService.IsAccountBelongToClient(accountId, client.Id);
+        
+            if (!check)
+            {
+                throw new ApplicationException("Account is not belong to client");
+            }
         }
-
+        
         return await _transactionService.GetDepositByAccountId(accountId);
     }
 
     public async Task<IEnumerable<Transaction>> GetWithdrawsByAccountIdAsync(int accountId)
     {
-        var client = await GetCurrentClient();
-        var check = await _accountService.IsAccountBelongToClient(accountId, client.Id);
-        if (!check)
+        var checkClient = await IsCurrentUserClient();
+        if (checkClient)
         {
-            throw new ApplicationException("Account is not belong to client");
+            var client = await GetCurrentClient();
+            var check = await _accountService.IsAccountBelongToClient(accountId, client.Id);
+        
+            if (!check)
+            {
+                throw new ApplicationException("Account is not belong to client");
+            }
         }
-
+        
         return await _transactionService.GetWithdrawByAccountId(accountId);
     }
 
@@ -259,6 +298,16 @@ public class ApplicationService : IApplicationService
     {
         _context.ClearCurrentUser();
         _context.ClearCurrentBank();
+    }
+
+    public async Task CancelTransfer(int numberTransfer)
+    {
+        var transaction = await _transactionService.GetTransferById(numberTransfer);
+        if (transaction == null)
+        {
+            throw new ApplicationException("Invalid number transfer");
+        }
+        await _transactionService.TransferFunds(transaction.Amount, transaction.FromAccountId??0, transaction.ToAccountId??0);
     }
 
     public async Task WithdrawAccount(int accountId, decimal sum)
