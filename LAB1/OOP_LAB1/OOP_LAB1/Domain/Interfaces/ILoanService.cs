@@ -11,8 +11,8 @@ public interface ILoanService
     public Task CreateLoanRequest(int clientId, decimal depositAmount, int interestRate, int monthCount);
 
     public Task ApproveLoanRequest(int loanId);
-    Task<IEnumerable<Loan>> GetAllClientLoansAsync(int clientId);
+    Task<IEnumerable<Loan>> GetAllClientLoans(int clientId);
     
-    Task<IEnumerable<Loan>> GetLoanApplicationsAsync();
+    Task<IEnumerable<Loan>> GetLoanApplications();
     Task RejectLoanRequest(int id);
 }

@@ -227,7 +227,7 @@ public class ApplicationService : IApplicationService
             return new List<Loan>();
         }
         
-        var accounts = await _loanService.GetAllClientLoansAsync(client.Id);
+        var accounts = await _loanService.GetAllClientLoans(client.Id);
         return accounts.ToList();
     }
 
@@ -239,7 +239,7 @@ public class ApplicationService : IApplicationService
             return new List<Installment>();
         }
         
-        var accounts = await _installmentService.GetAllClientInstallmentsAsync(client.Id);
+        var accounts = await _installmentService.GetAllClientInstallments(client.Id);
         return accounts.ToList();
     }
 
@@ -300,63 +300,7 @@ public class ApplicationService : IApplicationService
         _context.ClearCurrentBank();
     }
 
-    public async Task CancelTransfer(int numberTransfer)
-    {
-        var transaction = await _transactionService.GetTransferById(numberTransfer);
-        if (transaction == null)
-        {
-            throw new ApplicationException("Invalid number transfer");
-        }
-        await _transactionService.CancelTransfer(numberTransfer);
-    }
-
-    public async Task<IEnumerable<Installment>> GetInstallmentApplications()
-    {
-        var applications = await _installmentService.GetInstallmentApplicationsAsync();
-        return applications;
-    }
-
-    public async Task ApproveInstallmentByIdAsync(int id)
-    {
-        await _installmentService.ApproveInstallmentRequest(id);
-    }
-
-    public async Task RejectInstallmentByIdAsync(int id)
-    {
-        await _installmentService.RejectInstallmentRequest(id);
-    }
-
-    public async Task<IEnumerable<Loan>> GetLoanApplications()
-    {
-        return await _loanService.GetLoanApplicationsAsync();
-    }
-
-    public async Task ApproveLoanByIdAsync(int id)
-    {
-        await _loanService.ApproveLoanRequest(id);
-    }
-
-    public async Task RejectLoanByIdAsync(int id)
-    {
-        await _loanService.RejectLoanRequest(id);
-    }
-
-    public async Task<IEnumerable<Client>> GetClientRegistrationRequests()
-    {
-        return await _clientService.GetClientRegistrationRequests();
-    }
-
-    public async Task ApproveClientRegistrationAsync(int id)
-    {
-        await _clientService.ApproveClientRegistration(id);
-    }
-
-    public async Task RejectClientRegistrationAsync(int id)
-    {
-        await _clientService.RejectClientRegistration(id);
-    }
-
-
+    
     public async Task WithdrawAccount(int accountId, decimal sum)
     {
         var client = await GetCurrentClient();

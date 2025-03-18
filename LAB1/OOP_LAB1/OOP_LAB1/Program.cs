@@ -12,6 +12,7 @@ using OOP_LAB1.Presentation.Handler;
 using OOP_LAB1.Presentation.Navigator;
 using OOP_LAB1.Presentation.Registration;
 using OOP_LAB1.Presentation.Views;
+using OOP_LAB1.Presentation.Views.AdministratorViews;
 using Console = OOP_LAB1.Presentation.Console.Console;
 
 
@@ -112,6 +113,9 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<ManagerApproveInstallmentView>()
     .AddTransient<ManagerApproveLoanView>()
     .AddTransient<ManagerApproveClientRegistrationView>()
+    
+    //admin
+    .AddTransient<AdministratorMainMenuView>()
     
     .AddTransient<LoginEmployeeView>()
     .AddTransient<ExitView>()

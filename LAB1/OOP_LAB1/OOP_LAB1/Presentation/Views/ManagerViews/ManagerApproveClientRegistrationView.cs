@@ -13,18 +13,20 @@ public class ManagerApproveClientRegistrationView : IView
     private readonly IApplicationService _applicationService;
     private readonly IConsole _console;
     private readonly IInputHandler _input;
+    private readonly IClientService _clientService;
 
-    public ManagerApproveClientRegistrationView(IApplicationService applicationService, IConsole console, IInputHandler input)
+    public ManagerApproveClientRegistrationView(IApplicationService applicationService, IConsole console, IInputHandler input, IClientService clientService)
     {
         _applicationService = applicationService;
         _console = console;
         _input = input;
+        _clientService = clientService;
     }
     public PageName? NextViewName { get; private set; }
     public async Task Execute()
     {
         _console.WriteLine("Registration requests");
-        var clients = await _applicationService.GetClientRegistrationRequests();
+        var clients = await _clientService.GetClientRegistrationRequests();
         foreach (var c in clients)
         {
             _console.WriteLine($"Id: {c.Id}\t" +
@@ -44,7 +46,7 @@ public class ManagerApproveClientRegistrationView : IView
             _console.Clear();
             try
             {
-                await _applicationService.ApproveClientRegistrationAsync(id);
+                await _clientService.ApproveClientRegistration(id);
                 _console.WriteLine("Registration client approved");
             }
             catch (Exception e)
@@ -58,7 +60,7 @@ public class ManagerApproveClientRegistrationView : IView
             _console.Clear();
             try
             {
-                await _applicationService.RejectClientRegistrationAsync(id);
+                await _clientService.RejectClientRegistration(id);
                 _console.WriteLine("Client registration rejected");
             }
             catch (Exception e)

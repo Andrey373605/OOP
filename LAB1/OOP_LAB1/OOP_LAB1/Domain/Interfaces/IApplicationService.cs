@@ -31,14 +31,5 @@ public interface IApplicationService
     Task<IEnumerable<Transaction>> GetDepositsByAccountIdAsync(int accountId);
     Task<IEnumerable<Transaction>> GetWithdrawsByAccountIdAsync(int accountId);
     Task LogOutUser();
-    Task CancelTransfer(int numberTransfer);
-    Task<IEnumerable<Installment>> GetInstallmentApplications();
-    Task ApproveInstallmentByIdAsync(int id);
-    Task RejectInstallmentByIdAsync(int id);
-    Task<IEnumerable<Loan>> GetLoanApplications();
-    Task ApproveLoanByIdAsync(int id);
-    Task RejectLoanByIdAsync(int id);
-    Task<IEnumerable<Client>> GetClientRegistrationRequests();
-    Task ApproveClientRegistrationAsync(int id);
-    Task RejectClientRegistrationAsync(int id);
+
 }

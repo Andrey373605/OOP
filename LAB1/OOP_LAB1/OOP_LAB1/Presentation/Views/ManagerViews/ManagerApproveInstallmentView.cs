@@ -13,18 +13,20 @@ public class ManagerApproveInstallmentView : IView
     private readonly IApplicationService _applicationService;
     private readonly IConsole _console;
     private readonly IInputHandler _input;
+    private readonly IInstallmentService _installmentService;
 
-    public ManagerApproveInstallmentView(IApplicationService applicationService, IConsole console, IInputHandler input)
+    public ManagerApproveInstallmentView(IApplicationService applicationService, IConsole console, IInputHandler input, IInstallmentService installmentService)
     {
         _applicationService = applicationService;
         _console = console;
         _input = input;
+        _installmentService = installmentService;
     }
     public PageName? NextViewName { get; private set; }
     public async Task Execute()
     {
         _console.WriteLine("Installment applications");
-        var installments = await _applicationService.GetInstallmentApplications();
+        var installments = await _installmentService.GetInstallmentApplications();
         foreach (var i in installments)
         {
             _console.WriteLine($"Id: {i.Id}" +
@@ -44,7 +46,7 @@ public class ManagerApproveInstallmentView : IView
             _console.Clear();
             try
             {
-                await _applicationService.ApproveInstallmentByIdAsync(id);
+                await _installmentService.ApproveInstallmentRequest(id);
                 _console.WriteLine("Installment application approved");
             }
             catch (Exception e)
@@ -58,7 +60,7 @@ public class ManagerApproveInstallmentView : IView
             _console.Clear();
             try
             {
-                await _applicationService.RejectInstallmentByIdAsync(id);
+                await _installmentService.RejectInstallmentRequest(id);
                 _console.WriteLine("Installment application rejected");
             }
             catch (Exception e)

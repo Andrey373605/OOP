@@ -42,12 +42,12 @@ public class LoanService : ILoanService
         await _loanRepository.UpdateAsync(loanRequest);
     }
 
-    public async Task<IEnumerable<Loan>> GetAllClientLoansAsync(int clientId)
+    public async Task<IEnumerable<Loan>> GetAllClientLoans(int clientId)
     {
         return await _loanRepository.GetAllByClientId(clientId);
     }
 
-    public async Task<IEnumerable<Loan>> GetLoanApplicationsAsync()
+    public async Task<IEnumerable<Loan>> GetLoanApplications()
     {
         return await _loanRepository.GetLoanApplications();
     }

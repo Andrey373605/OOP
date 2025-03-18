@@ -1,5 +1,6 @@
 ﻿using OOP_LAB1.Application.Interfaces;
 using OOP_LAB1.Domain.Entities;
+using OOP_LAB1.Domain.Enums;
 using OOP_LAB1.Domain.Interfaces;
 
 
@@ -7,24 +8,22 @@ namespace OOP_LAB1.Application.Services;
 
 public class SalaryProjectService : ISalaryProjectService
 {
-    private readonly IAccountEnterpriseRepository _accountEnterpriseRepository;
     private readonly ISalaryProjectRepository _salaryProjectRepository;
     private readonly IBankRepository _bankRepository;
     private readonly IEnterpriseRepository _enterpriseRepository;
     private readonly IAccountRepository _accountRepository;
 
-    public SalaryProjectService(ISalaryProjectRepository repository, IAccountEnterpriseRepository enterpriseAccountRepository, 
-                                IBankRepository bankRepository, IEnterpriseRepository enterpriseRepository, IAccountRepository accountRepository)
+    public SalaryProjectService(ISalaryProjectRepository repository, IBankRepository bankRepository,
+        IEnterpriseRepository enterpriseRepository, IAccountRepository accountRepository)
     {
         _salaryProjectRepository = repository;
-        _accountEnterpriseRepository = enterpriseAccountRepository;
         _bankRepository = bankRepository;
         _enterpriseRepository = enterpriseRepository;
         _accountRepository = accountRepository;
             
     }
 
-    public async Task CreateSalaryProjectApplication(int bankId, int enterpriseId, int enterpriseAccountId)
+    public async Task CreateSalaryProjectApplication(int bankId, int enterpriseId)
     {
         var bank = await _bankRepository.GetByIdAsync(bankId);
         if (bank == null)
@@ -37,42 +36,40 @@ public class SalaryProjectService : ISalaryProjectService
         {
             throw new NullReferenceException("Enterprise could not be found");
         }
-
-        var account = await _accountEnterpriseRepository.GetByIdAsync(enterpriseAccountId);
-        if (account == null)
-        {
-            throw new NullReferenceException("Account could not be found");
-        }
-        if (account.EnterpriseId != enterpriseId)
-        {
-            throw new NullReferenceException("Account does not belong to this enterprise");
-        }
         
         
         SalaryProject project = new SalaryProject
         {
             BankId = bank.Id,
             EnterpriseId = enterprise.Id,
-            IsActive = false,
+            Status = SalaryProjectStatus.Application,
+            Balance = 0
         };
         await _salaryProjectRepository.AddAsync(project);
     }
-
+    
 
     public async Task ApproveSalaryProjectApplication(int id)
     {
         SalaryProject salaryProject = await _salaryProjectRepository.GetByIdAsync(id);
         
+        salaryProject.Activate();
+        await _salaryProjectRepository.UpdateAsync(salaryProject);
+    }
+    
+    public async Task RejectSalaryProjectApplication(int id)
+    {
+        SalaryProject salaryProject = await _salaryProjectRepository.GetByIdAsync(id);
         
-        
-        salaryProject.SetActive();
+        salaryProject.Reject();
         await _salaryProjectRepository.UpdateAsync(salaryProject);
     }
 
     public async Task AddAccountToSalaryProject(int projectId, int accountId)
     {
         var project = await _salaryProjectRepository.GetByIdAsync(projectId);
-        var account = await _accountEnterpriseRepository.GetByIdAsync(accountId);
+        var account = await _accountRepository.GetByIdAsync(accountId);
+        account.AccountType = AccountType.Salary;
         await _salaryProjectRepository.AddAccountToSalaryProjectAsync(project, account);
     }
 
@@ -81,14 +78,19 @@ public class SalaryProjectService : ISalaryProjectService
         
     }
 
+    public Task UpdateSalaryAmount(int projectId, int accountId, int amount)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task UpdateUserSalaryAmount(int projectId, int accountId, int amount)
     {
         var project = await _salaryProjectRepository.GetByIdAsync(projectId);
-        var account = await _accountEnterpriseRepository.GetByIdAsync(accountId);
+        var account = await _accountRepository.GetByIdAsync(accountId);
         await _salaryProjectRepository.UpdateSalaryAsync(project, account, amount);
     }
 
-    public async Task DepositProjectAccount(int projectId, decimal amount)
+    public async Task DepositProjectAccount(int fromAccountId, int projectId, decimal amount)
     {
         
     }

@@ -14,12 +14,14 @@ public class ManagerCancelTransferView : IView
     private IConsole _console;
     private IApplicationService _applicationService;
     private IInputHandler _input;
+    private readonly ITransactionService _transactionService;
 
-    public ManagerCancelTransferView(IConsole console, IApplicationService applicationService, IInputHandler input)
+    public ManagerCancelTransferView(IConsole console, IApplicationService applicationService, IInputHandler input, ITransactionService transactionService)
     {
         _console = console;
         _applicationService = applicationService;
         _input = input;
+        _transactionService = transactionService;
     }
     public PageName? NextViewName { get; private set; }
     public async Task Execute()
@@ -27,7 +29,7 @@ public class ManagerCancelTransferView : IView
         var numberTransfer = _input.GetIntNumber("Enter transfer number:", new IntValidator());
         try
         {
-            await _applicationService.CancelTransfer(numberTransfer);
+            await _transactionService.CancelTransfer(numberTransfer);
             _console.WriteLine("Transfer has been cancelled.");
         }
         catch (Exception e)

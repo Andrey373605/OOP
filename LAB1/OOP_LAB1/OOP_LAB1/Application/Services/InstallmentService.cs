@@ -51,7 +51,7 @@ public class InstallmentService : IInstallmentService
         var account = new Account
         {
             Balance = 0,
-            AccountType = AccountType.Loan,
+            AccountType = AccountType.Installment,
             Status = AccountStatus.Blocked,
             ClientId = client.Id,
             BankId = client.BankId
@@ -69,6 +69,7 @@ public class InstallmentService : IInstallmentService
             RestMonth = monthCount,
             Amount = depositAmount,
             Status = InstallmentStatus.Application
+            
         };
 
         await _installmentRepository.AddAsync(installmentRequest);
@@ -106,12 +107,12 @@ public class InstallmentService : IInstallmentService
         await _installmentRepository.UpdateAsync(installmentRequest);
     }
 
-    public async Task<IEnumerable<Installment>> GetAllClientInstallmentsAsync(int clientId)
+    public async Task<IEnumerable<Installment>> GetAllClientInstallments(int clientId)
     {
         return await _installmentRepository.GetAllByClientId(clientId);
     }
 
-    public async Task<IEnumerable<Installment>> GetInstallmentApplicationsAsync()
+    public async Task<IEnumerable<Installment>> GetInstallmentApplications()
     {
         return await _installmentRepository.GetInstallmentApplications();
     }

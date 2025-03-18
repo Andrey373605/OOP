@@ -11,20 +11,22 @@ namespace OOP_LAB1.Presentation.Views;
 public class ManagerApproveLoanView : IView
 {
     private readonly IApplicationService _applicationService;
+    private readonly ILoanService _loanService;
     private readonly IConsole _console;
     private readonly IInputHandler _input;
 
-    public ManagerApproveLoanView(IApplicationService applicationService, IConsole console, IInputHandler input)
+    public ManagerApproveLoanView(IApplicationService applicationService, IConsole console, IInputHandler input, ILoanService loanService)
     {
         _applicationService = applicationService;
         _console = console;
         _input = input;
+        _loanService = loanService;
     }
     public PageName? NextViewName { get; private set; }
     public async Task Execute()
     {
         _console.WriteLine("Loan applications");
-        var loans = await _applicationService.GetLoanApplications();
+        var loans = await _loanService.GetLoanApplications();
         foreach (var l in loans)
         {
             _console.WriteLine($"Id: {l.Id}" +
@@ -44,7 +46,7 @@ public class ManagerApproveLoanView : IView
             _console.Clear();
             try
             {
-                await _applicationService.ApproveLoanByIdAsync(id);
+                await _loanService.ApproveLoanRequest(id);
                 _console.WriteLine("Loan application approved");
             }
             catch (Exception e)
@@ -58,7 +60,7 @@ public class ManagerApproveLoanView : IView
             _console.Clear();
             try
             {
-                await _applicationService.RejectLoanByIdAsync(id);
+                await _loanService.RejectLoanRequest(id);
                 _console.WriteLine("Loan application rejected");
             }
             catch (Exception e)
