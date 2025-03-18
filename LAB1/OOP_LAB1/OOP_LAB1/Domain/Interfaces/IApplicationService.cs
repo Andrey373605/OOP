@@ -38,4 +38,7 @@ public interface IApplicationService
     Task<IEnumerable<Loan>> GetLoanApplications();
     Task ApproveLoanByIdAsync(int id);
     Task RejectLoanByIdAsync(int id);
+    Task<IEnumerable<Client>> GetClientRegistrationRequests();
+    Task ApproveClientRegistrationAsync(int id);
+    Task RejectClientRegistrationAsync(int id);
 }

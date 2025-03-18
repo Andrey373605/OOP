@@ -1,4 +1,6 @@
-﻿namespace OOP_LAB1.Domain.Entities;
+﻿using OOP_LAB1.Domain.Enums;
+
+namespace OOP_LAB1.Domain.Entities;
 
 public class Client
 {
@@ -13,16 +15,25 @@ public class Client
     public string PassportSeries { get; set; }
     public string IdentificationNumber { get; set; }
     public string Phone { get; set; }
-    public bool IsActive { get; set; } = false;
+    public ClientStatus Status { get; set; }
 
     public void Activate()
     {
-        IsActive = true;
+        Status = ClientStatus.Active;
     }
 
-    public void Deactivate()
+    public void Delete()
     {
-        IsActive = false;
+        Status = ClientStatus.Deleted;
     }
-    
+
+    public bool IsActive()
+    {
+        return Status == ClientStatus.Active;
+    }
+
+    public void Reject()
+    {
+        Status = ClientStatus.Rejected;
+    }
 }

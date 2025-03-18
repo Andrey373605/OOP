@@ -81,6 +81,7 @@ public class AuthorizationService : IAuthorizationService
             IdentificationNumber = passportNumber,
             UserId = user.Id,
             BankId = bank.Id,
+            Status = ClientStatus.Application
         };
         await _clientRepository.AddAsync(client);
     }
@@ -111,7 +112,7 @@ public class AuthorizationService : IAuthorizationService
             throw new UnauthorizedAccessException("Client is not registered with this bank");
         }
 
-        if (!client.IsActive)
+        if (!client.IsActive())
         {
             throw new ApplicationException("Client is not active");
         }

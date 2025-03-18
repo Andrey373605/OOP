@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace OOP_LAB1.Domain.Enums
 {
-    public enum LoanStatus
+    public enum ClientStatus
     {
         Application = 1,
         Active = 2,
-        Closed = 3,
+        Deleted = 3,
         Rejected = 4
     }
 }

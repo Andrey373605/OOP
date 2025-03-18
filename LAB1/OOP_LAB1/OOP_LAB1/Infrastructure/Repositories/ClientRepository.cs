@@ -26,7 +26,7 @@ public class ClientRepository : IClientRepository
                              PassportSeries = @PassportSeries, 
                              IdentificationNumber = @IdentificationNumber, 
                              Phone = @Phone, 
-                             IsActive = @IsActive 
+                             Status = @Status 
                          WHERE Id = @Id";
 
         var parameters = new Dictionary<string, object>
@@ -40,7 +40,7 @@ public class ClientRepository : IClientRepository
             {"PassportSeries", client.PassportSeries},
             {"IdentificationNumber", client.IdentificationNumber},
             {"Phone", client.Phone},
-            {"IsActive", client.IsActive ? 1 : 0}
+            {"Status", client.Status}
         };
 
         await Task.Run(() => _dataBaseHelper.ExecuteNonQuery(query, parameters));
@@ -49,13 +49,14 @@ public class ClientRepository : IClientRepository
     public async Task<Client> GetRequestByIdAsync(int id)
     {
         string query = @"SELECT Id, UserId, BankId, FirstName, LastName, MiddleName, 
-                         PassportSeries, IdentificationNumber, Phone, IsActive 
+                         PassportSeries, IdentificationNumber, Phone, Status 
                          FROM Client 
-                         WHERE Id = @Id AND IsActive = 0";
+                         WHERE Id = @Id AND Status = @Status";
 
         var parameters = new Dictionary<string, object>
         {
-            {"Id", id}
+            {"Id", id},
+            {"Status", ClientStatus.Application}
         };
 
         var result = await Task.Run(() => _dataBaseHelper.ExecuteQuery(query, parameters));
@@ -78,7 +79,7 @@ public class ClientRepository : IClientRepository
             PassportSeries = row["PassportSeries"].ToString(),
             IdentificationNumber = row["IdentificationNumber"].ToString(),
             Phone = row["Phone"].ToString(),
-            IsActive = Convert.ToBoolean(row["IsActive"])
+            Status = (ClientStatus)Convert.ToInt32(row["Status"])
         };
 
         return client;
@@ -88,10 +89,10 @@ public class ClientRepository : IClientRepository
     {
         string query = @"INSERT INTO Client 
                          (UserId, BankId, FirstName, LastName, MiddleName, 
-                         PassportSeries, IdentificationNumber, Phone, IsActive) 
+                         PassportSeries, IdentificationNumber, Phone, Status) 
                          VALUES 
                          (@UserId, @BankId, @FirstName, @LastName, @MiddleName, 
-                         @PassportSeries, @IdentificationNumber, @Phone, @IsActive)";
+                         @PassportSeries, @IdentificationNumber, @Phone, @Status)";
 
         var parameters = new Dictionary<string, object>
         {
@@ -103,7 +104,7 @@ public class ClientRepository : IClientRepository
             {"PassportSeries", client.PassportSeries},
             {"IdentificationNumber", client.IdentificationNumber},
             {"Phone", client.Phone},
-            {"IsActive", client.IsActive ? 1 : 0}
+            {"Status", client.Status }
         };
 
         await Task.Run(() => _dataBaseHelper.ExecuteNonQuery(query, parameters));
@@ -112,13 +113,14 @@ public class ClientRepository : IClientRepository
     public async Task<Client> GetByIdAsync(int clientId)
     {
         string query = @"SELECT Id, UserId, BankId, FirstName, LastName, MiddleName, 
-                         PassportSeries, IdentificationNumber, Phone, IsActive 
+                         PassportSeries, IdentificationNumber, Phone, Status 
                          FROM Client 
-                         WHERE Id = @Id AND IsActive = 1";
+                         WHERE Id = @Id AND Status = @Status";
 
         var parameters = new Dictionary<string, object>
         {
-            {"Id", clientId}
+            {"Id", clientId},
+            {"Status", ClientStatus.Active}
         };
 
         var result = await Task.Run(() => _dataBaseHelper.ExecuteQuery(query, parameters));
@@ -141,7 +143,7 @@ public class ClientRepository : IClientRepository
             PassportSeries = row["PassportSeries"].ToString(),
             IdentificationNumber = row["IdentificationNumber"].ToString(),
             Phone = row["Phone"].ToString(),
-            IsActive = Convert.ToBoolean(row["IsActive"])
+            Status = (ClientStatus)Convert.ToInt32(row["Status"])
         };
 
         return client;
@@ -183,7 +185,7 @@ public class ClientRepository : IClientRepository
     public async Task<Client> GetClientByUserIdAsync(int bankId, int userId)
     {
         string query = @"SELECT Id, UserId, BankId, FirstName, LastName, MiddleName, 
-                         PassportSeries, IdentificationNumber, Phone, IsActive 
+                         PassportSeries, IdentificationNumber, Phone, Status 
                          FROM Client 
                          WHERE BankId = @BankId AND UserId = @UserId";
 
@@ -213,9 +215,46 @@ public class ClientRepository : IClientRepository
             PassportSeries = row["PassportSeries"].ToString(),
             IdentificationNumber = row["IdentificationNumber"].ToString(),
             Phone = row["Phone"].ToString(),
-            IsActive = Convert.ToBoolean(row["IsActive"])
+            Status = (ClientStatus)Convert.ToInt32(row["Status"])
         };
 
         return client;
+    }
+
+    public async Task<IEnumerable<Client>> GetClientRegistrationRequests()
+    {
+        string query = @"SELECT Id, UserId, BankId, FirstName, LastName, MiddleName, 
+                         PassportSeries, IdentificationNumber, Phone, Status 
+                         FROM Client 
+                         WHERE Status = @Status";
+
+        var parameters = new Dictionary<string, object>
+        {
+            {"Status", ClientStatus.Application }
+        };
+
+        var result = await Task.Run(() => _dataBaseHelper.ExecuteQuery(query, parameters));
+
+        var requests = new List<Client>();
+
+        foreach (var row in result)
+        {
+            var client = new Client
+            {
+                Id = Convert.ToInt32(row["Id"]),
+                UserId = Convert.ToInt32(row["UserId"]),
+                BankId = Convert.ToInt32(row["BankId"]),
+                FirstName = row["FirstName"].ToString(),
+                LastName = row["LastName"].ToString(),
+                MiddleName = row["MiddleName"].ToString(),
+                PassportSeries = row["PassportSeries"].ToString(),
+                IdentificationNumber = row["IdentificationNumber"].ToString(),
+                Phone = row["Phone"].ToString(),
+                Status = (ClientStatus)Convert.ToInt32(row["Status"])
+            };
+            requests.Add(client);
+        }
+        
+        return requests;
     }
 }

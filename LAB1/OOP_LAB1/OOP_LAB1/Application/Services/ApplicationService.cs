@@ -341,6 +341,21 @@ public class ApplicationService : IApplicationService
         await _loanService.RejectLoanRequest(id);
     }
 
+    public async Task<IEnumerable<Client>> GetClientRegistrationRequests()
+    {
+        return await _clientService.GetClientRegistrationRequests();
+    }
+
+    public async Task ApproveClientRegistrationAsync(int id)
+    {
+        await _clientService.ApproveClientRegistration(id);
+    }
+
+    public async Task RejectClientRegistrationAsync(int id)
+    {
+        await _clientService.RejectClientRegistration(id);
+    }
+
 
     public async Task WithdrawAccount(int accountId, decimal sum)
     {

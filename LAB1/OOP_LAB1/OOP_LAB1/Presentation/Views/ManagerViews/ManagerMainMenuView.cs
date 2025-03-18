@@ -33,9 +33,10 @@ public class ManagerMainMenuView : IView
         _console.WriteLine("5. Approve salary project");
         _console.WriteLine("6. Approve loan");
         _console.WriteLine("7. Approve installment");
-        _console.WriteLine("8. Log out");
+        _console.WriteLine("8. Approve client registration");
+        _console.WriteLine("9. Log out");
         
-        var choice = _input.GetNumberVariant(8);
+        var choice = _input.GetNumberVariant(9);
         _console.Clear();
         NextViewName = choice switch
         {
@@ -46,7 +47,8 @@ public class ManagerMainMenuView : IView
             "5" => PageName.ManagerApproveSalaryProjectPage,
             "6" => PageName.ManagerApproveLoanPage,
             "7" => PageName.ManagerApproveInstallmentPage,
-            "8" => PageName.LogOutPage,
+            "8" => PageName.ManagerApproveClientRegistrationPage,
+            "9" => PageName.LogOutPage,
             _ => NextViewName
         };
     }
