@@ -38,5 +38,6 @@ public enum PageName
     ClientShowTransactionPage,
     ClientAllTransfersPage,
     ClientAllDepositsPage,
-    ClientAllWithdrawsPage
+    ClientAllWithdrawsPage,
+    ClientLogOutPage
 }

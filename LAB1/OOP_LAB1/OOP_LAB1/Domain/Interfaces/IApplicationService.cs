@@ -30,4 +30,5 @@ public interface IApplicationService
     Task<IEnumerable<Transaction>> GetTransfersByAccountIdAsync(int accountId);
     Task<IEnumerable<Transaction>> GetDepositsByAccountIdAsync(int accountId);
     Task<IEnumerable<Transaction>> GetWithdrawsByAccountIdAsync(int accountId);
+    Task LogOutUser();
 }

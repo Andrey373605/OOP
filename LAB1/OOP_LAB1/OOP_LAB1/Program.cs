@@ -66,6 +66,7 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<LoginClientView>()
     
     .AddTransient<ClientMainMenuView>()
+    .AddTransient<ClientLogOutView>()
     //transactions view
     .AddTransient<ClientTransactionMenuView>()
     .AddTransient<ClientDepositAccountView>()

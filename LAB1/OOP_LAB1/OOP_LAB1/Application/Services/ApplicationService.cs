@@ -255,6 +255,12 @@ public class ApplicationService : IApplicationService
         return await _transactionService.GetWithdrawByAccountId(accountId);
     }
 
+    public async Task LogOutUser()
+    {
+        _context.ClearCurrentUser();
+        _context.ClearCurrentBank();
+    }
+
     public async Task WithdrawAccount(int accountId, decimal sum)
     {
         var client = await GetCurrentClient();

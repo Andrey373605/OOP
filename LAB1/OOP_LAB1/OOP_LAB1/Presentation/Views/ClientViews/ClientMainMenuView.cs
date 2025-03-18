@@ -30,8 +30,9 @@ public class ClientMainMenuView : IView
         _console.WriteLine("2. Loan manage");
         _console.WriteLine("3. Installment manage");
         _console.WriteLine("4. Transfer manage");
+        _console.WriteLine("5. Log out");
         
-        var choice = _input.GetNumberVariant(4);
+        var choice = _input.GetNumberVariant(5);
         _console.Clear();
         NextViewName = choice switch
         {
@@ -39,6 +40,7 @@ public class ClientMainMenuView : IView
             "2" => PageName.ClientLoanMenuPage,
             "3" => PageName.ClientInstallmentMenuPage,
             "4" => PageName.ClientTransactionMenuPage,
+            "5" => PageName.ClientLogOutPage,
             _ => NextViewName
         };
     }
