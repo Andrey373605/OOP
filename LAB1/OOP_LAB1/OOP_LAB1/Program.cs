@@ -71,6 +71,9 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<ClientDepositAccountView>()
     .AddTransient<ClientTransferAccountView>()
     .AddTransient<ClientWithdrawAccountView>()
+    .AddTransient<ClientAllTransfersView>()
+    .AddTransient<ClientAllDepositsView>()
+    .AddTransient<ClientAllWithdrawsView>()
     
     //account views
     .AddTransient<ClientAccountMenuView>()

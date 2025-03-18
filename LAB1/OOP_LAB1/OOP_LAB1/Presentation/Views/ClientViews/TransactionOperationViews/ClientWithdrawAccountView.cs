@@ -37,7 +37,7 @@ public class ClientWithdrawAccountView : IView
         _console.Clear();
         try
         {
-            await _applicationService.DepositAccount(accountId, sum);
+            await _applicationService.WithdrawAccount(accountId, sum);
             _console.WriteLine("Success withdraw!");
         }
         catch (Exception e)

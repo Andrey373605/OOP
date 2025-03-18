@@ -15,4 +15,5 @@ public interface IAccountService
 
     Task<IEnumerable<Account>> GetAllClientAccountsAsync(int clientId);
     Task<bool> IsAccountBelongToClient(int accountId, int clientId);
+    Task<Account> GetByIdAsync(int accountId);
 }

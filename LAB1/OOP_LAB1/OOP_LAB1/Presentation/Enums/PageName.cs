@@ -34,5 +34,9 @@ public enum PageName
     ClientAllInstallmentPage,
     ClientAccountMenuPage,
     ClientTransactionMenuPage,
-    ClientAllTransactionsPage
+    ClientAllTransactionsPage,
+    ClientShowTransactionPage,
+    ClientAllTransfersPage,
+    ClientAllDepositsPage,
+    ClientAllWithdrawsPage
 }

@@ -17,6 +17,7 @@ public interface IApplicationService
     Task CreateAccount();
     Task DepositAccount(int accountId, decimal sum);
     Task TransferAccount(int fromAccountId, int toAccountId, decimal sum);
+    Task WithdrawAccount(int accountId, decimal sum);
     Task FreezeAccount(int accountId);
     
     Task UnfreezeAccount(int accountId);
@@ -26,4 +27,7 @@ public interface IApplicationService
     Task<EmployeeRole> GetCurrentEmployeeRole();
     Task<IEnumerable<Loan>> GetCurrentClientLoans();
     Task<IEnumerable<Installment>> GetCurrentClientInstallments();
+    Task<IEnumerable<Transaction>> GetTransfersByAccountIdAsync(int accountId);
+    Task<IEnumerable<Transaction>> GetDepositsByAccountIdAsync(int accountId);
+    Task<IEnumerable<Transaction>> GetWithdrawsByAccountIdAsync(int accountId);
 }

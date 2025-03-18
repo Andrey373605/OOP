@@ -20,9 +20,7 @@ public class TransactionService : ITransactionService
     {
         
         var account = await _accountRepository.GetByIdAsync(accountId);
-        account.WithdrawAccount(amount);
 
-        await _accountRepository.UpdateAsync(account);
         
         var transaction = new Transaction
         {
@@ -33,8 +31,22 @@ public class TransactionService : ITransactionService
             Type = TransactionType.Withdraw
         };
         
+
+        if (transaction.Amount < 0)
+        {
+            throw new ApplicationException("Insufficient funds");
+        }
+
+        if (amount > account.Balance)
+        {
+            throw new ApplicationException("Insufficient funds");
+        }
+        
         await _transactionRepository.AddAsync(transaction);
         
+        
+        account.WithdrawAccount(amount);
+        await _accountRepository.UpdateAsync(account);
         return true;
     }
 
@@ -80,7 +92,7 @@ public class TransactionService : ITransactionService
             ToAccountId = toAccountId,
             Amount = amount,
             Date = DateTime.UtcNow,
-            Type = TransactionType.Withdraw
+            Type = TransactionType.Transfer
         };
         
         await _transactionRepository.AddAsync(transaction);
@@ -106,12 +118,27 @@ public class TransactionService : ITransactionService
             ToAccountId = accountId,
             Amount = amount,
             Date = DateTime.UtcNow,
-            Type = TransactionType.Withdraw
+            Type = TransactionType.Deposit
         };
         
         await _transactionRepository.AddAsync(transaction);
 
         return true;
 
+    }
+
+    public async Task<IEnumerable<Transaction>> GetTransferByAccountId(int accountId)
+    {
+        return await _transactionRepository.GetTransferByAccountIdAsync(accountId);
+    }
+
+    public async Task<IEnumerable<Transaction>> GetDepositByAccountId(int accountId)
+    {
+        return await _transactionRepository.GetDepositByAccountIdAsync(accountId);
+    }
+
+    public async Task<IEnumerable<Transaction>> GetWithdrawByAccountId(int accountId)
+    {
+        return await _transactionRepository.GetWithdrawByAccountIdAsync(accountId);
     }
 }

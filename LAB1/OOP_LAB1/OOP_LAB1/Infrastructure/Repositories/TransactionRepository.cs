@@ -13,6 +13,7 @@ public class TransactionRepository : ITransactionRepository
     {
         _dataBaseHelper = dataBaseHelper;
     }
+
     public async Task<Transaction> GetByIdAsync(int transactionId)
     {
         var query = @"
@@ -26,7 +27,7 @@ public class TransactionRepository : ITransactionRepository
             { "Id", transactionId }
         };
 
-        var result = await Task.Run(() =>_dataBaseHelper.ExecuteQuery(query, parameters));
+        var result = await Task.Run(() => _dataBaseHelper.ExecuteQuery(query, parameters));
 
         if (result.Count == 0)
         {
@@ -66,5 +67,114 @@ public class TransactionRepository : ITransactionRepository
     public Task UpdateAsync(Transaction transaction)
     {
         throw new NotImplementedException();
+    }
+
+    public async Task<IEnumerable<Transaction>> GetTransferByAccountIdAsync(int accountId)
+    {
+        var query = @"
+                SELECT Id, FromAccountId, ToAccountId, Amount, Date, Type
+                FROM [Transaction]
+                WHERE FromAccountId = @accountId OR ToAccountId = @accountId and Type = @Type;
+            ";
+
+        var parameters = new Dictionary<string, object>
+        {
+            { "accountId", accountId },
+            { "Type", TransactionType.Transfer }
+        };
+
+        var result = await Task.Run(() => _dataBaseHelper.ExecuteQuery(query, parameters));
+
+
+        var transactions = new List<Transaction>();
+
+        foreach (var row in result)
+        {
+            transactions.Add(
+                new Transaction
+                {
+                    Id = Convert.ToInt32(row["Id"]),
+                    FromAccountId = Convert.ToInt32(row["FromAccountId"]),
+                    ToAccountId = Convert.ToInt32(row["ToAccountId"]),
+                    Amount = Convert.ToDecimal(row["Amount"]),
+                    Date = Convert.ToDateTime(row["Date"]),
+                    Type = (TransactionType)Convert.ToInt32(row["Type"])
+                }
+            );
+        }
+        return transactions;
+
+    }
+
+    public async Task<IEnumerable<Transaction>> GetDepositByAccountIdAsync(int accountId)
+    {
+        var query = @"
+                SELECT Id, FromAccountId, ToAccountId, Amount, Date, Type
+                FROM [Transaction]
+                WHERE ToAccountId = @accountId and Type = @Type;
+            ";
+
+        var parameters = new Dictionary<string, object>
+        {
+            { "accountId", accountId },
+            { "Type", TransactionType.Deposit }
+        };
+
+        var result = await Task.Run(() => _dataBaseHelper.ExecuteQuery(query, parameters));
+
+
+        var transactions = new List<Transaction>();
+
+        foreach (var row in result)
+        {
+            transactions.Add(
+                new Transaction
+                {
+                    Id = Convert.ToInt32(row["Id"]),
+                    FromAccountId = Convert.ToInt32(row["FromAccountId"]),
+                    ToAccountId = Convert.ToInt32(row["ToAccountId"]),
+                    Amount = Convert.ToDecimal(row["Amount"]),
+                    Date = Convert.ToDateTime(row["Date"]),
+                    Type = (TransactionType)Convert.ToInt32(row["Type"])
+                }
+            );
+        }
+        return transactions;
+    }
+    
+    public async Task<IEnumerable<Transaction>> GetWithdrawByAccountIdAsync(int accountId)
+    {
+        var query = @"
+                SELECT Id, FromAccountId, ToAccountId, Amount, Date, Type
+                FROM [Transaction]
+                WHERE FromAccountId = @accountId and Type = @Type;
+            ";
+
+        var parameters = new Dictionary<string, object>
+        {
+            { "accountId", accountId },
+            { "Type", TransactionType.Withdraw }
+        };
+
+        var result = await Task.Run(() => _dataBaseHelper.ExecuteQuery(query, parameters));
+
+
+        var transactions = new List<Transaction>();
+
+        foreach (var row in result)
+        {
+            transactions.Add(
+                new Transaction
+                {
+                    Id = Convert.ToInt32(row["Id"]),
+                    FromAccountId = Convert.ToInt32(row["FromAccountId"]),
+                    ToAccountId = Convert.ToInt32(row["ToAccountId"]),
+                    Amount = Convert.ToDecimal(row["Amount"]),
+                    Date = Convert.ToDateTime(row["Date"]),
+                    Type = (TransactionType)Convert.ToInt32(row["Type"])
+                }
+            );
+        }
+        return transactions;
     }
 }

@@ -118,6 +118,17 @@ public class AccountService : IAccountService
         return account.ClientId == clientId;
     }
 
+    public async Task<Account> GetByIdAsync(int accountId)
+    {
+        var account = await _accountRepository.GetByIdAsync(accountId);
+
+        if (account == null)
+        {
+            throw new NullReferenceException("Account not found");
+        }
+        return account;
+    }
+
     public async Task CreateAccountAsync(int clientId)
     {
         var client = await _clientRepository.GetByIdAsync(clientId);

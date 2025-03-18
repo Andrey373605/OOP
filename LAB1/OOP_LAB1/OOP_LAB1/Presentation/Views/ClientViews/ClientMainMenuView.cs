@@ -26,17 +26,13 @@ public class ClientMainMenuView : IView
     }
     public async Task Execute()
     {
-        var menu_list = new List<string>
-        {
-            "Account manage",
-            "Loan manage",
-            "Installment manage",
-            "Transfer manage",
-        };
+        _console.WriteLine("1. Account manage");
+        _console.WriteLine("2. Loan manage");
+        _console.WriteLine("3. Installment manage");
+        _console.WriteLine("4. Transfer manage");
         
-        _console.WriteMenuList(menu_list);
-
         var choice = _input.GetNumberVariant(4);
+        _console.Clear();
         NextViewName = choice switch
         {
             "1" => PageName.ClientAccountMenuPage,

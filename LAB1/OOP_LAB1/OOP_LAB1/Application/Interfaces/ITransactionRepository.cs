@@ -9,4 +9,7 @@ public interface ITransactionRepository
     public Task AddAsync(Transaction transaction);
     
     public Task UpdateAsync(Transaction transaction);
+    public Task<IEnumerable<Transaction>> GetTransferByAccountIdAsync(int accountId);
+    public Task<IEnumerable<Transaction>> GetDepositByAccountIdAsync(int accountId);
+    public Task<IEnumerable<Transaction>> GetWithdrawByAccountIdAsync(int accountId);
 }

@@ -22,22 +22,26 @@ public class ClientTransactionMenuView : IView
     public PageName? NextViewName { get; private set; }
     public async Task Execute()
     {
-        _console.WriteLine("1. All my transactions");
-        _console.WriteLine("2. Deposit");
-        _console.WriteLine("3. Withdraw");
-        _console.WriteLine("4. Transfer");
-        _console.WriteLine("5. Return back");
+        _console.WriteLine("1. All my transfers");
+        _console.WriteLine("2. All my deposits");
+        _console.WriteLine("3. All my withdraws");
+        _console.WriteLine("4. Deposit");
+        _console.WriteLine("5. Withdraw");
+        _console.WriteLine("6. Transfer");
+        _console.WriteLine("7. Return back");
 
-        var choice = _input.GetNumberVariant(5);
+        var choice = _input.GetNumberVariant(7);
 
         _console.Clear();
         NextViewName = choice switch
         {
-            "1" => PageName.ClientAllTransactionsPage,
-            "2" => PageName.ClientDepositAccountPage,
-            "3" => PageName.ClientWithdrawAccountPage,
-            "4" => PageName.ClientTransferAccountPage,
-            "5" => PageName.ClientMainMenuPage,
+            "1" => PageName.ClientAllTransfersPage,
+            "2" => PageName.ClientAllDepositsPage,
+            "3" => PageName.ClientAllWithdrawsPage,
+            "4" => PageName.ClientDepositAccountPage,
+            "5" => PageName.ClientWithdrawAccountPage,
+            "6" => PageName.ClientTransferAccountPage,
+            "7" => PageName.ClientMainMenuPage,
             _ => PageName.ClientTransactionMenuPage
         };
     }

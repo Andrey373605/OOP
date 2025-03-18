@@ -219,6 +219,42 @@ public class ApplicationService : IApplicationService
         return accounts.ToList();
     }
 
+    public async Task<IEnumerable<Transaction>> GetTransfersByAccountIdAsync(int accountId)
+    {
+        var client = await GetCurrentClient();
+        var check = await _accountService.IsAccountBelongToClient(accountId, client.Id);
+        if (!check)
+        {
+            throw new ApplicationException("Account is not belong to client");
+        }
+
+        return await _transactionService.GetTransferByAccountId(accountId);
+    }
+
+    public async Task<IEnumerable<Transaction>> GetDepositsByAccountIdAsync(int accountId)
+    {
+        var client = await GetCurrentClient();
+        var check = await _accountService.IsAccountBelongToClient(accountId, client.Id);
+        if (!check)
+        {
+            throw new ApplicationException("Account is not belong to client");
+        }
+
+        return await _transactionService.GetDepositByAccountId(accountId);
+    }
+
+    public async Task<IEnumerable<Transaction>> GetWithdrawsByAccountIdAsync(int accountId)
+    {
+        var client = await GetCurrentClient();
+        var check = await _accountService.IsAccountBelongToClient(accountId, client.Id);
+        if (!check)
+        {
+            throw new ApplicationException("Account is not belong to client");
+        }
+
+        return await _transactionService.GetWithdrawByAccountId(accountId);
+    }
+
     public async Task WithdrawAccount(int accountId, decimal sum)
     {
         var client = await GetCurrentClient();
