@@ -35,7 +35,7 @@ public class OperatorAllTransfersView : IView
             foreach (var t in transfers)
             {
                 var type = accountId == t.FromAccountId ? "sending" : "receiving";
-                _console.WriteLine($"Number: {t.Id}" +
+                _console.WriteLine($"Number: {t.Id}\t" +
                                    $"From: {t.FromAccountId} \t" +
                                    $"To: {t.ToAccountId}\t" +
                                    $"Amount: {t.Amount}\t" +
@@ -49,6 +49,6 @@ public class OperatorAllTransfersView : IView
         {
             _console.WriteLine(e.Message);
         }
-        NextViewName = PageName.ClientTransactionMenuPage;
+        NextViewName = PageName.OperatorMainMenuPage;
     }
 }

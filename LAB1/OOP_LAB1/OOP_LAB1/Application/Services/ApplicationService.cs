@@ -307,7 +307,7 @@ public class ApplicationService : IApplicationService
         {
             throw new ApplicationException("Invalid number transfer");
         }
-        await _transactionService.TransferFunds(transaction.Amount, transaction.FromAccountId??0, transaction.ToAccountId??0);
+        await _transactionService.CancelTransfer(numberTransfer);
     }
 
     public async Task WithdrawAccount(int accountId, decimal sum)

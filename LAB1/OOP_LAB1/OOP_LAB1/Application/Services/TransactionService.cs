@@ -127,6 +127,62 @@ public class TransactionService : ITransactionService
 
     }
 
+    public async Task<bool> CancelTransfer(int transferId)
+    {
+        var transfer = await _transactionRepository.GetByIdAsync(transferId);
+        var fromAccount = await _accountRepository.GetByIdAsync(transfer.FromAccountId ?? 0);
+        var toAccount = await _accountRepository.GetByIdAsync(transfer.ToAccountId ?? 0);
+
+        if (fromAccount == null || toAccount == null)
+        {
+            throw new NullReferenceException("This operation cannot be undone");
+        }
+
+        if (fromAccount.Status != AccountStatus.Active)
+        {
+            throw new ArgumentException("From Account is not active");
+        }
+
+        if (toAccount.Status != AccountStatus.Active)
+        {
+            throw new ArgumentException("To Account is not active");
+        }
+
+        if (toAccount.Id == fromAccount.Id)
+        {
+            throw new ArgumentException("From Account Id is equal to To Account Id");
+        }
+
+        if (toAccount.Balance < transfer.Amount)
+        {
+            throw new ArgumentException("Not enough balance");
+        }
+
+        if (transfer.Amount == 0)
+        {
+            throw new ArgumentException("Amount is equal to 0");
+        }
+        
+        var transaction = new Transaction
+        {
+            FromAccountId = toAccount.Id,
+            ToAccountId = fromAccount.Id,
+            Amount = transfer.Amount,
+            Date = DateTime.UtcNow,
+            Type = TransactionType.Cancel
+        };
+        
+        await _transactionRepository.AddAsync(transaction);
+        
+        toAccount.WithdrawAccount(transfer.Amount);
+        fromAccount.DepositAccount(transfer.Amount);
+        await _accountRepository.UpdateAsync(fromAccount);
+        await _accountRepository.UpdateAsync(toAccount);
+        await _transactionRepository.DeleteByIdAsync(transferId);
+        
+        return true;
+    }
+
     public async Task<Transaction> GetTransferById(int transferId)
     {
         return await _transactionRepository.GetByIdAsync(transferId);

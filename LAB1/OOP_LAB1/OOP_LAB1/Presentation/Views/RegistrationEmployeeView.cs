@@ -51,7 +51,7 @@ public class RegistrationEmployeeView : IView
         {
 
             await _applicationService.RegisterEmployee(role);
-            NextViewName = PageName.RegisterInBankPage;
+            NextViewName = PageName.ChooseRolePage;
             _console.WriteLine("Registration successful!");
         }
         catch (Exception ex)

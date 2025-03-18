@@ -42,6 +42,7 @@ public class OperatorMainMenuView : IView
             "3" => PageName.OperatorAllWithdrawsPage,
             "4" => PageName.OperatorCancelTransferPage,
             "5" => PageName.OperatorApproveSalaryProjectPage,
+            "6" => PageName.LogOutPage,
             _ => NextViewName
         };
     }

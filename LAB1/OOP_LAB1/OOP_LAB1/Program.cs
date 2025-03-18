@@ -66,7 +66,7 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<LoginClientView>()
     
     .AddTransient<ClientMainMenuView>()
-    .AddTransient<ClientLogOutView>()
+    .AddTransient<LogOutView>()
     //transactions view
     .AddTransient<ClientTransactionMenuView>()
     .AddTransient<ClientDepositAccountView>()
@@ -94,6 +94,13 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<ClientInstallmentRequestView>()
     .AddTransient<ClientAllInstallmentView>()
     
+    //operator
+    .AddTransient<OperatorMainMenuView>()
+    .AddTransient<OperatorCancelTransferPage>()
+    .AddTransient<OperatorAllDepositsView>()
+    .AddTransient<OperatorAllWithdrawsView>()
+    .AddTransient<OperatorAllTransfersView>()
+    .AddTransient<OperatorApproveSalaryProjectView>()
     
     .AddTransient<LoginEmployeeView>()
     .AddTransient<ExitView>()

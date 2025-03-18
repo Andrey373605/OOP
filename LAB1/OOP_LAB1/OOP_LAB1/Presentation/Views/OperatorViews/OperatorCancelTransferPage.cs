@@ -35,7 +35,7 @@ public class OperatorCancelTransferPage : IView
             _console.WriteLine(e.Message);
         }
         
-        NextViewName = PageName.OperatorCancelTransferPage;
+        NextViewName = PageName.OperatorMainMenuPage;
         
     }
 }

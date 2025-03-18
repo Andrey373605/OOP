@@ -12,4 +12,5 @@ public interface ITransactionRepository
     public Task<IEnumerable<Transaction>> GetTransferByAccountIdAsync(int accountId);
     public Task<IEnumerable<Transaction>> GetDepositByAccountIdAsync(int accountId);
     public Task<IEnumerable<Transaction>> GetWithdrawByAccountIdAsync(int accountId);
+    public Task DeleteByIdAsync(int transferId);
 }

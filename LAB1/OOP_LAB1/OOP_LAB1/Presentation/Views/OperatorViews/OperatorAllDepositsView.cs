@@ -44,6 +44,6 @@ public class OperatorAllDepositsView : IView
         {
             _console.WriteLine(e.Message);
         }
-        NextViewName = PageName.ClientTransactionMenuPage;
+        NextViewName = PageName.OperatorMainMenuPage;
     }
 }

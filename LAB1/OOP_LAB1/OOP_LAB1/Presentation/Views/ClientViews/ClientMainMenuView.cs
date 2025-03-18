@@ -40,7 +40,7 @@ public class ClientMainMenuView : IView
             "2" => PageName.ClientLoanMenuPage,
             "3" => PageName.ClientInstallmentMenuPage,
             "4" => PageName.ClientTransactionMenuPage,
-            "5" => PageName.ClientLogOutPage,
+            "5" => PageName.LogOutPage,
             _ => NextViewName
         };
     }

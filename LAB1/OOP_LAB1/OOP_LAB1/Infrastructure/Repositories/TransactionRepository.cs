@@ -177,4 +177,18 @@ public class TransactionRepository : ITransactionRepository
         }
         return transactions;
     }
+
+    public async Task DeleteByIdAsync(int transferId)
+    {
+        var query = @"
+        DELETE FROM [Transaction]
+        WHERE Id = @transferId;";
+
+        var parameters = new Dictionary<string, object>
+        {
+            { "transferId", transferId },
+        };
+
+        await Task.Run(() => _dataBaseHelper.ExecuteNonQuery(query, parameters));
+    }
 }

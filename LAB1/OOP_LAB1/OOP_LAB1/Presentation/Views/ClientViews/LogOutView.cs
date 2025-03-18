@@ -5,13 +5,13 @@ using OOP_LAB1.Presentation.Navigator;
 
 namespace OOP_LAB1.Presentation.Views;
 
-[ViewMapping(PageName.ClientLogOutPage)]
-public class ClientLogOutView : IView
+[ViewMapping(PageName.LogOutPage)]
+public class LogOutView : IView
 {
     IConsole _console;
     IApplicationService _applicationService;
 
-    public ClientLogOutView(IConsole console, IApplicationService applicationService)
+    public LogOutView(IConsole console, IApplicationService applicationService)
     {
         _console = console;
         _applicationService = applicationService;

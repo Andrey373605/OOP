@@ -14,9 +14,21 @@ public class EmployeeRepository : IEmployeeRepository
     {
         _dataBaseHelper = dataBaseHelper;
     }
-    public Task AddAsync(Employee employee)
+    public async Task AddAsync(Employee employee)
     {
-        throw new NotImplementedException();
+        string query = @"INSERT INTO Employee 
+                         (UserId, BankId, Role) 
+                         VALUES 
+                         (@UserId, @BankId, @Role);";
+
+        var parameters = new Dictionary<string, object>
+        {
+            {"UserId", employee.UserId},
+            {"BankId", employee.BankId},
+            {"Role", employee.Role},
+        };
+
+        await Task.Run(() => _dataBaseHelper.ExecuteNonQuery(query, parameters));
     }
 
     public Task DeleteAsync(Employee employee)
@@ -24,14 +36,54 @@ public class EmployeeRepository : IEmployeeRepository
         throw new NotImplementedException();
     }
 
-    public Task<Employee> GetByIdAsync(int id)
+    public async Task<Employee> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        string query = @"SELECT Id, UserId, BankId, Role 
+                         FROM Employee 
+                         WHERE Id = @Id;";
+
+        var parameters = new Dictionary<string, object>
+        {
+            {"Id", id}
+        };
+
+        var result = await Task.Run(() => _dataBaseHelper.ExecuteQuery(query, parameters));
+
+        if (result.Count == 0)
+        {
+            return null; // Если клиент не найден
+        }
+
+        var row = result[0];
+
+        var employee = new Employee
+        {
+            Id = Convert.ToInt32(row["Id"]),
+            UserId = Convert.ToInt32(row["UserId"]),
+            BankId = Convert.ToInt32(row["BankId"]),
+            Role = (EmployeeRole)Convert.ToInt32(row["Role"]),
+        };
+
+        return employee;
     }
 
-    public Task UpdateAsync(Employee employee)
+    public async Task UpdateAsync(Employee employee)
     {
-        throw new NotImplementedException();
+        string query = @"UPDATE Employee 
+                         SET UserId = @UserId, 
+                             BankId = @BankId, 
+                             Role = @Role,
+                         WHERE Id = @Id";
+
+        var parameters = new Dictionary<string, object>
+        {
+            {"Id", employee.Id},
+            {"BankId", employee.BankId},
+            {"UserId", employee.UserId},
+            {"Role", employee.Role},
+        };
+
+        await Task.Run(() => _dataBaseHelper.ExecuteNonQuery(query, parameters));
     }
     
     public async Task<Employee> GetEmployeeByUserIdAsync(int bankId, int userId)
