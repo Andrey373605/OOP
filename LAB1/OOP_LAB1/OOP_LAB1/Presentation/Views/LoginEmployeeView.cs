@@ -35,7 +35,6 @@ public class LoginEmployeeView : IView
                 _ => PageName.ChooseRolePage
             };
             _console.WriteLine($"Successfully login with Role: {role.ToString()}");
-            NextViewName = PageName.OperatorMainMenuPage;
         }
         catch (Exception e)
         {

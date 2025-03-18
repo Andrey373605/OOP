@@ -1,4 +1,6 @@
 ﻿
+using OOP_LAB1.Domain.Enums;
+
 namespace OOP_LAB1.Domain.Entities
 {
     public class Installment
@@ -10,27 +12,31 @@ namespace OOP_LAB1.Domain.Entities
         public int NumberOfPayments { get; init; }
         
         public int RestMonth { get; set; }
-        public bool IsActive { get; set; }
+        public InstallmentStatus Status { get; set; }
         
         public void DecreaseRestMonth()
         {
             RestMonth--;
         }
 
-        public void SetActive()
+        public void Activate()
         {
-            IsActive = true;
+            Status = InstallmentStatus.Active;
         }
 
-        public void SetInactive()
+        public void Close()
         {
-            IsActive = false;
+            Status = InstallmentStatus.Closed;
         }
         
         public decimal CalculateMonthlyPayment()
         {
             return Amount / NumberOfPayments;
         }
-        
+
+        public void Reject()
+        {
+            Status = InstallmentStatus.Rejected;
+        }
     }
 }

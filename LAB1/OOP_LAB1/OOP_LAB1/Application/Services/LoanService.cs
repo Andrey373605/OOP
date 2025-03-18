@@ -32,7 +32,7 @@ public class LoanService : ILoanService
             throw new ApplicationException($"Loan request with id: {loanId} does not exist");
         }
         
-        loanRequest.SetActive();
+        loanRequest.Activate();
         
         var account = await _accountRepository.GetByIdAsync(loanRequest.AccountId);
         account.DepositAccount(loanRequest.Amount);
@@ -45,6 +45,24 @@ public class LoanService : ILoanService
     public async Task<IEnumerable<Loan>> GetAllClientLoansAsync(int clientId)
     {
         return await _loanRepository.GetAllByClientId(clientId);
+    }
+
+    public async Task<IEnumerable<Loan>> GetLoanApplicationsAsync()
+    {
+        return await _loanRepository.GetLoanApplications();
+    }
+
+    public async Task RejectLoanRequest(int id)
+    {
+        var loanRequest = await _loanRepository.GetByIdAsync(id);
+        if (loanRequest == null)
+        {
+            throw new ApplicationException($"Loan request with id: {id} does not exist");
+        }
+        
+        loanRequest.Reject();
+        
+        await _loanRepository.UpdateAsync(loanRequest);
     }
 
     public async Task DepositMoney(int loanId)
@@ -100,7 +118,7 @@ public class LoanService : ILoanService
             RestMonth = monthCount,
             InterestRate = interestRate,
             Amount = depositAmount,
-            IsActive = false
+            Status = LoanStatus.Application
         };
 
         await _loanRepository.AddAsync(loanRequest);

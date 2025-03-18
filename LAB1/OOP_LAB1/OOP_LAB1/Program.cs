@@ -109,6 +109,8 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<ManagerAllWithdrawsView>()
     .AddTransient<ManagerAllTransfersView>()
     .AddTransient<ManagerApproveSalaryProjectView>()
+    .AddTransient<ManagerApproveInstallmentView>()
+    .AddTransient<ManagerApproveLoanView>()
     
     .AddTransient<LoginEmployeeView>()
     .AddTransient<ExitView>()

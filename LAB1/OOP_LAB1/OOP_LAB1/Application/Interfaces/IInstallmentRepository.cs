@@ -12,4 +12,5 @@ public interface IInstallmentRepository
     public Task DeleteAsync(Installment installment);
     public Task<Installment> GetByIdAsync(int installmentId);
     Task<IEnumerable<Installment>> GetAllByClientId(int clientId);
+    Task<IEnumerable<Installment>> GetInstallmentApplications();
 }

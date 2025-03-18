@@ -10,4 +10,5 @@ public interface ILoanRepository
     public Task DeleteAsync(Loan loan);
     public Task<Loan> GetByIdAsync(int loanId);
     Task<IEnumerable<Loan>> GetAllByClientId(int clientId);
+    Task<IEnumerable<Loan>> GetLoanApplications();
 }

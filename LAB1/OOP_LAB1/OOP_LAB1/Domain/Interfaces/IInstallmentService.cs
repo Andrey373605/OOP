@@ -9,6 +9,8 @@ public interface IInstallmentService
 
     public Task CreateInstallmentRequest(int clientId, decimal depositAmount, int monthCount);
 
-    public Task ApproveInstallmentRequest(int loanId);
+    public Task ApproveInstallmentRequest(int installmentId);
+    public Task RejectInstallmentRequest(int installmentId);
     Task<IEnumerable<Installment>> GetAllClientInstallmentsAsync(int clientId);
+    Task<IEnumerable<Installment>> GetInstallmentApplicationsAsync();
 }

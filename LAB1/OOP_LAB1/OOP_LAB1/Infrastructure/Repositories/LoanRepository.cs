@@ -1,5 +1,6 @@
 ﻿using OOP_LAB1.Application.Interfaces;
 using OOP_LAB1.Domain.Entities;
+using OOP_LAB1.Domain.Enums;
 using OOP_LAB1.Infrastructure.Data;
 
 namespace OOP_LAB1.Infrastructure.Repositories;
@@ -15,8 +16,8 @@ public class LoanRepository : ILoanRepository
     public async Task AddAsync(Loan loan)
     {
         var query = @"
-        INSERT INTO Loan (AccountId, ClientId, Amount, NumberOfPayments, InterestRate, RestMonth, IsActive)
-        VALUES (@AccountId, @ClientId, @Amount, @NumberOfPayments, @InterestRate, @RestMonth, @IsActive);";
+        INSERT INTO Loan (AccountId, ClientId, Amount, NumberOfPayments, InterestRate, RestMonth, Status)
+        VALUES (@AccountId, @ClientId, @Amount, @NumberOfPayments, @InterestRate, @RestMonth, @Status);";
 
         var parameters = new Dictionary<string, object>
         {
@@ -26,7 +27,7 @@ public class LoanRepository : ILoanRepository
             { "NumberOfPayments", loan.NumberOfPayments },
             { "InterestRate", loan.InterestRate },
             { "RestMonth", loan.RestMonth },
-            { "IsActive", loan.IsActive }
+            { "Status", loan.Status }
         };
 
         await Task.Run(() => _dataBaseHelper.ExecuteNonQuery(query, parameters));
@@ -42,7 +43,7 @@ public class LoanRepository : ILoanRepository
                 NumberOfPayments = @NumberOfPayments,
                 InterestRate = @InterestRate,
                 RestMonth = @RestMonth,
-                IsActive = @IsActive
+                Status = @Status
             WHERE Id = @Id;
         ";
 
@@ -55,7 +56,7 @@ public class LoanRepository : ILoanRepository
             { "NumberOfPayments", loan.NumberOfPayments },
             { "InterestRate", loan.InterestRate },
             { "RestMonth", loan.RestMonth },
-            { "IsActive", loan.IsActive }
+            { "Status", loan.Status }
         };
 
         await Task.Run(() => _dataBaseHelper.ExecuteNonQuery(query, parameters));
@@ -70,7 +71,7 @@ public class LoanRepository : ILoanRepository
     public async Task<Loan> GetByIdAsync(int loanId)
     {
         var query = @"
-                SELECT Id, AccountId, ClientId, Amount, NumberOfPayments, InterestRate, RestMonth, IsActive
+                SELECT Id, AccountId, ClientId, Amount, NumberOfPayments, InterestRate, RestMonth, Status
                 FROM Loan
                 WHERE Id = @Id;
             ";
@@ -97,14 +98,14 @@ public class LoanRepository : ILoanRepository
             NumberOfPayments = Convert.ToInt32(row["NumberOfPayments"]),
             InterestRate = Convert.ToInt32(row["InterestRate"]),
             RestMonth = Convert.ToDecimal(row["RestMonth"]),
-            IsActive = Convert.ToBoolean(row["IsActive"])
+            Status = (LoanStatus)Convert.ToInt32(row["Status"])
         };
     }
 
     public async Task<IEnumerable<Loan>> GetAllByClientId(int clientId)
     {
         var query = @"
-                SELECT Id, AccountId, ClientId, Amount, NumberOfPayments, InterestRate, RestMonth, IsActive
+                SELECT Id, AccountId, ClientId, Amount, NumberOfPayments, InterestRate, RestMonth, Status
                 FROM Loan
                 WHERE ClientId = @ClientId;
             ";
@@ -134,7 +135,47 @@ public class LoanRepository : ILoanRepository
                 NumberOfPayments = Convert.ToInt32(row["NumberOfPayments"]),
                 InterestRate = Convert.ToInt32(row["InterestRate"]),
                 RestMonth = Convert.ToDecimal(row["RestMonth"]),
-                IsActive = Convert.ToBoolean(row["IsActive"])
+                Status = (LoanStatus)Convert.ToInt32(row["Status"])
+            });
+        }
+
+        return loans;
+    }
+
+    public async Task<IEnumerable<Loan>> GetLoanApplications()
+    {
+        var query = @"
+                SELECT Id, AccountId, ClientId, Amount, NumberOfPayments, InterestRate, RestMonth, Status
+                FROM Loan
+                WHERE Status = @Status;
+            ";
+
+        var parameters = new Dictionary<string, object>
+        {
+            { "Status", LoanStatus.Application }
+        };
+
+        var result = await Task.Run(() =>_dataBaseHelper.ExecuteQuery(query, parameters));
+
+        if (result.Count == 0)
+        {
+            return null;
+        }
+        
+        var loans = new List<Loan>();
+
+        foreach (var row in result)
+        {
+            loans.Add(new Loan
+            {
+                Id = Convert.ToInt32(row["Id"]),
+                AccountId = Convert.ToInt32(row["AccountId"]),
+                ClientId = Convert.ToInt32(row["ClientId"]),
+                Amount = Convert.ToDecimal(row["Amount"]),
+                NumberOfPayments = Convert.ToInt32(row["NumberOfPayments"]),
+                InterestRate = Convert.ToInt32(row["InterestRate"]),
+                RestMonth = Convert.ToDecimal(row["RestMonth"]),
+                Status = (LoanStatus)Convert.ToInt32(row["Status"])
             });
         }
 

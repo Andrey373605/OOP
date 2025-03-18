@@ -12,4 +12,7 @@ public interface ILoanService
 
     public Task ApproveLoanRequest(int loanId);
     Task<IEnumerable<Loan>> GetAllClientLoansAsync(int clientId);
+    
+    Task<IEnumerable<Loan>> GetLoanApplicationsAsync();
+    Task RejectLoanRequest(int id);
 }

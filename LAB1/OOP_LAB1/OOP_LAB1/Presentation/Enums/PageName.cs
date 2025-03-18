@@ -49,5 +49,7 @@ public enum PageName
     ManagerAllTransfersPage,
     ManagerAllWithdrawsPage,
     ManagerCancelTransferPage,
-    ManagerApproveSalaryProjectPage
+    ManagerApproveSalaryProjectPage,
+    ManagerApproveInstallmentPage,
+    ManagerApproveLoanPage
 }

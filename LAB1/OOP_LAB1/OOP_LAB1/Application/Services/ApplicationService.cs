@@ -310,6 +310,38 @@ public class ApplicationService : IApplicationService
         await _transactionService.CancelTransfer(numberTransfer);
     }
 
+    public async Task<IEnumerable<Installment>> GetInstallmentApplications()
+    {
+        var applications = await _installmentService.GetInstallmentApplicationsAsync();
+        return applications;
+    }
+
+    public async Task ApproveInstallmentByIdAsync(int id)
+    {
+        await _installmentService.ApproveInstallmentRequest(id);
+    }
+
+    public async Task RejectInstallmentByIdAsync(int id)
+    {
+        await _installmentService.RejectInstallmentRequest(id);
+    }
+
+    public async Task<IEnumerable<Loan>> GetLoanApplications()
+    {
+        return await _loanService.GetLoanApplicationsAsync();
+    }
+
+    public async Task ApproveLoanByIdAsync(int id)
+    {
+        await _loanService.ApproveLoanRequest(id);
+    }
+
+    public async Task RejectLoanByIdAsync(int id)
+    {
+        await _loanService.RejectLoanRequest(id);
+    }
+
+
     public async Task WithdrawAccount(int accountId, decimal sum)
     {
         var client = await GetCurrentClient();

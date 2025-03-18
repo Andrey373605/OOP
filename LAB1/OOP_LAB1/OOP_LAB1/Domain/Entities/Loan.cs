@@ -13,7 +13,7 @@ namespace OOP_LAB1.Domain.Entities
         public int InterestRate { get; set; }
 
         public decimal RestMonth { get; set; }
-        public bool IsActive { get; set; }
+        public LoanStatus Status { get; set; }
         
         public decimal CalculateMonthlyPayment()
         {
@@ -25,15 +25,19 @@ namespace OOP_LAB1.Domain.Entities
             RestMonth--;
         }
 
-        public void SetActive()
+        public void Activate()
         {
-            IsActive = true;
+            Status = LoanStatus.Active;
         }
 
-        public void SetInactive()
+        public void Close()
         {
-            IsActive = false;
+            Status = LoanStatus.Closed;
         }
-        
+
+        public void Reject()
+        {
+            Status = LoanStatus.Rejected;
+        }
     }
 }
