@@ -44,5 +44,10 @@ public enum PageName
     OperatorAllTransfersPage,
     OperatorAllWithdrawsPage,
     OperatorCancelTransferPage,
-    OperatorApproveSalaryProjectPage
+    OperatorApproveSalaryProjectPage,
+    ManagerAllDepositsPage,
+    ManagerAllTransfersPage,
+    ManagerAllWithdrawsPage,
+    ManagerCancelTransferPage,
+    ManagerApproveSalaryProjectPage
 }

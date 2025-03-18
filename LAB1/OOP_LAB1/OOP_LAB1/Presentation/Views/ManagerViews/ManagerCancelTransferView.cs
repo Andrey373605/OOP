@@ -8,14 +8,14 @@ using OOP_LAB1.Presentation.Validators;
 
 namespace OOP_LAB1.Presentation.Views;
 
-[ViewMapping(PageName.OperatorCancelTransferPage)]
-public class OperatorCancelTransferPage : IView
+[ViewMapping(PageName.ManagerCancelTransferPage)]
+public class ManagerCancelTransferView : IView
 {
     private IConsole _console;
     private IApplicationService _applicationService;
     private IInputHandler _input;
 
-    public OperatorCancelTransferPage(IConsole console, IApplicationService applicationService, IInputHandler input)
+    public ManagerCancelTransferView(IConsole console, IApplicationService applicationService, IInputHandler input)
     {
         _console = console;
         _applicationService = applicationService;
@@ -35,7 +35,7 @@ public class OperatorCancelTransferPage : IView
             _console.WriteLine(e.Message);
         }
         
-        NextViewName = PageName.OperatorMainMenuPage;
+        NextViewName = PageName.ManagerMainMenuPage;
         
     }
 }
