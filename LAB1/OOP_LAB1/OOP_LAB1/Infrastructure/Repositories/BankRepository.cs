@@ -117,5 +117,24 @@ public class BankRepository : IBankRepository
         return bankNames;
     }
 
-    
+    public async Task<IEnumerable<Bank>> GetAllBanksAsync()
+    {
+        string query = @"SELECT Id, Name 
+                         FROM Bank";
+
+        var result = await Task.Run(() => _dataBaseHelper.ExecuteQuery(query));
+
+        var banks = new List<Bank>();
+
+        foreach (var row in result)
+        {
+            banks.Add(new Bank
+            {
+                Id = Convert.ToInt32(row["Id"]),
+                Name = row["Name"].ToString()
+            });
+        }
+
+        return banks;
+    }
 }

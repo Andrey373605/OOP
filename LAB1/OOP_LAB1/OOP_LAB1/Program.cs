@@ -31,6 +31,7 @@ var serviceProvider = new ServiceCollection()
     .AddSingleton<IClientService, ClientService>()
     .AddSingleton<IEmployeeService, EmployeeService>()
     .AddSingleton<ISalaryProjectService, SalaryProjectService>()
+    .AddSingleton<IEnterpriseService, EnterpriseService>()
     
     // регистрация контекста
     .AddSingleton<IContext, Context>()
@@ -124,6 +125,10 @@ var serviceProvider = new ServiceCollection()
     
     //admin
     .AddTransient<AdministratorMainMenuView>()
+    
+    //specialist
+    .AddTransient<SpecialistMainMenuView>()
+    .AddTransient<SpecialistProjectApplicationView>()
     
     .AddTransient<LoginEmployeeView>()
     .AddTransient<ExitView>()

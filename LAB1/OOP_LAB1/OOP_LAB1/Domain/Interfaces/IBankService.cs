@@ -10,4 +10,5 @@ public interface IBankService
     
     public Task<Bank> GetBankByName(string name);
 
+    public Task<IEnumerable<Bank>> GetAllBanks();
 }

@@ -8,7 +8,7 @@ namespace OOP_LAB1.Domain.Entities
         public string Type { get; set; }
         public string LegalName { get; set; }
         public string UNP { get; set; } 
-        public string Address { get; set; } 
+        public string Adress { get; set; } 
         public int BankId { get; set; }
     }
 }

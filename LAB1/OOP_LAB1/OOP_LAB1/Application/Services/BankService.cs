@@ -39,5 +39,9 @@ public class BankService : IBankService
         return bank;
     }
 
-    
+    public async Task<IEnumerable<Bank>> GetAllBanks()
+    {
+        var bankNames = await _bankRepository.GetAllBanksAsync();
+        return bankNames;
+    }
 }

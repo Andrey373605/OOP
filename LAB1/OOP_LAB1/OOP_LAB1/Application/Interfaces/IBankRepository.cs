@@ -14,6 +14,7 @@ namespace OOP_LAB1.Application.Interfaces
         public Task UpdateAsync(Bank bank);
 
         public Task<IEnumerable<string>> GetAllBankNamesAsync();
-        
+
+        public Task<IEnumerable<Bank>> GetAllBanksAsync();
     }
 }

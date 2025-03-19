@@ -31,7 +31,7 @@ public class LoginEmployeeView : IView
                 EmployeeRole.Administrator => PageName.AdministratorMainMenuPage,
                 EmployeeRole.Manager => PageName.ManagerMainMenuPage,
                 EmployeeRole.Operator => PageName.OperatorMainMenuPage,
-                EmployeeRole.ExternalSpecialist => PageName.ExternalSpecialistMainMenuPage,
+                EmployeeRole.ExternalSpecialist => PageName.SpecialistMainMenuPage,
                 _ => PageName.ChooseRolePage
             };
             _console.WriteLine($"Successfully login with Role: {role.ToString()}");

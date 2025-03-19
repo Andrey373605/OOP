@@ -3,7 +3,7 @@ namespace OOP_LAB1.Domain.Interfaces;
 
 public interface ISalaryProjectService
 {
-    public Task CreateSalaryProjectApplication(int bankId, int enterpriseId);
+    public Task CreateSalaryProjectApplication(int enterpriseId);
     public Task ApproveSalaryProjectApplication(int id);
     public Task RejectSalaryProjectApplication(int id);
     

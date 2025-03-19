@@ -27,7 +27,7 @@ public enum PageName
     AdministratorMainMenuPage,
     OperatorMainMenuPage,
     ManagerMainMenuPage,
-    ExternalSpecialistMainMenuPage,
+    SpecialistMainMenuPage,
     ClientAllLoanPage,
     ClientLoanMenuPage,
     ClientInstallmentMenuPage,
@@ -56,5 +56,8 @@ public enum PageName
     AdministratorAllLogsPage,
     AdministratorCancelTransferPage,
     AdministratorEmployeeRegistrationRequestPage,
-    ClientSalaryRequestPage
+    ClientSalaryRequestPage,
+
+    SpecialistProjectApplicationPage,
+    SpecialistSalaryRequestPage
 }

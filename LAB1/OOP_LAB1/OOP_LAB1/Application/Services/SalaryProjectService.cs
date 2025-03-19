@@ -23,20 +23,19 @@ public class SalaryProjectService : ISalaryProjectService
             
     }
 
-    public async Task CreateSalaryProjectApplication(int bankId, int enterpriseId)
+    public async Task CreateSalaryProjectApplication(int enterpriseId)
     {
-        var bank = await _bankRepository.GetByIdAsync(bankId);
-        if (bank == null)
-        {
-            throw new NullReferenceException("Bank could not be found");
-        }
-        
         var enterprise = await _enterpriseRepository.GetByIdAsync(enterpriseId);
         if (enterprise == null)
         {
             throw new NullReferenceException("Enterprise could not be found");
         }
         
+        var bank = await _bankRepository.GetByIdAsync(enterprise.BankId);
+        if (bank == null)
+        {
+            throw new NullReferenceException("Bank could not be found");
+        }
         
         SalaryProject project = new SalaryProject
         {
