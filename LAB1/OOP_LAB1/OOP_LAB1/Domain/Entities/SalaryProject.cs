@@ -8,7 +8,7 @@ public class SalaryProject
     public int Id { get; set; }
     public int EnterpriseId { get; set; }
     
-    public int Balance { get; set; }
+    public decimal Balance { get; set; }
     public int BankId { get; set; }
     public SalaryProjectStatus Status { get; set; }
 
@@ -20,6 +20,26 @@ public class SalaryProject
     public void Reject()
     {
         Status = SalaryProjectStatus.Rejected;
+    }
+
+    public void Deposit(decimal amount)
+    {
+        Balance += amount;
+    }
+
+    public void Withdraw(decimal amount)
+    {
+        Balance -= amount;
+    }
+
+    public void Block()
+    {
+        Status = SalaryProjectStatus.Blocked;
+    }
+
+    public void Unblock()
+    {
+        Status = SalaryProjectStatus.Blocked;
     }
 }
 

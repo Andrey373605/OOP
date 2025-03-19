@@ -11,8 +11,7 @@ public interface ISalaryProjectRepository
     
     public Task UpdateAsync(SalaryProject salaryProject);
 
-    public Task<IEnumerable<Account>> GetAccountInSalaryProjectAsync(SalaryProject salaryProject);
-    public Task AddAccountToSalaryProjectAsync(SalaryProject project, Account account);
-    public Task<Dictionary<Account, decimal>> GetSalaryAmounts(SalaryProject project);
-    public Task UpdateSalaryAsync(SalaryProject project, Account account, int amount);
+    public Task AddAccountToSalaryProjectAsync(SalaryProject project, Account account, decimal salary);
+    public Task UpdateSalaryAsync(SalaryProject project, Account account, decimal amount);
+    public Task<IEnumerable<Salary>> GetSalaries(int projectId);
 }
