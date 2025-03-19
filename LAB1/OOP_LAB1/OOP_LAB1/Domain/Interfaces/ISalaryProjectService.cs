@@ -5,13 +5,16 @@ public interface ISalaryProjectService
 {
     public Task CreateSalaryProjectApplication(int bankId, int enterpriseId);
     public Task ApproveSalaryProjectApplication(int id);
-    
     public Task RejectSalaryProjectApplication(int id);
-    public Task AddAccountToSalaryProject(int projectId, int accountId, decimal amount);
+    
+    public Task CreateSalaryApplication(int projectId, int accountId, decimal salary);
+    public Task ApproveSalaryApplication(int salaryId);
+    public Task RejectSalaryApplication(int salaryId);
     
     public Task PaySalary(int projectId);
-    
-    public Task UpdateSalaryAmount(int projectId, int accountId, int amount);
-
+    public Task UpdateSalaryAmount(int salaryId, int amount);
     public Task DepositProjectAccount(int fromAccountId,int projectId, decimal amount);
+    public Task<IEnumerable<SalaryProject>> GetAllSalaryProjects();
+    
+    public Task<SalaryProject> GetSalaryProject(int id);
 }

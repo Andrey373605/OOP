@@ -12,7 +12,7 @@ public class ApplicationService : IApplicationService
     private readonly IContext _context;
     private readonly IAuthorizationService _authorizationService;
     private readonly IAccountService _accountService;
-    private readonly IBankRepository _bankRepository;
+    private readonly ISalaryProjectService _salaryProjectService;
     private readonly ITransactionService _transactionService;
     private readonly IInstallmentService _installmentService;
     private readonly ILoanService _loanService;
@@ -21,14 +21,14 @@ public class ApplicationService : IApplicationService
 
 
     public ApplicationService(IContext context, IAuthorizationService authorizationService, 
-        IAccountService accountService, IBankRepository bankRepository,
+        IAccountService accountService, ISalaryProjectService salaryProjectService,
         ITransactionService transactionService, IInstallmentService installmentService, ILoanService loanService,
         IClientService clientService, IEmployeeService employeeService)
     {
         _context = context;
         _authorizationService = authorizationService;
         _accountService = accountService;
-        _bankRepository = bankRepository;
+        _salaryProjectService = salaryProjectService;
         _transactionService = transactionService;
         _installmentService = installmentService;
         _loanService = loanService;
@@ -300,7 +300,13 @@ public class ApplicationService : IApplicationService
         _context.ClearCurrentBank();
     }
 
-    
+    public async Task AddSalaryRequest(int salaryProjectId, decimal sum)
+    {
+        var client = await GetCurrentClient();
+        await _salaryProjectService.CreateSalaryApplication(salaryProjectId, client.Id, sum);
+    }
+
+
     public async Task WithdrawAccount(int accountId, decimal sum)
     {
         var client = await GetCurrentClient();

@@ -55,5 +55,6 @@ public enum PageName
     ManagerApproveClientRegistrationPage,
     AdministratorAllLogsPage,
     AdministratorCancelTransferPage,
-    AdministratorEmployeeRegistrationRequestPage
+    AdministratorEmployeeRegistrationRequestPage,
+    ClientSalaryRequestPage
 }

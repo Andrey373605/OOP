@@ -28,17 +28,19 @@ public class SalaryProjectRepository : ISalaryProjectRepository
             ["Status"] = (int)salaryProject.Status
         };
 
-        _dataBaseHelper.ExecuteNonQuery(query, parameters);
-
-        salaryProject.Id = _dataBaseHelper.GetLastInsertId();
+        await Task.Run(()=>_dataBaseHelper.ExecuteNonQuery(query, parameters));
     }
 
     public async Task<SalaryProject> GetByIdAsync(int id)
     {
-        var query = "SELECT * FROM SalaryProject WHERE Id = @Id";
-        var parameters = new Dictionary<string, object> { ["Id"] = id };
+        var query = "SELECT * FROM SalaryProject WHERE Id = @Id AND Status = @Status";
+        var parameters = new Dictionary<string, object>
+        {
+            ["Id"] = id,
+            ["Status"] = (int)SalaryProjectStatus.Active
+        };
 
-        var result = _dataBaseHelper.ExecuteQuery(query, parameters).FirstOrDefault();
+        var result = await Task.Run(()=>_dataBaseHelper.ExecuteQuery(query, parameters).FirstOrDefault());
 
         if (result == null)
             return null;
@@ -69,26 +71,59 @@ public class SalaryProjectRepository : ISalaryProjectRepository
             ["Status"] = (int)salaryProject.Status
         };
 
-        _dataBaseHelper.ExecuteNonQuery(query, parameters);
+        await Task.Run(()=>_dataBaseHelper.ExecuteNonQuery(query, parameters));
     }
 
     public async Task AddAccountToSalaryProjectAsync(SalaryProject project, Account account, decimal salary)
     {
         var query = @"
-            INSERT INTO Salary (AccountId, SalaryProjectId, Amount)
-            VALUES (@AccountId, @SalaryProjectId, @Amount)";
+            INSERT INTO Salary (AccountId, SalaryProjectId, Amount, Status)
+            VALUES (@AccountId, @SalaryProjectId, @Amount, @Status)";
 
         var parameters = new Dictionary<string, object>
         {
             ["AccountId"] = account.Id,
             ["SalaryProjectId"] = project.Id,
-            ["Amount"] = salary
+            ["Amount"] = salary,
+            ["Status"] = SalaryStatus.Active
         };
 
-        _dataBaseHelper.ExecuteNonQuery(query, parameters);
+        await Task.Run(()=>_dataBaseHelper.ExecuteNonQuery(query, parameters));
     }
 
-    
+    public async Task<IEnumerable<SalaryProject>> GetSalaryProjectRequests()
+    {
+        var query = "SELECT * FROM SalaryProject WHERE Status = @Status";
+        var parameters = new Dictionary<string, object>
+        {
+            ["Status"] = (int)SalaryProjectStatus.Application
+        };
+
+        var result = await Task.Run(()=>_dataBaseHelper.ExecuteQuery(query, parameters));
+
+        var projects = new List<SalaryProject>();
+
+        foreach (var row in result)
+        {
+            projects.Add(new SalaryProject
+            {
+                Id = Convert.ToInt32(row["Id"]),
+                EnterpriseId = Convert.ToInt32(row["EnterpriseId"]),
+                Balance = Convert.ToDecimal(row["Balance"]),
+                BankId = Convert.ToInt32(row["BankId"]),
+                Status = (SalaryProjectStatus)Convert.ToInt32(row["Status"])
+            });
+        }
+
+        return projects;
+    }
+
+
+    public Task AddSalaryAsync(SalaryProject project, Account account, decimal salary)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task UpdateSalaryAsync(SalaryProject project, Account account, decimal amount)
     {
         var query = @"
@@ -100,25 +135,144 @@ public class SalaryProjectRepository : ISalaryProjectRepository
         {
             ["AccountId"] = account.Id,
             ["SalaryProjectId"] = project.Id,
-            ["Amount"] = amount
+            ["Amount"] = amount,
+            ["Status"] = SalaryStatus.Active
         };
 
-        _dataBaseHelper.ExecuteNonQuery(query, parameters);
+        await Task.Run(()=>_dataBaseHelper.ExecuteNonQuery(query, parameters));
+    }
+
+    public async Task UpdateSalaryAsync(Salary salary)
+    {
+        var query = @"
+            UPDATE Salary
+            SET AccountId = @AccountId, SalaryProjectId = @SalaryProjectId, Amount = @Amount, Status = @Status
+            WHERE Id = @Id";
+
+        var parameters = new Dictionary<string, object>
+        {
+            ["Id"] = salary.Id,
+            ["AccountId"] = salary.AccountId,
+            ["SalaryProjectId"] = salary.SalaryProjectId,
+            ["Amount"] = salary.Amount,
+            ["Status"] = (int)salary.Status
+        };
+
+        await Task.Run(() =>_dataBaseHelper.ExecuteNonQuery(query, parameters));
+    }
+
+    public async Task<Salary> GetSalaryAsync(int salaryId)
+    {
+        var query = "SELECT * FROM Salary " +
+                    "WHERE Id = @salaryId and Status = @Status";
+        var parameters = new Dictionary<string, object>
+        {
+            ["salaryId"] = salaryId,
+            ["Status"] = (int)SalaryStatus.Active
+        };
+
+        var result = await Task.Run(()=>_dataBaseHelper.ExecuteQuery(query, parameters).FirstOrDefault());
+
+        if (result == null)
+        {
+            return null;
+        }
+
+        return new Salary
+        {
+            Id = Convert.ToInt32(result["Id"]),
+            AccountId = Convert.ToInt32(result["AccountId"]),
+            SalaryProjectId = Convert.ToInt32(result["SalaryProjectId"]),
+            Amount = Convert.ToDecimal(result["Amount"]),
+            Status = (SalaryStatus)Convert.ToInt32(result["Status"])
+        };
+    }
+
+    public async Task<IEnumerable<SalaryProject>> GetAllSalaryProjectAsync()
+    {
+        var query = "SELECT * FROM SalaryProject WHERE Status = @Status";
+        var parameters = new Dictionary<string, object>
+        {
+            ["Status"] = (int)SalaryProjectStatus.Active
+        };
+
+        var result = await Task.Run(()=>_dataBaseHelper.ExecuteQuery(query, parameters));
+
+        var projects = new List<SalaryProject>();
+
+        foreach (var row in result)
+        {
+            projects.Add(new SalaryProject
+            {
+                Id = Convert.ToInt32(row["Id"]),
+                EnterpriseId = Convert.ToInt32(row["EnterpriseId"]),
+                Balance = Convert.ToDecimal(row["Balance"]),
+                BankId = Convert.ToInt32(row["BankId"]),
+                Status = (SalaryProjectStatus)Convert.ToInt32(row["Status"])
+            });
+        }
+
+        return projects;
     }
 
     public async Task<IEnumerable<Salary>> GetSalaries(int projectId)
     {
-        var query = "SELECT * FROM Salary WHERE SalaryProjectId = @SalaryProjectId";
-        var parameters = new Dictionary<string, object> { ["SalaryProjectId"] = projectId };
+        var query = "SELECT * FROM Salary " +
+            "WHERE SalaryProjectId = @SalaryProjectId and Status = @Status";
+        var parameters = new Dictionary<string, object>
+        {
+            ["SalaryProjectId"] = projectId,
+            ["Status"] = (int)SalaryStatus.Active
+        };
 
-        var results = _dataBaseHelper.ExecuteQuery(query, parameters);
+        var results = await Task.Run(()=>_dataBaseHelper.ExecuteQuery(query, parameters));
 
         return results.Select(result => new Salary
         {
             Id = Convert.ToInt32(result["Id"]),
             AccountId = Convert.ToInt32(result["AccountId"]),
             SalaryProjectId = Convert.ToInt32(result["SalaryProjectId"]),
-            Amount = Convert.ToDecimal(result["Amount"])
+            Amount = Convert.ToDecimal(result["Amount"]),
+            Status = (SalaryStatus)Convert.ToInt32(result["Status"])
+        });
+    }
+
+    public async Task AddSalaryAsync(Salary salary)
+    {
+        var query = @"
+        INSERT INTO Salary (AccountId, SalaryProjectId, Amount, Status)
+        VALUES (@AccountId, @SalaryProjectId, @Amount, @Status)";
+
+        var parameters = new Dictionary<string, object>
+        {
+            ["AccountId"] = salary.AccountId,
+            ["SalaryProjectId"] = salary.SalaryProjectId,
+            ["Amount"] = salary.Amount,
+            ["Status"] = salary.Status
+        };
+
+        await Task.Run(()=>_dataBaseHelper.ExecuteNonQuery(query, parameters));
+    }
+
+    public async Task<IEnumerable<Salary>> GetSalaryRequests(int projectId)
+    {
+        var query = "SELECT * FROM Salary " +
+                    "WHERE SalaryProjectId = @SalaryProjectId and Status = @Status";
+        var parameters = new Dictionary<string, object>
+        {
+            ["SalaryProjectId"] = projectId,
+            ["Status"] = (int)SalaryStatus.Application
+        };
+
+        var results = await Task.Run(()=>_dataBaseHelper.ExecuteQuery(query, parameters));
+
+        return results.Select(result => new Salary
+        {
+            Id = Convert.ToInt32(result["Id"]),
+            AccountId = Convert.ToInt32(result["AccountId"]),
+            SalaryProjectId = Convert.ToInt32(result["SalaryProjectId"]),
+            Amount = Convert.ToDecimal(result["Amount"]),
+            Status = (SalaryStatus)Convert.ToInt32(result["Status"])
         });
     }
 }

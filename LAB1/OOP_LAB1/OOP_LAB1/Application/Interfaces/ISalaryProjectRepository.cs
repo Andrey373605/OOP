@@ -10,8 +10,14 @@ public interface ISalaryProjectRepository
     public Task<SalaryProject> GetByIdAsync(int id);
     
     public Task UpdateAsync(SalaryProject salaryProject);
+    
 
-    public Task AddAccountToSalaryProjectAsync(SalaryProject project, Account account, decimal salary);
-    public Task UpdateSalaryAsync(SalaryProject project, Account account, decimal amount);
+    public Task<IEnumerable<SalaryProject>> GetSalaryProjectRequests();
+    public Task<IEnumerable<Salary>> GetSalaryRequests(int projectId);
     public Task<IEnumerable<Salary>> GetSalaries(int projectId);
+    
+    Task AddSalaryAsync(Salary salary);
+    public Task UpdateSalaryAsync(Salary salary);
+    public Task<Salary> GetSalaryAsync(int salaryId);
+    public Task<IEnumerable<SalaryProject>> GetAllSalaryProjectAsync();
 }

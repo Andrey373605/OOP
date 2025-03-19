@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using OOP_LAB1.Application.Context;
 using OOP_LAB1.Application.Interfaces;
 using OOP_LAB1.Application.Services;
+using OOP_LAB1.Domain.Entities;
 using OOP_LAB1.Domain.Interfaces;
 using OOP_LAB1.Infrastructure.Repositories;
 using OOP_LAB1.Presentation.Console;
@@ -13,6 +14,7 @@ using OOP_LAB1.Presentation.Navigator;
 using OOP_LAB1.Presentation.Registration;
 using OOP_LAB1.Presentation.Views;
 using OOP_LAB1.Presentation.Views.AdministratorViews;
+using OOP_LAB1.Presentation.Views.SalaryProjectViews;
 using Console = OOP_LAB1.Presentation.Console.Console;
 
 
@@ -28,6 +30,7 @@ var serviceProvider = new ServiceCollection()
     .AddSingleton<IInstallmentService, InstallmentService>()
     .AddSingleton<IClientService, ClientService>()
     .AddSingleton<IEmployeeService, EmployeeService>()
+    .AddSingleton<ISalaryProjectService, SalaryProjectService>()
     
     // регистрация контекста
     .AddSingleton<IContext, Context>()
@@ -54,6 +57,8 @@ var serviceProvider = new ServiceCollection()
     .AddSingleton<ITransactionRepository, TransactionRepository>()
     .AddSingleton<IInstallmentRepository, InstallmentRepository>()
     .AddSingleton<ILoanRepository, LoanRepository>()
+    .AddSingleton<ISalaryProjectRepository, SalaryProjectRepository>()
+    .AddSingleton<IEnterpriseRepository, EnterpriseRepository>()
     
     // регистрация view
     .AddTransient<MainMenuView>()
@@ -94,6 +99,9 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<ClientInstallmentMenuView>()
     .AddTransient<ClientInstallmentRequestView>()
     .AddTransient<ClientAllInstallmentView>()
+    
+    //client salary
+    .AddTransient<ClientSalaryRequestView>()
     
     //operator
     .AddTransient<OperatorMainMenuView>()
