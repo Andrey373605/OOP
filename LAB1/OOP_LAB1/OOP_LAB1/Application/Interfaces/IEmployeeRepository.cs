@@ -10,4 +10,7 @@ public interface IEmployeeRepository
     public Task UpdateAsync(Employee employee);
 
     public Task<Employee> GetEmployeeByUserIdAsync(int bankId, int userId);
+    
+    public Task<IEnumerable<Employee>> GetEmployeesAsync();
+    public Task<IEnumerable<Employee>> GetEmployeeRequestsAsync();
 }

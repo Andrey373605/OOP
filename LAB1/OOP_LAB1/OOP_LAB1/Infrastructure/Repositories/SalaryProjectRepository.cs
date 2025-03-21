@@ -215,6 +215,54 @@ public class SalaryProjectRepository : ISalaryProjectRepository
         return projects;
     }
 
+    public async Task<IEnumerable<Salary>> GetAllSalaryRequests()
+    {
+        var query = "SELECT * FROM Salary " +
+                    "WHERE Status = @Status";
+        var parameters = new Dictionary<string, object>
+        {
+            ["Status"] = (int)SalaryStatus.Application
+        };
+
+        var results = await Task.Run(()=>_dataBaseHelper.ExecuteQuery(query, parameters));
+
+        return results.Select(result => new Salary
+        {
+            Id = Convert.ToInt32(result["Id"]),
+            AccountId = Convert.ToInt32(result["AccountId"]),
+            SalaryProjectId = Convert.ToInt32(result["SalaryProjectId"]),
+            Amount = Convert.ToDecimal(result["Amount"]),
+            Status = (SalaryStatus)Convert.ToInt32(result["Status"])
+        });
+    }
+
+    public async Task<Salary> GetSalaryRequest(int salaryId)
+    {
+        var query = "SELECT * FROM Salary " +
+                    "WHERE Id = @salaryId and Status = @Status";
+        var parameters = new Dictionary<string, object>
+        {
+            ["salaryId"] = salaryId,
+            ["Status"] = (int)SalaryStatus.Application
+        };
+
+        var result = await Task.Run(()=>_dataBaseHelper.ExecuteQuery(query, parameters).FirstOrDefault());
+
+        if (result == null)
+        {
+            return null;
+        }
+
+        return new Salary
+        {
+            Id = Convert.ToInt32(result["Id"]),
+            AccountId = Convert.ToInt32(result["AccountId"]),
+            SalaryProjectId = Convert.ToInt32(result["SalaryProjectId"]),
+            Amount = Convert.ToDecimal(result["Amount"]),
+            Status = (SalaryStatus)Convert.ToInt32(result["Status"])
+        };
+    }
+
     public async Task<IEnumerable<Salary>> GetSalaries(int projectId)
     {
         var query = "SELECT * FROM Salary " +

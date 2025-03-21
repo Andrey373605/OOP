@@ -17,4 +17,5 @@ public interface ISalaryProjectService
     public Task<IEnumerable<SalaryProject>> GetAllSalaryProjects();
     
     public Task<SalaryProject> GetSalaryProject(int id);
+    public Task<IEnumerable<Salary>> GetAllSalaryRequests();
 }

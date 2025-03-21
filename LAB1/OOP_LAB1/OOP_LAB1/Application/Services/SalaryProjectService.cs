@@ -50,7 +50,11 @@ public class SalaryProjectService : ISalaryProjectService
 
     public async Task ApproveSalaryProjectApplication(int id)
     {
-        SalaryProject salaryProject = await _salaryProjectRepository.GetByIdAsync(id);
+        var salaryProject = await _salaryProjectRepository.GetByIdAsync(id);
+        if (salaryProject == null)
+        {
+            throw new NullReferenceException("Salary project could not be found");
+        }
         
         salaryProject.Activate();
         await _salaryProjectRepository.UpdateAsync(salaryProject);
@@ -58,7 +62,11 @@ public class SalaryProjectService : ISalaryProjectService
     
     public async Task RejectSalaryProjectApplication(int id)
     {
-        SalaryProject salaryProject = await _salaryProjectRepository.GetByIdAsync(id);
+        var salaryProject = await _salaryProjectRepository.GetByIdAsync(id);
+        if (salaryProject == null)
+        {
+            throw new NullReferenceException("Salary project could not be found");
+        }
         
         salaryProject.Reject();
         await _salaryProjectRepository.UpdateAsync(salaryProject);
@@ -87,7 +95,7 @@ public class SalaryProjectService : ISalaryProjectService
 
     public async Task ApproveSalaryApplication(int salaryId)
     {
-        var salary = await _salaryProjectRepository.GetSalaryAsync(salaryId);
+        var salary = await _salaryProjectRepository.GetSalaryRequest(salaryId);
         if (salary.Status != SalaryStatus.Application)
         {
             throw new ApplicationException("Its not a request to approve salary");
@@ -98,7 +106,7 @@ public class SalaryProjectService : ISalaryProjectService
 
     public async Task RejectSalaryApplication(int salaryId)
     {
-        var salary = await _salaryProjectRepository.GetSalaryAsync(salaryId);
+        var salary = await _salaryProjectRepository.GetSalaryRequest(salaryId);
         if (salary.Status != SalaryStatus.Application)
         {
             throw new ApplicationException("Its not a request to reject salary");
@@ -110,6 +118,10 @@ public class SalaryProjectService : ISalaryProjectService
     public async Task PaySalary(int projectId)
     {
         var project = await _salaryProjectRepository.GetByIdAsync(projectId);
+        if (project == null)
+        {
+            throw new NullReferenceException("Salary project could not be found");
+        }
         if (project.Status == SalaryProjectStatus.Blocked)
         {
             throw new ApplicationException("Project is blocked");
@@ -142,6 +154,10 @@ public class SalaryProjectService : ISalaryProjectService
     {
         
         var salary = await _salaryProjectRepository.GetSalaryAsync(salaryId);
+        if (salary == null)
+        {
+            throw new NullReferenceException("Salary could not be found");
+        }
         salary.Amount = amount;
         await _salaryProjectRepository.UpdateSalaryAsync(salary);
     }
@@ -186,5 +202,10 @@ public class SalaryProjectService : ISalaryProjectService
     public async Task<SalaryProject> GetSalaryProject(int id)
     {
         return await _salaryProjectRepository.GetByIdAsync(id);
+    }
+
+    public async Task<IEnumerable<Salary>> GetAllSalaryRequests()
+    {
+        return await _salaryProjectRepository.GetAllSalaryRequests();
     }
 }

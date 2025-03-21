@@ -26,6 +26,7 @@ public class EmployeeRepository : IEmployeeRepository
             {"UserId", employee.UserId},
             {"BankId", employee.BankId},
             {"Role", employee.Role},
+            {"Status", employee.Status}
         };
 
         await Task.Run(() => _dataBaseHelper.ExecuteNonQuery(query, parameters));
@@ -62,6 +63,7 @@ public class EmployeeRepository : IEmployeeRepository
             UserId = Convert.ToInt32(row["UserId"]),
             BankId = Convert.ToInt32(row["BankId"]),
             Role = (EmployeeRole)Convert.ToInt32(row["Role"]),
+            Status = (EmployeeStatus)Convert.ToInt32(row["Status"]),
         };
 
         return employee;
@@ -81,6 +83,7 @@ public class EmployeeRepository : IEmployeeRepository
             {"BankId", employee.BankId},
             {"UserId", employee.UserId},
             {"Role", employee.Role},
+            {"Status", employee.Status}
         };
 
         await Task.Run(() => _dataBaseHelper.ExecuteNonQuery(query, parameters));
@@ -88,14 +91,15 @@ public class EmployeeRepository : IEmployeeRepository
     
     public async Task<Employee> GetEmployeeByUserIdAsync(int bankId, int userId)
     {
-        string query = @"SELECT Id, UserId, BankId, Role 
+        string query = @"SELECT Id, UserId, BankId, Role, Status
                          FROM Employee 
-                         WHERE BankId = @BankId AND UserId = @UserId";
+                         WHERE BankId = @BankId AND UserId = @UserId AND Status = @Status";
 
         var parameters = new Dictionary<string, object>
         {
             {"BankId", bankId},
-            {"UserId", userId}
+            {"UserId", userId},
+            {"Status", (int)EmployeeStatus.Active}
         };
 
         var result = await Task.Run(() => _dataBaseHelper.ExecuteQuery(query, parameters));
@@ -112,9 +116,66 @@ public class EmployeeRepository : IEmployeeRepository
             Id = Convert.ToInt32(row["Id"]),
             UserId = Convert.ToInt32(row["UserId"]),
             BankId = Convert.ToInt32(row["BankId"]),
-            Role = (EmployeeRole)Convert.ToInt32(row["Role"])
+            Role = (EmployeeRole)Convert.ToInt32(row["Role"]),
+            Status = (EmployeeStatus)Convert.ToInt32(row["Status"]),
         };
 
         return employee;
+    }
+
+    public async Task<IEnumerable<Employee>> GetEmployeesAsync()
+    {
+        string query = @"SELECT Id, UserId, BankId, Role, Status
+                         FROM Employee ";
+
+        var parameters = new Dictionary<string, object>
+        {
+            {"Status", (int)EmployeeStatus.Active}
+        };
+
+        var result = await Task.Run(() => _dataBaseHelper.ExecuteQuery(query, parameters));
+
+        var employees = new List<Employee>();
+
+        foreach (var row in result)
+        {
+            employees.Add(new Employee
+            {
+                Id = Convert.ToInt32(row["Id"]),
+                UserId = Convert.ToInt32(row["UserId"]),
+                BankId = Convert.ToInt32(row["BankId"]),
+                Role = (EmployeeRole)Convert.ToInt32(row["Role"]),
+                Status = (EmployeeStatus)Convert.ToInt32(row["Status"])
+            });
+        }
+        return employees;
+    }
+
+    public async Task<IEnumerable<Employee>> GetEmployeeRequestsAsync()
+    {
+        string query = @"SELECT Id, UserId, BankId, Role, Status
+                         FROM Employee ";
+
+        var parameters = new Dictionary<string, object>
+        {
+            {"Status", (int)EmployeeStatus.Application}
+        };
+
+        var result = await Task.Run(() => _dataBaseHelper.ExecuteQuery(query, parameters));
+
+        var employees = new List<Employee>();
+
+        foreach (var row in result)
+        {
+            employees.Add(new Employee
+            {
+                Id = Convert.ToInt32(row["Id"]),
+                UserId = Convert.ToInt32(row["UserId"]),
+                BankId = Convert.ToInt32(row["BankId"]),
+                Role = (EmployeeRole)Convert.ToInt32(row["Role"]),
+                Status = (EmployeeStatus)Convert.ToInt32(row["Status"])
+            });
+        }
+        return employees;
     }
 }

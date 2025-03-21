@@ -20,4 +20,6 @@ public interface ISalaryProjectRepository
     public Task UpdateSalaryAsync(Salary salary);
     public Task<Salary> GetSalaryAsync(int salaryId);
     public Task<IEnumerable<SalaryProject>> GetAllSalaryProjectAsync();
+    public Task<IEnumerable<Salary>> GetAllSalaryRequests();
+    Task<Salary> GetSalaryRequest(int salaryId);
 }
