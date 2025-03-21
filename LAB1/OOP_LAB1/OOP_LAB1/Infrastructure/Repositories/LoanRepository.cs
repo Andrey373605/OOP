@@ -16,8 +16,8 @@ public class LoanRepository : ILoanRepository
     public async Task AddAsync(Loan loan)
     {
         var query = @"
-        INSERT INTO Loan (AccountId, ClientId, Amount, NumberOfPayments, InterestRate, RestMonth, Status)
-        VALUES (@AccountId, @ClientId, @Amount, @NumberOfPayments, @InterestRate, @RestMonth, @Status);";
+        INSERT INTO Loan (AccountId, ClientId, Amount, NumberOfPayments, InterestRate, RestMonth, Status, StartDate)
+        VALUES (@AccountId, @ClientId, @Amount, @NumberOfPayments, @InterestRate, @RestMonth, @Status, @StartDate);";
 
         var parameters = new Dictionary<string, object>
         {
@@ -27,7 +27,8 @@ public class LoanRepository : ILoanRepository
             { "NumberOfPayments", loan.NumberOfPayments },
             { "InterestRate", loan.InterestRate },
             { "RestMonth", loan.RestMonth },
-            { "Status", loan.Status }
+            { "Status", loan.Status },
+            { "StartDate", loan.StartDate }
         };
 
         await Task.Run(() => _dataBaseHelper.ExecuteNonQuery(query, parameters));
@@ -43,7 +44,8 @@ public class LoanRepository : ILoanRepository
                 NumberOfPayments = @NumberOfPayments,
                 InterestRate = @InterestRate,
                 RestMonth = @RestMonth,
-                Status = @Status
+                Status = @Status,
+                StartDate = @StartDate
             WHERE Id = @Id;
         ";
 
@@ -56,7 +58,8 @@ public class LoanRepository : ILoanRepository
             { "NumberOfPayments", loan.NumberOfPayments },
             { "InterestRate", loan.InterestRate },
             { "RestMonth", loan.RestMonth },
-            { "Status", loan.Status }
+            { "Status", loan.Status },
+            { "StartDate", loan.StartDate }
         };
 
         await Task.Run(() => _dataBaseHelper.ExecuteNonQuery(query, parameters));
@@ -97,8 +100,9 @@ public class LoanRepository : ILoanRepository
             Amount = Convert.ToDecimal(row["Amount"]),
             NumberOfPayments = Convert.ToInt32(row["NumberOfPayments"]),
             InterestRate = Convert.ToInt32(row["InterestRate"]),
-            RestMonth = Convert.ToDecimal(row["RestMonth"]),
-            Status = (LoanStatus)Convert.ToInt32(row["Status"])
+            RestMonth = Convert.ToInt32(row["RestMonth"]),
+            Status = (LoanStatus)Convert.ToInt32(row["Status"]),
+            StartDate = Convert.ToDateTime(row["StartDate"])
         };
     }
 
@@ -134,8 +138,9 @@ public class LoanRepository : ILoanRepository
                 Amount = Convert.ToDecimal(row["Amount"]),
                 NumberOfPayments = Convert.ToInt32(row["NumberOfPayments"]),
                 InterestRate = Convert.ToInt32(row["InterestRate"]),
-                RestMonth = Convert.ToDecimal(row["RestMonth"]),
-                Status = (LoanStatus)Convert.ToInt32(row["Status"])
+                RestMonth = Convert.ToInt32(row["RestMonth"]),
+                Status = (LoanStatus)Convert.ToInt32(row["Status"]),
+                StartDate = Convert.ToDateTime(row["StartDate"])
             });
         }
 
@@ -174,8 +179,50 @@ public class LoanRepository : ILoanRepository
                 Amount = Convert.ToDecimal(row["Amount"]),
                 NumberOfPayments = Convert.ToInt32(row["NumberOfPayments"]),
                 InterestRate = Convert.ToInt32(row["InterestRate"]),
-                RestMonth = Convert.ToDecimal(row["RestMonth"]),
-                Status = (LoanStatus)Convert.ToInt32(row["Status"])
+                RestMonth = Convert.ToInt32(row["RestMonth"]),
+                Status = (LoanStatus)Convert.ToInt32(row["Status"]),
+                StartDate = Convert.ToDateTime(row["StartDate"])
+            });
+        }
+
+        return loans;
+    }
+
+    public async Task<IEnumerable<Loan>> GetAllActiveLoans()
+    {
+        var query = @"
+                SELECT Id, AccountId, ClientId, Amount, NumberOfPayments, InterestRate, RestMonth, Status
+                FROM Loan
+                WHERE Status = @Status;
+            ";
+
+        var parameters = new Dictionary<string, object>
+        {
+            { "Status", LoanStatus.Active }
+        };
+
+        var result = await Task.Run(() =>_dataBaseHelper.ExecuteQuery(query, parameters));
+
+        if (result.Count == 0)
+        {
+            return null;
+        }
+        
+        var loans = new List<Loan>();
+
+        foreach (var row in result)
+        {
+            loans.Add(new Loan
+            {
+                Id = Convert.ToInt32(row["Id"]),
+                AccountId = Convert.ToInt32(row["AccountId"]),
+                ClientId = Convert.ToInt32(row["ClientId"]),
+                Amount = Convert.ToDecimal(row["Amount"]),
+                NumberOfPayments = Convert.ToInt32(row["NumberOfPayments"]),
+                InterestRate = Convert.ToInt32(row["InterestRate"]),
+                RestMonth = Convert.ToInt32(row["RestMonth"]),
+                Status = (LoanStatus)Convert.ToInt32(row["Status"]),
+                StartDate = Convert.ToDateTime(row["StartDate"])
             });
         }
 

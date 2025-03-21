@@ -28,17 +28,21 @@ public class SpecialistMainMenuView : IView
     {
         _console.WriteLine("1. Salary project application");
         _console.WriteLine("2. Salary request");
-        _console.WriteLine("3. Log out");
-        _console.WriteLine("4. Exit");
+        _console.WriteLine("3. Deposit salary project");
+        _console.WriteLine("4. Pay salary project");
+        _console.WriteLine("5. Log out");
+        _console.WriteLine("6. Exit");
         
-        var choice = _input.GetNumberVariant(4);
+        var choice = _input.GetNumberVariant(6);
         _console.Clear();
         NextViewName = choice switch
         {
             "1" => PageName.SpecialistProjectApplicationPage,
             "2" => PageName.SpecialistSalaryRequestPage,
-            "3" => PageName.LogOutPage,
-            "4" => PageName.ExitPage,
+            "3" => PageName.SpeccialistDepositSalaryProjectPage,
+            "4" => PageName.SpecialistPaySalaryPage,
+            "5" => PageName.LogOutPage,
+            "6" => PageName.ExitPage,
             _ => NextViewName
         };
     }

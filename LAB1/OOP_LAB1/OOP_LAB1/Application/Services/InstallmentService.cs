@@ -66,6 +66,60 @@ public class InstallmentService : IInstallmentService
         }
     }
 
+    public async Task PayInstallment(int installmentId)
+{
+    try
+    {
+        _logger.Information($"Starting to process payment for installment with ID {installmentId}");
+        
+        var installment = await _installmentRepository.GetByIdAsync(installmentId);
+        if (installment == null)
+        {
+            _logger.Error($"Installment with ID {installmentId} not found");
+            throw new ApplicationException($"Installment with ID {installmentId} does not exist");
+        }
+
+        _logger.Information($"Installment with ID {installmentId} found: {installment}");
+        
+        var account = await _accountRepository.GetByIdAsync(installment.AccountId);
+        if (account == null)
+        {
+            _logger.Error($"Account with ID {installment.AccountId} not found");
+            throw new ApplicationException($"Account with id: {installment.AccountId} does not exist");
+        }
+
+        _logger.Information($"Account with ID {installment.AccountId} found: {account}");
+        
+        var monthlyPayment = installment.CalculateMonthlyPayment();
+        _logger.Information($"Calculated monthly payment for installment ID {installmentId}: {monthlyPayment}");
+        
+        account.WithdrawAccount(monthlyPayment);
+        _logger.Information($"Withdrew {monthlyPayment} from account ID {installment.AccountId}. New balance: {account.Balance}");
+        
+        installment.DecreaseRestMonth();
+        _logger.Information($"Decreased remaining months for installment ID {installmentId}. Remaining months: {installment.RestMonth}");
+        
+        if (installment.RestMonth <= 0)
+        {
+            installment.Close();
+            _logger.Information($"Installment with ID {installmentId} has been closed.");
+        }
+
+        await _accountRepository.UpdateAsync(account);
+        _logger.Information($"Account with ID {installment.AccountId} has been updated.");
+        
+        await _installmentRepository.UpdateAsync(installment);
+        _logger.Information($"Installment with ID {installmentId} has been updated.");
+
+        _logger.Information($"Successfully processed payment for installment with ID {installmentId}");
+    }
+    catch (Exception ex)
+    {
+        _logger.Fatal(ex, $"An error occurred while processing payment for installment with ID {installmentId}");
+        throw;
+    }
+}
+
     public async Task CreateInstallmentRequest(int clientId, decimal depositAmount, int monthCount)
     {
         try
@@ -98,7 +152,8 @@ public class InstallmentService : IInstallmentService
                 NumberOfPayments = monthCount,
                 RestMonth = monthCount,
                 Amount = depositAmount,
-                Status = InstallmentStatus.Application
+                Status = InstallmentStatus.Application,
+                StartDate = DateTime.UtcNow
             };
 
             await _installmentRepository.AddAsync(installmentRequest);
@@ -206,5 +261,20 @@ public class InstallmentService : IInstallmentService
             _logger.Error(ex, "Error retrieving all installment applications");
             throw;
         }
+    }
+
+    public async Task PayAll()
+    {
+        var installments = await _installmentRepository.GetAllActiveInstallments();
+        foreach (var i in installments)
+        {
+            var months = i.NumberOfPayments - i.RestMonth;
+            var date = i.StartDate.AddMonths(months);
+            if (date < DateTime.Now)
+            {
+                await PayInstallment(i.Id);
+            }
+        }
+        
     }
 }

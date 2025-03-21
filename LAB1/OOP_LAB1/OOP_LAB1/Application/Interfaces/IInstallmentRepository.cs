@@ -13,4 +13,5 @@ public interface IInstallmentRepository
     public Task<Installment> GetByIdAsync(int installmentId);
     Task<IEnumerable<Installment>> GetAllByClientId(int clientId);
     Task<IEnumerable<Installment>> GetInstallmentApplications();
+    Task<IEnumerable<Installment>> GetAllActiveInstallments();
 }

@@ -241,22 +241,11 @@ public class SalaryProjectService : ISalaryProjectService
         }
     }
 
-    public async Task DepositProjectAccount(int fromAccountId, int projectId, decimal amount)
+    public async Task DepositProjectAccount(int projectId, decimal amount)
     {
         try
         {
-            _logger.Information($"Attempting to deposit {amount} into project account for project ID: {projectId} from account ID: {fromAccountId}");
-            var account = await _accountRepository.GetByIdAsync(fromAccountId);
-            if (account.Status != AccountStatus.Active)
-            {
-                _logger.Error($"Account with ID {fromAccountId} is not active");
-                throw new ArgumentException("Account not active");
-            }
-            if (account.Balance < amount)
-            {
-                _logger.Error($"Insufficient balance in account with ID {fromAccountId}");
-                throw new NullReferenceException("Insufficient balance");
-            }
+            
             var project = await _salaryProjectRepository.GetByIdAsync(projectId);
             if (project.Status != SalaryProjectStatus.Active)
             {
@@ -264,18 +253,16 @@ public class SalaryProjectService : ISalaryProjectService
                 throw new ArgumentException("Project not active");
             }
             project.Deposit(amount);
-            account.WithdrawAccount(amount);
             if (project.Balance > 0 && project.Status == SalaryProjectStatus.Blocked)
             {
                 project.Unblock();
             }
             await _salaryProjectRepository.UpdateAsync(project);
-            await _accountRepository.UpdateAsync(account);
-            _logger.Information($"Successfully deposited {amount} into project account for project ID {projectId} from account ID {fromAccountId}");
+            _logger.Information($"Successfully deposited {amount} into project account for project ID {projectId}");
         }
         catch (Exception ex)
         {
-            _logger.Error(ex, $"Error depositing {amount} into project account for project ID {projectId} from account ID {fromAccountId}");
+            _logger.Error(ex, $"Error depositing {amount} into project account for project ID {projectId}");
             throw;
         }
     }

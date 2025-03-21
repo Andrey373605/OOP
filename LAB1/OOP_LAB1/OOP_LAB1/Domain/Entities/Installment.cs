@@ -11,6 +11,8 @@ namespace OOP_LAB1.Domain.Entities
         public decimal Amount { get; init; }
         public int NumberOfPayments { get; init; }
         
+        public DateTime StartDate { get; set; }
+        
         public int RestMonth { get; set; }
         public InstallmentStatus Status { get; set; } = InstallmentStatus.Application;
         
@@ -38,5 +40,6 @@ namespace OOP_LAB1.Domain.Entities
         {
             Status = InstallmentStatus.Rejected;
         }
+        
     }
 }

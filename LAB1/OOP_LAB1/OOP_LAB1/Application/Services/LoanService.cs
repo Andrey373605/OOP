@@ -7,6 +7,7 @@ using OOP_LAB1.Infrastructure.Data;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.JavaScript;
 using System.Threading.Tasks;
 
 namespace OOP_LAB1.Application.Services;
@@ -192,7 +193,8 @@ public class LoanService : ILoanService
                 RestMonth = monthCount,
                 InterestRate = interestRate,
                 Amount = depositAmount,
-                Status = LoanStatus.Application
+                Status = LoanStatus.Application, 
+                StartDate = DateTime.UtcNow
             };
 
             await _loanRepository.AddAsync(loanRequest);
@@ -204,4 +206,73 @@ public class LoanService : ILoanService
             throw;
         }
     }
+    
+    public async Task PayAll()
+    {
+        var loans = await _loanRepository.GetAllActiveLoans();
+        foreach (var l in loans)
+        {
+            var months = l.NumberOfPayments - l.RestMonth;
+            var date = l.StartDate.AddMonths(months);
+            if (date < DateTime.Now)
+            {
+                await PayLoan(l.Id);
+            }
+        }
+        
+    }
+
+    private async Task PayLoan(int loanId)
+{
+    try
+    {
+        _logger.Information($"Starting to process payment for loan with ID {loanId}");
+        
+        var loan = await _loanRepository.GetByIdAsync(loanId);
+        if (loan == null)
+        {
+            _logger.Error($"Loan with ID {loanId} not found");
+            throw new ApplicationException($"Loan with ID {loanId} does not exist");
+        }
+
+        _logger.Information($"Loan with ID {loanId} found: {loan}");
+        
+        var account = await _accountRepository.GetByIdAsync(loan.AccountId);
+        if (account == null)
+        {
+            _logger.Error($"Account with ID {loan.AccountId} not found");
+            throw new ApplicationException($"Account with id: {loan.AccountId} does not exist");
+        }
+
+        _logger.Information($"Account with ID {loan.AccountId} found: {account}");
+        
+        var monthlyPayment = loan.CalculateMonthlyPayment();
+        _logger.Information($"Calculated monthly payment for loan ID {loanId}: {monthlyPayment}");
+        
+        account.WithdrawAccount(monthlyPayment);
+        _logger.Information($"Withdrew {monthlyPayment} from account ID {loan.AccountId}. New balance: {account.Balance}");
+        
+        loan.DecreaseRestMonth();
+        _logger.Information($"Decreased remaining months for loan ID {loanId}. Remaining months: {loan.RestMonth}");
+        
+        if (loan.RestMonth <= 0)
+        {
+            loan.Close();
+            _logger.Information($"Loan with ID {loanId} has been closed.");
+        }
+
+        await _accountRepository.UpdateAsync(account);
+        _logger.Information($"Account with ID {loan.AccountId} has been updated.");
+        
+        await _loanRepository.UpdateAsync(loan);
+        _logger.Information($"Loan with ID {loanId} has been updated.");
+
+        _logger.Information($"Successfully processed payment for loan with ID {loanId}");
+    }
+    catch (Exception ex)
+    {
+        _logger.Fatal(ex, $"An error occurred while processing payment for loan with ID {loanId}");
+        throw;
+    }
+}
 }

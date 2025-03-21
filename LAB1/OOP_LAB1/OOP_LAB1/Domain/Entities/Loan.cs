@@ -1,4 +1,5 @@
-﻿using OOP_LAB1.Domain.Enums;
+﻿using System.Runtime.InteropServices.JavaScript;
+using OOP_LAB1.Domain.Enums;
 
 namespace OOP_LAB1.Domain.Entities
 {
@@ -11,8 +12,10 @@ namespace OOP_LAB1.Domain.Entities
         public decimal Amount { get; set; }
         public int NumberOfPayments { get; set; }
         public int InterestRate { get; set; }
+        
+        public DateTime StartDate { get; set; }
 
-        public decimal RestMonth { get; set; }
+        public int RestMonth { get; set; }
         public LoanStatus Status { get; set; } = LoanStatus.Application;
         
         public decimal CalculateMonthlyPayment()

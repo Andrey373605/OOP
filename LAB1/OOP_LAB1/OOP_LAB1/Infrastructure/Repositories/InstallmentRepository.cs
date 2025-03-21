@@ -17,8 +17,8 @@ public class InstallmentRepository : IInstallmentRepository
     public async Task AddAsync(Installment installment)
     {
         var query = @"
-        INSERT INTO Installment (AccountId, ClientId, Amount, NumberOfPayments, RestMonth, Status)
-        VALUES (@AccountId, @ClientId, @Amount, @NumberOfPayments, @RestMonth, @Status);
+        INSERT INTO Installment (AccountId, ClientId, Amount, NumberOfPayments, RestMonth, Status, StartDate)
+        VALUES (@AccountId, @ClientId, @Amount, @NumberOfPayments, @RestMonth, @Status, @StartDate);
     ";
 
         var parameters = new Dictionary<string, object>
@@ -28,7 +28,8 @@ public class InstallmentRepository : IInstallmentRepository
             { "Amount", installment.Amount },
             { "NumberOfPayments", installment.NumberOfPayments },
             { "RestMonth", installment.RestMonth },
-            { "Status", installment.Status }
+            { "Status", installment.Status },
+            { "StartDate", installment.StartDate }
         };
 
         await Task.Run(() => _dataBaseHelper.ExecuteNonQuery(query, parameters));
@@ -44,7 +45,8 @@ public class InstallmentRepository : IInstallmentRepository
                 Amount = @Amount,
                 NumberOfPayments = @NumberOfPayments,
                 RestMonth = @RestMonth,
-                Status = @Status
+                Status = @Status,
+                StartDate = @StartDate
             WHERE Id = @Id;
         ";
 
@@ -56,7 +58,8 @@ public class InstallmentRepository : IInstallmentRepository
             { "Amount", installment.Amount },
             { "NumberOfPayments", installment.NumberOfPayments },
             { "RestMonth", installment.RestMonth },
-            { "Status", installment.Status }
+            { "Status", installment.Status },
+            { "StartDate", installment.StartDate }
         };
 
         await Task.Run(() => _dataBaseHelper.ExecuteNonQuery(query, parameters));
@@ -70,7 +73,7 @@ public class InstallmentRepository : IInstallmentRepository
     public async Task<Installment> GetByIdAsync(int installmentId)
     {
         var query = @"
-                SELECT Id, AccountId, ClientId, Amount, NumberOfPayments, RestMonth, Status
+                SELECT Id, AccountId, ClientId, Amount, NumberOfPayments, RestMonth, Status, StartDate
                 FROM Installment
                 WHERE Id = @Id;
             ";
@@ -96,14 +99,15 @@ public class InstallmentRepository : IInstallmentRepository
             Amount = Convert.ToDecimal(row["Amount"]),
             NumberOfPayments = Convert.ToInt32(row["NumberOfPayments"]),
             RestMonth = Convert.ToInt32(row["RestMonth"]),
-            Status = (InstallmentStatus)Convert.ToInt32(row["Status"])
+            Status = (InstallmentStatus)Convert.ToInt32(row["Status"]),
+            StartDate = Convert.ToDateTime(row["StartDate"])
         };
     }
 
     public async Task<IEnumerable<Installment>> GetAllByClientId(int clientId)
     {
         var query = @"
-                SELECT Id, AccountId, ClientId, Amount, NumberOfPayments, RestMonth, Status
+                SELECT Id, AccountId, ClientId, Amount, NumberOfPayments, RestMonth, Status, StartDate
                 FROM Installment
                 WHERE ClientId = @ClientId;
             ";
@@ -128,7 +132,8 @@ public class InstallmentRepository : IInstallmentRepository
                 Amount = Convert.ToDecimal(row["Amount"]),
                 NumberOfPayments = Convert.ToInt32(row["NumberOfPayments"]),
                 RestMonth = Convert.ToInt32(row["RestMonth"]),
-                Status = (InstallmentStatus)Convert.ToInt32(row["Status"])
+                Status = (InstallmentStatus)Convert.ToInt32(row["Status"]),
+                StartDate = Convert.ToDateTime(row["StartDate"])
             });
         }
 
@@ -163,7 +168,44 @@ public class InstallmentRepository : IInstallmentRepository
                 Amount = Convert.ToDecimal(row["Amount"]),
                 NumberOfPayments = Convert.ToInt32(row["NumberOfPayments"]),
                 RestMonth = Convert.ToInt32(row["RestMonth"]),
-                Status = (InstallmentStatus)Convert.ToInt32(row["Status"])
+                Status = (InstallmentStatus)Convert.ToInt32(row["Status"]),
+                StartDate = Convert.ToDateTime(row["StartDate"])
+            });
+        }
+
+        return installments;
+    }
+
+    public async Task<IEnumerable<Installment>> GetAllActiveInstallments()
+    {
+        var query = @"
+                SELECT Id, AccountId, ClientId, Amount, NumberOfPayments, RestMonth, Status
+                FROM Installment
+                WHERE Status = @Status;
+            ";
+
+        var parameters = new Dictionary<string, object>
+        {
+            { "Status", InstallmentStatus.Active }
+        };
+
+        var result = await Task.Run(() =>_dataBaseHelper.ExecuteQuery(query, parameters));
+
+        
+        var installments = new List<Installment>();
+
+        foreach (var row in result)
+        {
+            installments.Add(new Installment
+            {
+                Id = Convert.ToInt32(row["Id"]),
+                AccountId = Convert.ToInt32(row["AccountId"]),
+                ClientId = Convert.ToInt32(row["ClientId"]),
+                Amount = Convert.ToDecimal(row["Amount"]),
+                NumberOfPayments = Convert.ToInt32(row["NumberOfPayments"]),
+                RestMonth = Convert.ToInt32(row["RestMonth"]),
+                Status = (InstallmentStatus)Convert.ToInt32(row["Status"]),
+                StartDate = Convert.ToDateTime(row["StartDate"])
             });
         }
 

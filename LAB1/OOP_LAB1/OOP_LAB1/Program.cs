@@ -145,6 +145,8 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<SpecialistMainMenuView>()
     .AddTransient<SpecialistProjectApplicationView>()
     .AddTransient<SpecialistSalaryRequestView>()
+    .AddTransient<SpecialistPaySalaryView>()
+    .AddTransient<SpecialistDepositSalaryProjectView>()
     
     .AddTransient<LoginEmployeeView>()
     .AddTransient<ExitView>()

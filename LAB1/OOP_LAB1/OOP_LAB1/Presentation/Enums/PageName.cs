@@ -66,5 +66,7 @@ public enum PageName
     AdministratorLoanRequestPage,
     AdministratorInstallmentRequestPage,
     AdministratorSalaryProjectRequestpage,
-    AdministratorSalaryProjectRequestPage
+    AdministratorSalaryProjectRequestPage,
+    SpeccialistDepositSalaryProjectPage,
+    SpecialistPaySalaryPage
 }

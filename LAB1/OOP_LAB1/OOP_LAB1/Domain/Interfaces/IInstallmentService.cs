@@ -6,6 +6,8 @@ namespace OOP_LAB1.Domain.Interfaces;
 public interface IInstallmentService
 {
     public Task DepositMoney(int installmentId);
+    
+    public Task PayInstallment(int installmentId);
 
     public Task CreateInstallmentRequest(int clientId, decimal depositAmount, int monthCount);
 
@@ -14,4 +16,6 @@ public interface IInstallmentService
     Task<IEnumerable<Installment>> GetAllClientInstallments(int clientId);
     
     Task<IEnumerable<Installment>> GetInstallmentApplications();
+
+    Task PayAll();
 }
