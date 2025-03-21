@@ -20,6 +20,13 @@ using Serilog.Events;
 using Console = OOP_LAB1.Presentation.Console.Console;
 
 
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+    .Enrich.FromLogContext()
+    .WriteTo.File("../../../logs/banks-.log", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
 // Настройка DI
 var serviceProvider = new ServiceCollection()
     // регистрация сервисов
@@ -137,15 +144,13 @@ var serviceProvider = new ServiceCollection()
     .AddTransient<LoginEmployeeView>()
     .AddTransient<ExitView>()
     
+    // Register Serilog ILogger
+    .AddSingleton<ILogger>(Log.Logger)
+    
     // сборка
     .BuildServiceProvider();
 
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Debug()
-    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-    .Enrich.FromLogContext()
-    .WriteTo.File("logs/banks-.log", rollingInterval: RollingInterval.Day)
-    .CreateLogger();
+
 
 
 var navigator = serviceProvider.GetService<INavigator>();
