@@ -114,11 +114,7 @@ public class InstallmentRepository : IInstallmentRepository
         };
 
         var result = await Task.Run(() =>_dataBaseHelper.ExecuteQuery(query, parameters));
-
-        if (result.Count == 0)
-        {
-            return null;
-        }
+        
         
         var installments = new List<Installment>();
 
@@ -154,10 +150,6 @@ public class InstallmentRepository : IInstallmentRepository
 
         var result = await Task.Run(() =>_dataBaseHelper.ExecuteQuery(query, parameters));
 
-        if (result.Count == 0)
-        {
-            return null;
-        }
         
         var installments = new List<Installment>();
 

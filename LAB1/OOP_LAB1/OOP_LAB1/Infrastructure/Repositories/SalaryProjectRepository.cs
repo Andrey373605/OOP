@@ -290,6 +290,30 @@ public class SalaryProjectRepository : ISalaryProjectRepository
         return projects;
     }
 
+    public async Task<SalaryProject> GetSalaryProjectRequest(int id)
+    {
+        var query = "SELECT * FROM SalaryProject WHERE Id = @Id AND Status = @Status";
+        var parameters = new Dictionary<string, object>
+        {
+            ["Id"] = id,
+            ["Status"] = (int)SalaryProjectStatus.Application
+        };
+
+        var result = await Task.Run(()=>_dataBaseHelper.ExecuteQuery(query, parameters).FirstOrDefault());
+
+        if (result == null)
+            return null;
+
+        return new SalaryProject
+        {
+            Id = Convert.ToInt32(result["Id"]),
+            EnterpriseId = Convert.ToInt32(result["EnterpriseId"]),
+            Balance = Convert.ToDecimal(result["Balance"]),
+            BankId = Convert.ToInt32(result["BankId"]),
+            Status = (SalaryProjectStatus)Convert.ToInt32(result["Status"])
+        };
+    }
+
     public async Task<IEnumerable<Salary>> GetSalaries(int projectId)
     {
         var query = "SELECT * FROM Salary " +

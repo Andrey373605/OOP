@@ -69,6 +69,6 @@ public class AdministratorLoanRequestView : IView
             }
         }
         
-        NextViewName = PageName.ManagerMainMenuPage;
+        NextViewName = PageName.AdministratorMainMenuPage;
     }
 }

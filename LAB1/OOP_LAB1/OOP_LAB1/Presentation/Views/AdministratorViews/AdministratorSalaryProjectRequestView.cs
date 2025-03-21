@@ -65,6 +65,6 @@ public class AdministratorSalaryProjectRequestView : IView
             }
         }
 
-        NextViewName = PageName.ManagerMainMenuPage;
+        NextViewName = PageName.AdministratorMainMenuPage;
     }
 }

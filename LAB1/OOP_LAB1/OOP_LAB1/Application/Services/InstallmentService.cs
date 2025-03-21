@@ -189,6 +189,8 @@ public class InstallmentService : IInstallmentService
         }
     }
 
+
+
     public async Task<IEnumerable<Installment>> GetInstallmentApplications()
     {
         try

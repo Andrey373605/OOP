@@ -135,6 +135,11 @@ var serviceProvider = new ServiceCollection()
     //admin
     .AddTransient<AdministratorMainMenuView>()
     .AddTransient<AdministratorEmployeeRegistrationRequestView>()
+    .AddTransient<AdministratorSalaryProjectRequestView>()
+    .AddTransient<AdministratorClientRegistrationRequestView>()
+    .AddTransient<AdministratorInstallmentRequestView>()
+    .AddTransient<AdministratorLoanRequestView>()
+    .AddTransient<AdministratorLogsView>()
     
     //specialist
     .AddTransient<SpecialistMainMenuView>()

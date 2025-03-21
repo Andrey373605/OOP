@@ -12,5 +12,6 @@ public interface IInstallmentService
     public Task ApproveInstallmentRequest(int installmentId);
     public Task RejectInstallmentRequest(int installmentId);
     Task<IEnumerable<Installment>> GetAllClientInstallments(int clientId);
+    
     Task<IEnumerable<Installment>> GetInstallmentApplications();
 }

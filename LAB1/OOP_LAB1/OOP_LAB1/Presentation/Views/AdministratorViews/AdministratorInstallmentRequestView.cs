@@ -69,6 +69,6 @@ public class AdministratorInstallmentRequestView : IView
             }
         }
         
-        NextViewName = PageName.ManagerMainMenuPage;
+        NextViewName = PageName.AdministratorMainMenuPage;
     }
 }

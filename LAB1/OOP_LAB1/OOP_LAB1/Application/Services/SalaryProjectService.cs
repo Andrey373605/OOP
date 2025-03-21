@@ -66,7 +66,7 @@ public class SalaryProjectService : ISalaryProjectService
         try
         {
             _logger.Information($"Attempting to approve salary project application with ID: {id}");
-            var salaryProject = await _salaryProjectRepository.GetByIdAsync(id);
+            var salaryProject = await _salaryProjectRepository.GetSalaryProjectRequest(id);
             if (salaryProject == null)
             {
                 _logger.Error($"Salary project with ID {id} not found");
