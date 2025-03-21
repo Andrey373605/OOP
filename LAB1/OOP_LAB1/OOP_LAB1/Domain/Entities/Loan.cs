@@ -13,7 +13,7 @@ namespace OOP_LAB1.Domain.Entities
         public int InterestRate { get; set; }
 
         public decimal RestMonth { get; set; }
-        public LoanStatus Status { get; set; }
+        public LoanStatus Status { get; set; } = LoanStatus.Application;
         
         public decimal CalculateMonthlyPayment()
         {

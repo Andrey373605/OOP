@@ -9,7 +9,16 @@ public class Employee
     public int UserId { get; set; }
     public int BankId { get; set; }
     public EmployeeRole Role { get; set; }
-    
-    [Required]
-    public EmployeeStatus Status { get; set; }
+
+    public EmployeeStatus Status { get; set; } = EmployeeStatus.Application;
+
+    public void Activate()
+    {
+        Status = EmployeeStatus.Active;
+    }
+
+    public void Reject()
+    {
+        Status = EmployeeStatus.Rejected;
+    }
 }

@@ -5,7 +5,6 @@ namespace OOP_LAB1.Domain.Enums
     {
         Transfer = 1,
         Withdraw = 2,
-        Deposit = 3,
-        Cancel = 4,
+        Deposit = 3
     }
 }

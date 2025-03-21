@@ -10,5 +10,12 @@ namespace OOP_LAB1.Domain.Entities
         public decimal Amount { get; set; }
         public DateTime Date { get; set; } = DateTime.UtcNow;
         public TransactionType Type { get; set; }
+        
+        public TransactionStatus Status { get; set; }
+
+        public void Delete()
+        {
+            Status = TransactionStatus.Deleted;
+        }
     }
 }

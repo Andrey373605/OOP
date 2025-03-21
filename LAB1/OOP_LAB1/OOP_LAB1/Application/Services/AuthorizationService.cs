@@ -150,6 +150,7 @@ public class AuthorizationService : IAuthorizationService
         {
             Role = role,
             UserId = user.Id,
+            Status = EmployeeStatus.Application
         };
         await _employeeRepository.AddAsync(employee);
     }
@@ -175,6 +176,11 @@ public class AuthorizationService : IAuthorizationService
         }
         
         var employee = await _employeeRepository.GetEmployeeByUserIdAsync(bank.Id, user.Id);
+        if (employee.Status != EmployeeStatus.Active)
+        {
+            throw new ApplicationException("Employee is not active");
+        }
+        
         if (employee == null)
         {
             throw new UnauthorizedAccessException("Employee does not register in this bank");

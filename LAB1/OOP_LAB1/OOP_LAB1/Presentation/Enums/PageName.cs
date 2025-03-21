@@ -59,5 +59,6 @@ public enum PageName
     ClientSalaryRequestPage,
 
     SpecialistProjectApplicationPage,
-    SpecialistSalaryRequestPage
+    SpecialistSalaryRequestPage,
+    AdministratorApproveEmployeeRegistrationPage
 }

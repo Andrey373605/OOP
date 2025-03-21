@@ -2,22 +2,20 @@
 
 namespace OOP_LAB1.Domain.Entities;
 
-public class Salary
+public class ReplenishmentRequest
 {
     public int Id { get; set; }
-    public int AccountId { get; set; }
     public int SalaryProjectId { get; set; }
     public decimal Amount { get; set; }
+    public RequestStatus Status { get; set; } = RequestStatus.Application;
 
-    public SalaryStatus Status { get; set; } = SalaryStatus.Application;
-
-    public void Activate()
+    public void Approve()
     {
-        Status = SalaryStatus.Active;
+        Status = RequestStatus.Approved;
     }
 
     public void Reject()
     {
-        Status = SalaryStatus.Rejected;
+        Status = RequestStatus.Rejected;
     }
 }

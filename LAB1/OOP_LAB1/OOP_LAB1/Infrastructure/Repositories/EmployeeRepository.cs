@@ -17,9 +17,9 @@ public class EmployeeRepository : IEmployeeRepository
     public async Task AddAsync(Employee employee)
     {
         string query = @"INSERT INTO Employee 
-                         (UserId, BankId, Role) 
+                         (UserId, BankId, Role, Status) 
                          VALUES 
-                         (@UserId, @BankId, @Role);";
+                         (@UserId, @BankId, @Role, @Status);";
 
         var parameters = new Dictionary<string, object>
         {
@@ -39,7 +39,7 @@ public class EmployeeRepository : IEmployeeRepository
 
     public async Task<Employee> GetByIdAsync(int id)
     {
-        string query = @"SELECT Id, UserId, BankId, Role 
+        string query = @"SELECT Id, UserId, BankId, Role, Status
                          FROM Employee 
                          WHERE Id = @Id;";
 
@@ -75,6 +75,7 @@ public class EmployeeRepository : IEmployeeRepository
                          SET UserId = @UserId, 
                              BankId = @BankId, 
                              Role = @Role,
+                             Status = @Status
                          WHERE Id = @Id";
 
         var parameters = new Dictionary<string, object>
@@ -93,13 +94,12 @@ public class EmployeeRepository : IEmployeeRepository
     {
         string query = @"SELECT Id, UserId, BankId, Role, Status
                          FROM Employee 
-                         WHERE BankId = @BankId AND UserId = @UserId AND Status = @Status";
+                         WHERE BankId = @BankId AND UserId = @UserId";
 
         var parameters = new Dictionary<string, object>
         {
             {"BankId", bankId},
-            {"UserId", userId},
-            {"Status", (int)EmployeeStatus.Active}
+            {"UserId", userId}
         };
 
         var result = await Task.Run(() => _dataBaseHelper.ExecuteQuery(query, parameters));
@@ -126,7 +126,8 @@ public class EmployeeRepository : IEmployeeRepository
     public async Task<IEnumerable<Employee>> GetEmployeesAsync()
     {
         string query = @"SELECT Id, UserId, BankId, Role, Status
-                         FROM Employee ";
+                         FROM Employee 
+                         WHERE Status = @Status";
 
         var parameters = new Dictionary<string, object>
         {
@@ -154,7 +155,8 @@ public class EmployeeRepository : IEmployeeRepository
     public async Task<IEnumerable<Employee>> GetEmployeeRequestsAsync()
     {
         string query = @"SELECT Id, UserId, BankId, Role, Status
-                         FROM Employee ";
+                         FROM Employee 
+                         WHERE Status = @Status;";
 
         var parameters = new Dictionary<string, object>
         {
@@ -177,5 +179,37 @@ public class EmployeeRepository : IEmployeeRepository
             });
         }
         return employees;
+    }
+
+    public async Task<Employee> GetEmployeeRequestAsync()
+    {
+        string query = @"SELECT Id, UserId, BankId, Role, Status
+                         FROM Employee 
+                         WHERE Status = @Status";
+
+        var parameters = new Dictionary<string, object>
+        {
+            {"Status", (int)EmployeeStatus.Application}
+        };
+
+        var result = await Task.Run(() => _dataBaseHelper.ExecuteQuery(query, parameters));
+
+        if (result.Count == 0)
+        {
+            return null; // Если сотрудник не найден
+        }
+
+        var row = result[0];
+
+        var employee = new Employee
+        {
+            Id = Convert.ToInt32(row["Id"]),
+            UserId = Convert.ToInt32(row["UserId"]),
+            BankId = Convert.ToInt32(row["BankId"]),
+            Role = (EmployeeRole)Convert.ToInt32(row["Role"]),
+            Status = (EmployeeStatus)Convert.ToInt32(row["Status"]),
+        };
+
+        return employee;
     }
 }

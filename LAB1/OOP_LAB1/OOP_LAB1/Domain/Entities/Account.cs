@@ -9,7 +9,7 @@ namespace OOP_LAB1.Domain.Entities
         public int BankId { get; set; }
         public decimal Balance { get; set; }
         public int ClientId { get; set; }
-        public AccountStatus Status { get; set; }
+        public AccountStatus Status { get; set; } = AccountStatus.Active;
         public AccountType AccountType { get; set; }
 
         public void FreezeAccount()

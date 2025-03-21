@@ -12,7 +12,7 @@ namespace OOP_LAB1.Domain.Entities
         public int NumberOfPayments { get; init; }
         
         public int RestMonth { get; set; }
-        public InstallmentStatus Status { get; set; }
+        public InstallmentStatus Status { get; set; } = InstallmentStatus.Application;
         
         public void DecreaseRestMonth()
         {

@@ -30,7 +30,9 @@ public class AdministratorMainMenuView : IView
         _console.WriteLine("4. Log out");
 
         var choice = _input.GetNumberVariant(4);
+        _console.Clear();
         NextViewName = choice switch
+            
         {
             "1" => PageName.AdministratorAllLogsPage,
             "2" => PageName.AdministratorCancelTransferPage,

@@ -29,4 +29,33 @@ public class EmployeeService : IEmployeeService
         }
         return employee;
     }
+
+    public async Task<IEnumerable<Employee>> GetClientRegistrationRequests()
+    {
+        return await _employeeRepository.GetEmployeeRequestsAsync();
+    }
+
+    public async Task ApproveClientRegistration(int id)
+    {
+        var request = await _employeeRepository.GetEmployeeRequestAsync();
+        if (request == null)
+        {
+            throw new NullReferenceException("Employee not found");
+        }
+
+        request.Activate();
+        await _employeeRepository.UpdateAsync(request);
+    }
+
+    public async Task RejectClientRegistration(int id)
+    {
+        var request = await _employeeRepository.GetEmployeeRequestAsync();
+        if (request == null)
+        {
+            throw new NullReferenceException("Employee not found");
+        }
+
+        request.Reject();
+        await _employeeRepository.UpdateAsync(request);
+    }
 }

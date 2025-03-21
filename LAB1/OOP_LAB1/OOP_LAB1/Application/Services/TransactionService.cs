@@ -28,7 +28,8 @@ public class TransactionService : ITransactionService
             ToAccountId = null,
             Amount = amount,
             Date = DateTime.UtcNow,
-            Type = TransactionType.Withdraw
+            Type = TransactionType.Withdraw,
+            Status = TransactionStatus.Completed
         };
         
 
@@ -92,7 +93,8 @@ public class TransactionService : ITransactionService
             ToAccountId = toAccountId,
             Amount = amount,
             Date = DateTime.UtcNow,
-            Type = TransactionType.Transfer
+            Type = TransactionType.Transfer,
+            Status = TransactionStatus.Completed
         };
         
         await _transactionRepository.AddAsync(transaction);
@@ -118,7 +120,8 @@ public class TransactionService : ITransactionService
             ToAccountId = accountId,
             Amount = amount,
             Date = DateTime.UtcNow,
-            Type = TransactionType.Deposit
+            Type = TransactionType.Deposit,
+            Status = TransactionStatus.Completed
         };
         
         await _transactionRepository.AddAsync(transaction);
@@ -169,7 +172,8 @@ public class TransactionService : ITransactionService
             ToAccountId = fromAccount.Id,
             Amount = transfer.Amount,
             Date = DateTime.UtcNow,
-            Type = TransactionType.Cancel
+            Type = TransactionType.Transfer,
+            Status = TransactionStatus.Canceled
         };
         
         await _transactionRepository.AddAsync(transaction);
@@ -178,7 +182,8 @@ public class TransactionService : ITransactionService
         fromAccount.DepositAccount(transfer.Amount);
         await _accountRepository.UpdateAsync(fromAccount);
         await _accountRepository.UpdateAsync(toAccount);
-        await _transactionRepository.DeleteByIdAsync(transferId);
+        transfer.Delete();
+        await _transactionRepository.UpdateAsync(transfer);
         
         return true;
     }

@@ -10,7 +10,7 @@ public class SalaryProject
     
     public decimal Balance { get; set; }
     public int BankId { get; set; }
-    public SalaryProjectStatus Status { get; set; }
+    public SalaryProjectStatus Status { get; set; } = SalaryProjectStatus.Application;
 
     public void Activate()
     {
