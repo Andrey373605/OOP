@@ -7,14 +7,14 @@ using OOP_LAB1.Presentation.Validators;
 
 namespace OOP_LAB1.Presentation.Views;
 
-[ViewMapping(PageName.ManagerApproveSalaryProjectPage)]
-public class ManagerApproveSalaryProjectView : IView
+[ViewMapping(PageName.AdministratorSalaryProjectRequestPage)]
+public class AdministratorSalaryProjectRequestView : IView
 {
     private ISalaryProjectService _salaryProjectService;
     private IConsole _console;
     private IInputHandler _input;
 
-    public ManagerApproveSalaryProjectView(ISalaryProjectService salaryProjectService, IConsole console, IInputHandler input)
+    public AdministratorSalaryProjectRequestView(ISalaryProjectService salaryProjectService, IConsole console, IInputHandler input)
     {
         _salaryProjectService = salaryProjectService;
         _console = console;

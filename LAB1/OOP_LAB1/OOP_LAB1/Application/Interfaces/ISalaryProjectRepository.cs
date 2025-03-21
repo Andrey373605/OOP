@@ -22,4 +22,5 @@ public interface ISalaryProjectRepository
     public Task<IEnumerable<SalaryProject>> GetAllSalaryProjectAsync();
     public Task<IEnumerable<Salary>> GetAllSalaryRequests();
     Task<Salary> GetSalaryRequest(int salaryId);
+    Task<IEnumerable<SalaryProject>> GetAllSalaryProjectRequests();
 }

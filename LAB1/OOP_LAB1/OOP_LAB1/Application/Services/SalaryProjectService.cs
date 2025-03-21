@@ -332,4 +332,20 @@ public class SalaryProjectService : ISalaryProjectService
             throw;
         }
     }
+
+    public async Task<IEnumerable<SalaryProject>> GetAllSalaryProjectRequests()
+    {
+        try
+        {
+            _logger.Information("Attempting to retrieve all salary prject requests");
+            var requests = await _salaryProjectRepository.GetAllSalaryProjectRequests();
+            _logger.Information("Successfully retrieved all salary prject requests");
+            return requests;
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Error retrieving all salary prject requests");
+            throw;
+        }
+    }
 }

@@ -60,5 +60,11 @@ public enum PageName
 
     SpecialistProjectApplicationPage,
     SpecialistSalaryRequestPage,
-    AdministratorApproveEmployeeRegistrationPage
+    AdministratorApproveEmployeeRegistrationPage,
+    AdministratorLogsPage,
+    AdministratorClientRegistrationRequestPage,
+    AdministratorLoanRequestPage,
+    AdministratorInstallmentRequestPage,
+    AdministratorSalaryProjectRequestpage,
+    AdministratorSalaryProjectRequestPage
 }

@@ -1,4 +1,5 @@
-﻿using OOP_LAB1.Domain.Entities;
+﻿using System.Collections;
+using OOP_LAB1.Domain.Entities;
 namespace OOP_LAB1.Domain.Interfaces;
 
 public interface ISalaryProjectService
@@ -18,4 +19,5 @@ public interface ISalaryProjectService
     
     public Task<SalaryProject> GetSalaryProject(int id);
     public Task<IEnumerable<Salary>> GetAllSalaryRequests();
+    Task<IEnumerable<SalaryProject>> GetAllSalaryProjectRequests();
 }

@@ -263,6 +263,33 @@ public class SalaryProjectRepository : ISalaryProjectRepository
         };
     }
 
+    public async Task<IEnumerable<SalaryProject>> GetAllSalaryProjectRequests()
+    {
+        var query = "SELECT * FROM SalaryProject WHERE Status = @Status";
+        var parameters = new Dictionary<string, object>
+        {
+            ["Status"] = (int)SalaryProjectStatus.Application
+        };
+
+        var result = await Task.Run(()=>_dataBaseHelper.ExecuteQuery(query, parameters));
+
+        var projects = new List<SalaryProject>();
+
+        foreach (var row in result)
+        {
+            projects.Add(new SalaryProject
+            {
+                Id = Convert.ToInt32(row["Id"]),
+                EnterpriseId = Convert.ToInt32(row["EnterpriseId"]),
+                Balance = Convert.ToDecimal(row["Balance"]),
+                BankId = Convert.ToInt32(row["BankId"]),
+                Status = (SalaryProjectStatus)Convert.ToInt32(row["Status"])
+            });
+        }
+
+        return projects;
+    }
+
     public async Task<IEnumerable<Salary>> GetSalaries(int projectId)
     {
         var query = "SELECT * FROM Salary " +
