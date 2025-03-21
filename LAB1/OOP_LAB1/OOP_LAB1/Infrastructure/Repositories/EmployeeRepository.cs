@@ -181,15 +181,16 @@ public class EmployeeRepository : IEmployeeRepository
         return employees;
     }
 
-    public async Task<Employee> GetEmployeeRequestAsync()
+    public async Task<Employee> GetEmployeeRequestAsync(int id)
     {
         string query = @"SELECT Id, UserId, BankId, Role, Status
                          FROM Employee 
-                         WHERE Status = @Status";
+                         WHERE Status = @Status AND Id = @Id;";
 
         var parameters = new Dictionary<string, object>
         {
-            {"Status", (int)EmployeeStatus.Application}
+            {"Status", (int)EmployeeStatus.Application},
+            {"Id", id}
         };
 
         var result = await Task.Run(() => _dataBaseHelper.ExecuteQuery(query, parameters));

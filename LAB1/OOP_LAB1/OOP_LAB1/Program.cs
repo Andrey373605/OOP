@@ -15,6 +15,8 @@ using OOP_LAB1.Presentation.Registration;
 using OOP_LAB1.Presentation.Views;
 using OOP_LAB1.Presentation.Views.AdministratorViews;
 using OOP_LAB1.Presentation.Views.SalaryProjectViews;
+using Serilog;
+using Serilog.Events;
 using Console = OOP_LAB1.Presentation.Console.Console;
 
 
@@ -137,6 +139,13 @@ var serviceProvider = new ServiceCollection()
     
     // сборка
     .BuildServiceProvider();
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+    .Enrich.FromLogContext()
+    .WriteTo.File("logs/banks-.log", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
 
 var navigator = serviceProvider.GetService<INavigator>();

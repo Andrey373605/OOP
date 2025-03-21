@@ -12,7 +12,7 @@ public interface ISalaryProjectService
     public Task RejectSalaryApplication(int salaryId);
     
     public Task PaySalary(int projectId);
-    public Task UpdateSalaryAmount(int salaryId, int amount);
+    public Task UpdateSalaryAmount(int salaryId, decimal amount);
     public Task DepositProjectAccount(int fromAccountId,int projectId, decimal amount);
     public Task<IEnumerable<SalaryProject>> GetAllSalaryProjects();
     

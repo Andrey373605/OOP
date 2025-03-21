@@ -13,5 +13,5 @@ public interface IEmployeeRepository
     
     public Task<IEnumerable<Employee>> GetEmployeesAsync();
     public Task<IEnumerable<Employee>> GetEmployeeRequestsAsync();
-    Task<Employee> GetEmployeeRequestAsync();
+    Task<Employee> GetEmployeeRequestAsync(int id);
 }
